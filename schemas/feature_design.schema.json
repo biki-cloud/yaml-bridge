@@ -1,0 +1,236 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "feature_design.schema.json",
+  "title": "新機能設計ドキュメント",
+  "description": "新機能開発の設計を記述するためのスキーマ",
+  "allOf": [
+    { "$ref": "base.schema.json" }
+  ],
+  "type": "object",
+  "required": ["meta", "background", "requirements"],
+  "properties": {
+    "meta": {
+      "properties": {
+        "type": {
+          "const": "feature_design"
+        }
+      }
+    },
+    "requirements": {
+      "type": "object",
+      "description": "要件定義",
+      "properties": {
+        "functional": {
+          "type": "array",
+          "description": "機能要件",
+          "items": {
+            "type": "object",
+            "required": ["id", "description"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "要件ID (例: FR-001)"
+              },
+              "description": {
+                "type": "string",
+                "description": "要件の説明"
+              },
+              "priority": {
+                "type": "string",
+                "enum": ["must", "should", "could", "wont"],
+                "description": "優先度 (MoSCoW)"
+              },
+              "acceptance_criteria": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "受け入れ条件"
+              }
+            }
+          }
+        },
+        "non_functional": {
+          "type": "array",
+          "description": "非機能要件",
+          "items": {
+            "type": "object",
+            "required": ["id", "category", "description"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "要件ID (例: NFR-001)"
+              },
+              "category": {
+                "type": "string",
+                "enum": ["performance", "security", "availability", "scalability", "usability", "maintainability"],
+                "description": "カテゴリ"
+              },
+              "description": {
+                "type": "string",
+                "description": "要件の説明"
+              },
+              "metric": {
+                "type": "string",
+                "description": "測定指標"
+              }
+            }
+          }
+        }
+      }
+    },
+    "architecture": {
+      "type": "object",
+      "description": "アーキテクチャ設計",
+      "properties": {
+        "overview": {
+          "type": "string",
+          "description": "アーキテクチャ概要"
+        },
+        "patterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "採用するデザインパターン"
+        },
+        "decisions": {
+          "type": "array",
+          "description": "アーキテクチャ決定記録 (ADR)",
+          "items": {
+            "type": "object",
+            "required": ["title", "decision", "rationale"],
+            "properties": {
+              "title": {
+                "type": "string",
+                "description": "決定事項のタイトル"
+              },
+              "context": {
+                "type": "string",
+                "description": "背景・状況"
+              },
+              "decision": {
+                "type": "string",
+                "description": "決定内容"
+              },
+              "rationale": {
+                "type": "string",
+                "description": "理由"
+              },
+              "alternatives": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "検討した代替案"
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "type": "array",
+      "description": "コンポーネント一覧",
+      "items": {
+        "type": "object",
+        "required": ["name", "responsibility"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "コンポーネント名"
+          },
+          "responsibility": {
+            "type": "string",
+            "description": "責務"
+          },
+          "dependencies": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "依存するコンポーネント"
+          },
+          "interfaces": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "提供するインターフェース"
+          }
+        }
+      }
+    },
+    "data_model": {
+      "type": "object",
+      "description": "データモデル",
+      "properties": {
+        "entities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "エンティティ名"
+              },
+              "description": {
+                "type": "string",
+                "description": "説明"
+              },
+              "attributes": {
+                "type": "array",
+                "items": {
+                  "$ref": "base.schema.json#/definitions/param_spec"
+                }
+              }
+            }
+          }
+        },
+        "relationships": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "string"
+              },
+              "to": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": ["one-to-one", "one-to-many", "many-to-many"]
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "milestones": {
+      "type": "array",
+      "description": "マイルストーン",
+      "items": {
+        "type": "object",
+        "required": ["name", "deliverables"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "マイルストーン名"
+          },
+          "deliverables": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "成果物"
+          }
+        }
+      }
+    }
+  }
+}

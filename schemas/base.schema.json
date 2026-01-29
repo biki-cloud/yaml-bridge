@@ -1,0 +1,199 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "base.schema.json",
+  "title": "設計ドキュメント基本スキーマ",
+  "description": "全ての案件タイプで共通の基本フィールドを定義するスキーマ",
+  "type": "object",
+  "required": ["meta", "background"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "description": "ドキュメントのメタ情報",
+      "required": ["title", "type", "version", "status"],
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "設計ドキュメントのタイトル"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["api_design", "feature_design", "bugfix", "infrastructure"],
+          "description": "案件タイプ"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "ドキュメントバージョン (例: 1.0.0)"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["draft", "review", "approved", "implemented"],
+          "description": "ドキュメントのステータス"
+        },
+        "author": {
+          "type": "string",
+          "description": "作成者"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date",
+          "description": "作成日 (YYYY-MM-DD)"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date",
+          "description": "更新日 (YYYY-MM-DD)"
+        }
+      }
+    },
+    "background": {
+      "type": "object",
+      "description": "背景・目的",
+      "required": ["purpose"],
+      "properties": {
+        "purpose": {
+          "type": "string",
+          "description": "目的"
+        },
+        "context": {
+          "type": "string",
+          "description": "背景・経緯の詳細"
+        },
+        "issue_links": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "関連するIssue/チケットのリンク"
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "description": "スコープ（対象範囲）",
+      "properties": {
+        "in": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "スコープ内（対象）"
+        },
+        "out": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "スコープ外（対象外）"
+        }
+      }
+    },
+    "risks": {
+      "type": "array",
+      "description": "リスクと対策",
+      "items": {
+        "$ref": "#/definitions/risk_item"
+      }
+    },
+    "testing": {
+      "type": "object",
+      "description": "テスト計画",
+      "properties": {
+        "unit_tests": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "ユニットテスト項目"
+        },
+        "integration_tests": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "結合テスト項目"
+        },
+        "regression_tests": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "回帰テスト項目"
+        }
+      }
+    },
+    "custom": {
+      "type": "object",
+      "description": "カスタムフィールド（案件固有の追加情報）",
+      "additionalProperties": true
+    }
+  },
+  "definitions": {
+    "risk_item": {
+      "type": "object",
+      "required": ["risk", "mitigation"],
+      "properties": {
+        "risk": {
+          "type": "string",
+          "description": "リスクの内容"
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "critical"],
+          "description": "深刻度"
+        },
+        "probability": {
+          "type": "string",
+          "enum": ["low", "medium", "high"],
+          "description": "発生確率"
+        },
+        "mitigation": {
+          "type": "string",
+          "description": "対策"
+        }
+      }
+    },
+    "param_spec": {
+      "type": "object",
+      "required": ["name", "type"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "パラメータ名"
+        },
+        "type": {
+          "type": "string",
+          "description": "データ型"
+        },
+        "required": {
+          "type": "boolean",
+          "default": false
+        },
+        "description": {
+          "type": "string"
+        },
+        "example": {
+          "description": "値の例"
+        }
+      }
+    },
+    "step_item": {
+      "type": "object",
+      "required": ["order", "description"],
+      "properties": {
+        "order": {
+          "type": "integer",
+          "description": "実行順序"
+        },
+        "description": {
+          "type": "string",
+          "description": "ステップの説明"
+        },
+        "rollback": {
+          "type": "string",
+          "description": "ロールバック手順"
+        }
+      }
+    }
+  }
+}

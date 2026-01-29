@@ -1,0 +1,247 @@
+# yaml-language-server: $schema=../schemas/infrastructure.schema.json
+# AI作成用YAML - このファイルをAIが編集します
+
+meta:
+  title: Kubernetes移行プロジェクト
+  type: infrastructure
+  version: 1.0.0
+  status: draft
+  author: インフラチーム
+  created_at: "2026-01-29"
+  updated_at: "2026-01-29"
+
+background:
+  purpose: EC2ベースのインフラをKubernetesに移行し、運用効率とスケーラビリティを向上
+  context: |
+    現在のEC2ベースのインフラは手動でのスケーリングが必要で、
+    デプロイに時間がかかっている。Kubernetesに移行することで
+    オートスケーリング、ローリングデプロイ、自己修復機能を実現する。
+  issue_links:
+    - https://github.com/example/issues/100
+    - https://jira.example.com/browse/INFRA-500
+
+scope:
+  in:
+    - APIサーバー（3サービス）
+    - バックグラウンドワーカー
+    - 監視・ログ基盤
+  out:
+    - データベース（RDSのまま維持）
+    - CDN設定
+
+current_state:
+  description: EC2インスタンスでの手動運用
+  components:
+    - name: API Server
+      type: server
+      technology: EC2 (t3.large)
+      description: 3台構成、ALB経由でロードバランス
+      connections:
+        - RDS
+        - ElastiCache
+    - name: Worker
+      type: server
+      technology: EC2 (t3.medium)
+      description: 2台構成、SQSからジョブを取得
+      connections:
+        - SQS
+        - RDS
+    - name: RDS
+      type: database
+      technology: Aurora MySQL
+      description: マルチAZ構成
+    - name: ElastiCache
+      type: cache
+      technology: Redis
+      description: セッションストア
+  issues:
+    - スケーリングに10分以上かかる
+    - デプロイ時に5分程度のダウンタイムが発生
+    - サーバー障害時の自動復旧ができない
+
+target_state:
+  description: EKS上でのコンテナオーケストレーション
+  components:
+    - name: API Server
+      type: container
+      technology: EKS (Kubernetes)
+      description: Deployment + HPA、最小3Pod
+      connections:
+        - RDS
+        - ElastiCache
+    - name: Worker
+      type: container
+      technology: EKS (Kubernetes)
+      description: Deployment + KEDA、イベント駆動スケーリング
+      connections:
+        - SQS
+        - RDS
+    - name: Ingress
+      type: network
+      technology: AWS ALB Ingress Controller
+      description: パスベースルーティング
+      connections:
+        - API Server
+    - name: RDS
+      type: database
+      technology: Aurora MySQL
+      description: 既存のまま維持
+    - name: ElastiCache
+      type: cache
+      technology: Redis
+      description: 既存のまま維持
+  benefits:
+    - オートスケーリングで負荷に自動対応
+    - ローリングデプロイでダウンタイムゼロ
+    - Pod障害時の自動復旧
+    - インフラのコード化（GitOps）
+
+resources:
+  compute:
+    - name: EKS Node Group
+      type: t3.large
+      count: 3
+      specs:
+        cpu: 2 vCPU
+        memory: 8 GB
+        storage: 50 GB
+    - name: EKS Node Group (Worker)
+      type: t3.medium
+      count: 2
+      specs:
+        cpu: 2 vCPU
+        memory: 4 GB
+        storage: 30 GB
+  network:
+    - name: VPC
+      type: vpc
+      config:
+        cidr: 10.0.0.0/16
+    - name: ALB
+      type: load_balancer
+      config:
+        type: application
+        scheme: internet-facing
+  services:
+    - name: EKS
+      provider: AWS
+      service_type: Managed Kubernetes
+      config:
+        version: "1.28"
+        addons:
+          - vpc-cni
+          - coredns
+          - kube-proxy
+    - name: ECR
+      provider: AWS
+      service_type: Container Registry
+    - name: CloudWatch
+      provider: AWS
+      service_type: Monitoring
+
+security:
+  authentication: IAM + OIDC Provider
+  authorization: Kubernetes RBAC
+  encryption:
+    at_rest: EBS暗号化 (AWS KMS)
+    in_transit: TLS 1.3
+  compliance:
+    - SOC 2
+    - ISO 27001
+
+monitoring:
+  metrics:
+    - name: Pod CPU使用率
+      threshold: 80%
+      alert_condition: 5分間平均が閾値超過
+    - name: Pod Memory使用率
+      threshold: 85%
+      alert_condition: 5分間平均が閾値超過
+    - name: API レスポンスタイム
+      threshold: 500ms
+      alert_condition: p99が閾値超過
+    - name: Pod再起動回数
+      threshold: 3回/時
+      alert_condition: 閾値超過
+  logging:
+    destination: CloudWatch Logs
+    retention_days: 30
+  alerting:
+    channels:
+      - Slack (#infra-alerts)
+      - PagerDuty
+    escalation_policy: 5分応答なしでエスカレーション
+
+migration:
+  strategy: blue_green
+  steps:
+    - order: 1
+      description: EKSクラスター構築とネットワーク設定
+      rollback: クラスター削除
+    - order: 2
+      description: CI/CDパイプラインの構築（GitHub Actions + ArgoCD）
+      rollback: 旧デプロイパイプラインに戻す
+    - order: 3
+      description: ステージング環境での動作検証
+      rollback: 該当なし
+    - order: 4
+      description: 本番環境へのブルー/グリーンデプロイ（10%トラフィック）
+      rollback: トラフィックを旧環境に100%戻す
+    - order: 5
+      description: トラフィックを段階的に移行（10% → 50% → 100%）
+      rollback: トラフィック比率を戻す
+    - order: 6
+      description: 旧EC2環境の停止・削除
+      rollback: EC2インスタンスを再起動
+  rollback_plan: |
+    トラフィックをALBのターゲットグループで制御しているため、
+    問題発生時は即座に旧環境にトラフィックを戻すことが可能。
+    最悪の場合でも5分以内にロールバック完了。
+  downtime_window: ゼロダウンタイム（ブルー/グリーンデプロイ）
+
+cost:
+  monthly_estimate: $2,500
+  breakdown:
+    - item: EKS Control Plane
+      cost: $73
+    - item: EC2 (Node Group)
+      cost: $500
+    - item: ALB
+      cost: $50
+    - item: CloudWatch
+      cost: $100
+    - item: データ転送
+      cost: $200
+    - item: その他（ECR, Secrets Manager等）
+      cost: $77
+  notes: |
+    現行のEC2環境（月額$2,200）と比較して約$300増加だが、
+    運用工数削減とスケーラビリティ向上を考慮するとROIは良好。
+
+risks:
+  - risk: Kubernetes学習コスト
+    severity: medium
+    probability: high
+    mitigation: チームへのトレーニング実施、ドキュメント整備
+
+  - risk: 移行中のサービス障害
+    severity: high
+    probability: low
+    mitigation: ブルー/グリーンデプロイで即座にロールバック可能
+
+  - risk: 想定外のコスト増加
+    severity: medium
+    probability: medium
+    mitigation: コストアラートの設定、リソース使用状況の定期レビュー
+
+testing:
+  unit_tests:
+    - Kubernetesマニフェストのバリデーション
+    - Helmチャートのテスト
+  integration_tests:
+    - クラスター内サービス間通信
+    - オートスケーリングの動作確認
+    - ローリングデプロイの動作確認
+  regression_tests:
+    - APIの機能テスト
+    - 負荷テスト（現行同等の負荷を処理できること）
