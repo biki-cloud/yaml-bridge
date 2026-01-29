@@ -138,6 +138,46 @@ def format_references_section(data: dict) -> str:
     return '\n'.join(lines)
 
 
+def format_overview_section(
+    overview: dict,
+    *,
+    include_background: bool = True,
+    include_goal: bool = True,
+    goal_heading: str = "目的",
+    include_related_docs: bool = True,
+) -> str:
+    """
+    overview 辞書から「背景」「目的/ゴール」「関連ドキュメント」の Markdown を生成する。
+    各 create_human_document.py で共通利用。
+    """
+    if not overview:
+        return ''
+    lines = []
+    if include_background and overview.get('background'):
+        lines.append('## 背景')
+        lines.append('')
+        lines.append(overview['background'])
+        lines.append('')
+    if include_goal and overview.get('goal'):
+        lines.append(f'## {goal_heading}')
+        lines.append('')
+        lines.append(overview['goal'])
+        lines.append('')
+    if include_related_docs and overview.get('related_docs'):
+        lines.append('### 関連ドキュメント')
+        lines.append('')
+        for doc in overview['related_docs']:
+            if isinstance(doc, dict):
+                name, url = doc.get('name', '-'), doc.get('url', '')
+                lines.append(f'- [{name}]({url})' if url else f'- {name}')
+            else:
+                lines.append(f'- {doc}')
+        lines.append('')
+    if not lines:
+        return ''
+    return '\n'.join(lines).rstrip() + '\n'
+
+
 def run_create_human_document(generate_markdown_fn: Callable[[dict], str]) -> None:
     """
     create_human_document の共通エントリポイント。

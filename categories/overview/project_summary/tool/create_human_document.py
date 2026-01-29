@@ -9,7 +9,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent.parent / 'common'))
 from config import AI_DOCUMENT_YAML, HUMAN_DOCUMENT_MD
-from md_base import load_yaml, format_status, format_references_section, format_ai_context_section, run_create_human_document
+from md_base import load_yaml, format_status, format_references_section, format_ai_context_section, format_overview_section, run_create_human_document
 
 CATEGORIES = ['overview', 'design', 'development', 'investigation', 'verification']
 
@@ -87,18 +87,13 @@ def generate_markdown(data: dict) -> str:
     if ai_section:
         lines.append(ai_section)
         lines.append("")
-    # Summary
+    overview_section = format_overview_section(
+        data.get('summary', {}), goal_heading='ゴール', include_related_docs=False
+    )
+    if overview_section:
+        lines.append(overview_section.rstrip())
+        lines.append("")
     summary = data.get('summary', {})
-    lines.append("## 背景")
-    lines.append("")
-    lines.append(summary.get('background', '-'))
-    lines.append("")
-    
-    lines.append("## ゴール")
-    lines.append("")
-    lines.append(summary.get('goal', '-'))
-    lines.append("")
-    
     if summary.get('scope'):
         scope = summary['scope']
         lines.append("## スコープ")

@@ -9,7 +9,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent.parent / 'common'))
 from config import AI_DOCUMENT_YAML
-from md_base import load_yaml, format_status, format_references_section, format_ai_context_section, run_create_human_document
+from md_base import load_yaml, format_status, format_references_section, format_ai_context_section, format_overview_section, run_create_human_document
 
 TASK_STATE_CATEGORIES = ['overview', 'design', 'development', 'investigation', 'verification']
 
@@ -100,20 +100,10 @@ def generate_markdown(data: dict) -> str:
     if ai_section:
         lines.append(ai_section)
         lines.append("")
-    # Overview
-    overview = data.get('overview', {})
-    if overview.get('background'):
-        lines.append("## 背景")
+    overview_section = format_overview_section(data.get('overview', {}), include_related_docs=False)
+    if overview_section:
+        lines.append(overview_section.rstrip())
         lines.append("")
-        lines.append(overview['background'])
-        lines.append("")
-    
-    if overview.get('goal'):
-        lines.append("## 目的")
-        lines.append("")
-        lines.append(overview['goal'])
-        lines.append("")
-    
     # Tasks + Mermaid
     tasks = data.get('tasks', [])
     if tasks:

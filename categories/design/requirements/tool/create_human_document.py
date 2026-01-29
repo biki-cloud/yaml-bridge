@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent.parent / 'common'))
-from md_base import load_yaml, format_status, format_references_section, format_ai_context_section, run_create_human_document
+from md_base import load_yaml, format_status, format_references_section, format_ai_context_section, format_overview_section, run_create_human_document
 
 
 def generate_markdown(data: dict) -> str:
@@ -22,20 +22,11 @@ def generate_markdown(data: dict) -> str:
     if ai_section:
         lines.append(ai_section)
         lines.append("")
-    # Overview
+    overview_section = format_overview_section(data.get('overview', {}), include_related_docs=False)
+    if overview_section:
+        lines.append(overview_section.rstrip())
+        lines.append("")
     overview = data.get('overview', {})
-    if overview.get('background'):
-        lines.append("## 背景")
-        lines.append("")
-        lines.append(overview['background'])
-        lines.append("")
-    
-    if overview.get('goal'):
-        lines.append("## 目的")
-        lines.append("")
-        lines.append(overview['goal'])
-        lines.append("")
-    
     if overview.get('scope'):
         scope = overview['scope']
         lines.append("## スコープ")
