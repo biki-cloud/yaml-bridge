@@ -34,7 +34,7 @@ tasks:
     title: "リフレッシュトークン実装"
     category: development
     priority: high
-    status: wip
+    status: done
     dependencies:
       - T-001
     estimated_hours: 8
@@ -43,7 +43,7 @@ tasks:
     title: "エラーメッセージ改善"
     category: development
     priority: high
-    status: todo
+    status: wip
     dependencies: []
     estimated_hours: 2
 
