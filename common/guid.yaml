@@ -1,0 +1,60 @@
+# 共通定義ガイド (common/guid.yaml)
+#
+# common/scheme.json の definitions に対応するガイド。
+# 各 doc_type の document.yaml で共通して使う meta / overview / references / ai_context の書き方。
+# 各 doc_type の guid.yaml は「共通部分は common/guid.yaml を参照」しつつ、
+# doc_type 固有のセクションに集中させることを推奨。
+
+# ---------------------------------------------------------------------------
+# meta_base（全 doc_type 共通の meta）
+# ---------------------------------------------------------------------------
+# 必須: title, category, doc_type, status, version
+# 任意: author, created_at, updated_at
+# status は enum: todo, wip, done
+# version は semver (例: "1.0.0")
+meta:
+  title: "ドキュメントタイトル"
+  category: "overview"   # 各 doc_type で const に上書き
+  doc_type: "project_summary"  # 各 doc_type で const に上書き
+  status: done
+  version: "1.0.0"
+
+# ---------------------------------------------------------------------------
+# overview_background_goal（背景・目的・関連資料）
+# ---------------------------------------------------------------------------
+# 必須: background, goal, related_docs
+# related_docs は 1件以上の { title, url } 配列（文字列配列ではない）
+overview:
+  background: |
+    背景を記述
+  goal: |
+    目的を記述
+  related_docs:
+    - title: "関連資料名"
+      url: "path/or/url"
+
+# ---------------------------------------------------------------------------
+# references（参考文献・参照元）
+# ---------------------------------------------------------------------------
+# 1件以上の { title, url } 配列。全 doc_type で required。
+references:
+  - title: "参考資料名"
+    url: "https://example.com"
+
+# ---------------------------------------------------------------------------
+# ai_context（任意・人間用MDで図化される）
+# ---------------------------------------------------------------------------
+# document.yaml に任意で ai_context を書けます。
+# current_thinking（現在の考え）, next_actions（これからのアクション）,
+# decision_flow（判断・進め方の流れ）を書くと、人間用MDでフローチャート等の図になります。
+# ai_context:
+#   current_thinking: "..."  # または文字列の配列
+#   next_actions:
+#     - id: "a1"
+#       label: "ラベル"
+#       detail: "詳細"
+#   decision_flow:
+#     - id: "d1"
+#       label: "判断"
+#       next: "d2"
+#       next_condition: ["条件"]

@@ -2,9 +2,7 @@
 #
 # 案件でやることを整理するドキュメント
 #
-# document.yaml には任意で ai_context を書けます。
-# current_thinking（現在の考え）, next_actions（これからのアクション）,
-# decision_flow（判断・進め方の流れ）を書くと、人間用MDでフローチャート等の図になります。
+# 共通項目（meta / overview / references / ai_context）は common/guid.yaml を参照。
 
 meta:
   title: "タスク分解ガイド"
@@ -18,6 +16,9 @@ overview:
     背景を記述
   goal: |
     目的を記述
+  related_docs:
+    - title: "関連資料名"
+      url: "path/or/url"
 
 tasks:
   - id: T-001
@@ -46,3 +47,7 @@ risks:
   - risk: "リスク"
     impact: medium
     mitigation: "対策"
+
+references:
+  - title: "参考資料名"
+    url: "https://example.com"
