@@ -18,11 +18,15 @@
       ]
     },
     "overview": {
-      "type": "object",
-      "properties": {
-        "related_plan": { "type": "string" },
-        "environment": { "type": "string" }
-      }
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/overview_background_goal" },
+        {
+          "properties": {
+            "related_plan": { "type": "string" },
+            "environment": { "type": "string" }
+          }
+        }
+      ]
     },
     "procedures": {
       "type": "array",

@@ -71,7 +71,11 @@ def generate_markdown(data: dict) -> str:
         lines.append("### 関連ドキュメント")
         lines.append("")
         for doc in overview['related_docs']:
-            lines.append(f"- {doc}")
+            if isinstance(doc, dict):
+                name, url = doc.get('name', '-'), doc.get('url', '')
+                lines.append(f"- [{name}]({url})" if url else f"- {name}")
+            else:
+                lines.append(f"- {doc}")
         lines.append("")
     
     # Target (API)

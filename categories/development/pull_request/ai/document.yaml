@@ -46,6 +46,11 @@ pull_request:
 overview:
   background: |
     セキュリティ監査でリフレッシュトークンのローテーションが必要との指摘を受けた。
+  goal: |
+    このPRではリフレッシュトークンローテーションの実装内容と変更点を説明する。
+  related_docs:
+    - name: 実装計画
+      url: development/implementation_plan/document.yaml
   changes_summary: |
     - src/auth/token.ts: トークンローテーションロジック追加
     - src/auth/tokenStore.ts: 新規追加、Redis連携

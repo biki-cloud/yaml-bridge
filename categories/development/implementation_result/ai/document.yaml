@@ -8,6 +8,13 @@ meta:
   created_at: "2024-02-15"
 
 overview:
+  background: |
+    セッション管理のRedis移行を実装計画に沿って実施した。
+  goal: |
+    この資料では実装結果のサマリと変更内容を記録する。
+  related_docs:
+    - name: セッション管理実装計画
+      url: implementation_plan/session_management.yaml
   related_plan: implementation_plan/session_management.yaml
   related_pr: https://github.com/example/project/pull/123
 

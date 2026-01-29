@@ -17,6 +17,7 @@
         }
       ]
     },
+    "overview": { "$ref": "../../../../common/scheme.json#/definitions/overview_background_goal" },
     "target": {
       "type": "object",
       "required": ["feature"],

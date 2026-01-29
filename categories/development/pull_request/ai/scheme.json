@@ -41,11 +41,14 @@
       }
     },
     "overview": {
-      "type": "object",
-      "properties": {
-        "background": { "type": "string" },
-        "changes_summary": { "type": "string" }
-      }
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/overview_background_goal" },
+        {
+          "properties": {
+            "changes_summary": { "type": "string" }
+          }
+        }
+      ]
     },
     "testing": {
       "type": "object",

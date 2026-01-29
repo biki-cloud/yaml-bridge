@@ -12,6 +12,9 @@ overview:
     認証機能のセキュリティ改善が必要。
   goal: |
     セキュリティ要件を満たす認証機能を実装する。
+  related_docs:
+    - name: 要件整理
+      url: design/requirements/document.yaml
   scope:
     in:
       - リフレッシュトークンのローテーション実装

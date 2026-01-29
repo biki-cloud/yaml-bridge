@@ -14,6 +14,11 @@ overview:
   goal: |
     セキュアで使いやすい認証機能を提供し、
     ユーザー体験を向上させる。
+  related_docs:
+    - name: プロジェクト概要
+      url: overview/project_summary/document.yaml
+    - name: タスク分解
+      url: overview/task_breakdown/document.yaml
   scope:
     in:
       - ログイン/ログアウト機能

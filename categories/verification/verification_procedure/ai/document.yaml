@@ -8,6 +8,13 @@ meta:
   created_at: "2024-02-22"
 
 overview:
+  background: |
+    ログイン機能のリリースに伴い、動作確認手順を文書化する。
+  goal: |
+    この資料ではログイン機能の動作確認手順と期待結果を定義する。
+  related_docs:
+    - name: 動作確認計画
+      url: verification_plan/login_verification.yaml
   related_plan: verification_plan/login_verification.yaml
   environment: ステージング環境（https://staging.example.com）
 
