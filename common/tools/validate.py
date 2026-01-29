@@ -11,11 +11,13 @@ import sys
 from pathlib import Path
 from typing import Optional
 
-# common/config.py を import するため
+# common/ を import するため
 _common_dir = Path(__file__).resolve().parent.parent
 if str(_common_dir) not in sys.path:
     sys.path.insert(0, str(_common_dir))
 from config import AI_DOCUMENT_SCHEME_JSON
+from paths import get_categories_dir, get_available_categories, get_doc_types
+from md_base import load_yaml
 
 try:
     import jsonschema
@@ -26,23 +28,10 @@ except ImportError:
     sys.exit(1)
 
 
-def get_project_root() -> Path:
-    return Path(__file__).parent.parent.parent
-
-
-def get_categories_dir() -> Path:
-    return get_project_root() / 'categories'
-
-
 def get_schema_path(category: str, doc_type: str) -> Optional[Path]:
     """category/doc_typeに対応するスキーマパスを取得"""
     schema_path = get_categories_dir() / category / doc_type / AI_DOCUMENT_SCHEME_JSON
     return schema_path if schema_path.exists() else None
-
-
-def load_yaml(file_path: str) -> dict:
-    with open(file_path, 'r', encoding='utf-8') as f:
-        return yaml.safe_load(f)
 
 
 def load_schema(schema_path: Path) -> dict:
@@ -97,7 +86,7 @@ def run_common_checks(yaml_data: dict) -> list[str]:
 
 def main():
     parser = argparse.ArgumentParser(description='設計YAMLをバリデートします')
-    parser.add_argument('input', help='入力YAMLファイルのパス')
+    parser.add_argument('input', nargs='?', help='入力YAMLファイルのパス')
     parser.add_argument('-s', '--schema', default=None, help='JSON Schemaファイルのパス')
     parser.add_argument('-v', '--verbose', action='store_true', help='詳細なエラー情報を表示')
     parser.add_argument('--strict', action='store_true', help='警告もエラーとして扱う')
@@ -107,17 +96,15 @@ def main():
     
     if args.list:
         print("利用可能なcategory/doc_type:")
-        for cat_dir in get_categories_dir().iterdir():
-            if cat_dir.is_dir() and not cat_dir.name.startswith('_'):
-                doc_types = []
-                for dt_dir in cat_dir.iterdir():
-                    if dt_dir.is_dir() and (dt_dir / AI_DOCUMENT_SCHEME_JSON).exists():
-                        doc_types.append(dt_dir.name)
-                if doc_types:
-                    print(f"\n📦 {cat_dir.name}")
-                    for dt in sorted(doc_types):
-                        print(f"   └─ {dt}")
+        for category in get_available_categories():
+            print(f"\n📦 {category}")
+            for doc_type in get_doc_types(category):
+                print(f"   └─ {doc_type}")
         sys.exit(0)
+    
+    if not args.input:
+        print("❌ 入力YAMLファイルを指定してください")
+        sys.exit(1)
     
     input_path = Path(args.input)
     if not input_path.exists():

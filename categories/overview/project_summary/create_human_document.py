@@ -9,7 +9,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent / 'common'))
 from config import AI_DOCUMENT_YAML, HUMAN_DOCUMENT_MD
-from md_base import load_yaml
+from md_base import load_yaml, format_status, run_create_human_document
 
 CATEGORIES = ['overview', 'design', 'development', 'investigation', 'verification']
 
@@ -70,10 +70,6 @@ def format_doc_links_section(entries: list[tuple[str, str, str]]) -> str:
             lines.append(f"- [{title}]({href})")
         lines.append('')
     return '\n'.join(lines)
-
-
-def format_status(status: str) -> str:
-    return {'todo': '⬜ TODO', 'wip': '🔄 WIP', 'done': '✅ Done'}.get(status, status)
 
 
 def generate_markdown(data: dict) -> str:
@@ -221,21 +217,5 @@ def generate_markdown(data: dict) -> str:
     return '\n'.join(lines)
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('input')
-    parser.add_argument('-o', '--output')
-    args = parser.parse_args()
-    
-    data = load_yaml(args.input)
-    md = generate_markdown(data)
-    
-    if args.output:
-        Path(args.output).write_text(md, encoding='utf-8')
-        print(f"✅ {args.output}")
-    else:
-        print(md)
-
-
 if __name__ == '__main__':
-    main()
+    run_create_human_document(generate_markdown)

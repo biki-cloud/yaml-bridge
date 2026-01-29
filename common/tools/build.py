@@ -24,7 +24,7 @@ import yaml
 from pathlib import Path
 from typing import Optional
 
-# common/config.py を import するため
+# common/ を import するため
 _common_dir = Path(__file__).resolve().parent.parent
 if str(_common_dir) not in sys.path:
     sys.path.insert(0, str(_common_dir))
@@ -35,42 +35,12 @@ from config import (
     HUMAN_DOCUMENT_MD,
     AI_DOCUMENT_YAML,
 )
-
-
-def get_project_root() -> Path:
-    return Path(__file__).parent.parent.parent
-
-
-def get_categories_dir() -> Path:
-    return get_project_root() / 'categories'
-
-
-def get_available_categories() -> list[str]:
-    categories_dir = get_categories_dir()
-    if not categories_dir.exists():
-        return []
-    
-    categories = []
-    for d in categories_dir.iterdir():
-        if d.is_dir() and not d.name.startswith('_'):
-            # doc_typeサブディレクトリがあるカテゴリのみ
-            for sub in d.iterdir():
-                if sub.is_dir() and (sub / AI_DOCUMENT_SCHEME_JSON).exists():
-                    categories.append(d.name)
-                    break
-    return sorted(categories)
-
-
-def get_doc_types(category: str) -> list[str]:
-    category_dir = get_categories_dir() / category
-    if not category_dir.exists():
-        return []
-    
-    doc_types = []
-    for d in category_dir.iterdir():
-        if d.is_dir() and (d / AI_DOCUMENT_SCHEME_JSON).exists():
-            doc_types.append(d.name)
-    return sorted(doc_types)
+from paths import (
+    get_project_root,
+    get_categories_dir,
+    get_available_categories,
+    get_doc_types,
+)
 
 
 def detect_doc_type_from_yaml(yaml_path: Path) -> Optional[tuple[str, str]]:
