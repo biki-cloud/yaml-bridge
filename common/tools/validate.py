@@ -20,7 +20,7 @@ _common_dir = Path(__file__).resolve().parent.parent
 if str(_common_dir) not in sys.path:
     sys.path.insert(0, str(_common_dir))
 from config import AI_DOCUMENT_SCHEME_JSON, GITHUB_LINK_CHECK_HOSTS
-from paths import get_categories_dir, get_available_categories, get_doc_types
+from paths import get_categories_dir, get_available_categories, get_doc_types, get_project_root
 from md_base import load_yaml
 
 try:
@@ -153,6 +153,76 @@ def collect_reference_urls(yaml_data: dict) -> list[str]:
     return urls
 
 
+def collect_all_urls_and_paths(yaml_data: dict) -> list[str]:
+    """
+    YAML から references[].url および related_docs 由来の url/パスを収集する。
+    references, overview.related_docs（{ title, url } または文字列）, target.related_docs（文字列配列）を対象とする。
+    """
+    result = []
+    for ref in yaml_data.get('references', []):
+        url = ref.get('url') if isinstance(ref, dict) else None
+        if url and isinstance(url, str) and url.strip():
+            result.append(url.strip())
+    for doc in yaml_data.get('overview', {}).get('related_docs', []):
+        if isinstance(doc, dict):
+            url = doc.get('url')
+        elif isinstance(doc, str):
+            url = doc
+        else:
+            url = None
+        if url and isinstance(url, str) and url.strip():
+            result.append(url.strip())
+    for item in yaml_data.get('target', {}).get('related_docs', []):
+        if isinstance(item, str) and item.strip():
+            result.append(item.strip())
+    return result
+
+
+def is_file_path(value: str) -> bool:
+    """http/https で始まらなければファイルパスとみなす。空は呼び元で除外すること。"""
+    s = value.strip().lower()
+    return not (s.startswith('http://') or s.startswith('https://'))
+
+
+def check_file_path_exists(path_str: str, base: Path) -> Optional[str]:
+    """
+    ファイルパスを base 基準で解決し、存在するかチェックする。
+    存在しなければエラーメッセージを返す。存在すれば None。
+    空・空白はスキップ（None を返す）。絶対パスでプロジェクト外の場合はスキップ（None）。
+    """
+    s = path_str.strip()
+    if not s:
+        return None
+    if s.lower().startswith('file://'):
+        parsed = urlparse(s)
+        resolved = Path(parsed.path)
+    elif s.startswith('/'):
+        resolved = base / s.lstrip('/')
+    else:
+        resolved = (base / s).resolve()
+    try:
+        if not resolved.exists():
+            return f"ファイルパスが存在しません: {path_str}"
+    except OSError:
+        return f"ファイルパスを解決できません: {path_str}"
+    return None
+
+
+def run_file_path_check(yaml_data: dict, base_path: Path) -> list[str]:
+    """
+    references および related_docs 由来の url/パスのうち、ファイルパスとみなすものについて
+    実在チェックを行い、存在しないパスのエラーメッセージリストを返す。
+    """
+    all_values = collect_all_urls_and_paths(yaml_data)
+    file_paths = list(dict.fromkeys(v for v in all_values if v.strip() and is_file_path(v)))
+    errors = []
+    for path_str in file_paths:
+        err = check_file_path_exists(path_str, base_path)
+        if err:
+            errors.append(err)
+    return errors
+
+
 def is_github_url(url: str) -> bool:
     """GitHub の URL かどうか（config.GITHUB_LINK_CHECK_HOSTS で定義されたホスト）"""
     try:
@@ -204,6 +274,7 @@ def main():
     parser.add_argument('--strict', action='store_true', help='警告もエラーとして扱う')
     parser.add_argument('--list', action='store_true', help='利用可能なcategory/doc_typeを表示')
     parser.add_argument('--skip-link-check', action='store_true', help='GitHub リンクの 404 チェックをスキップ')
+    parser.add_argument('--skip-file-path-check', action='store_true', help='related_docs/references のファイルパス存在チェックをスキップ')
     
     args = parser.parse_args()
     
@@ -295,17 +366,28 @@ def main():
             for err in link_errors:
                 print(err)
     
+    file_path_errors = []
+    if not args.skip_file_path_check:
+        print()
+        print("🔍 ファイルパス確認中...")
+        file_path_errors = run_file_path_check(yaml_data, get_project_root())
+        if file_path_errors:
+            print()
+            print("=== ファイルパスエラー ===")
+            for err in file_path_errors:
+                print(err)
+    
     print()
     print("=" * 40)
     
-    if is_valid and (not warnings or not args.strict) and not link_errors:
+    if is_valid and (not warnings or not args.strict) and not link_errors and not file_path_errors:
         if warnings:
             print(f"✅ バリデーション成功（警告 {len(warnings)} 件）")
         else:
             print("✅ バリデーション成功")
         sys.exit(0)
     else:
-        error_count = len(errors) + len(link_errors)
+        error_count = len(errors) + len(link_errors) + len(file_path_errors)
         warning_count = len(warnings)
         if args.strict:
             print(f"❌ バリデーション失敗（エラー {error_count} 件、警告 {warning_count} 件）")
