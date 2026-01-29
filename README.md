@@ -28,7 +28,7 @@ make clean   # 生成したMDを削除
 ### カテゴリ別ビルド
 
 ```bash
-make overview        # プロジェクト概要
+make overview        # プロジェクト概要（design / development / investigation / verification のタスク状態を集約表示）
 make investigation   # 調査
 make design          # 設計
 make development     # 開発
@@ -56,7 +56,7 @@ categories/{category}/{doc_type}/
 
 | カテゴリ | doc_type |
 |----------|----------|
-| overview | project_summary |
+| overview | project_summary（カテゴリ別タスク状態の集約表示あり） |
 | investigation | code_understanding, domain_knowledge, related_code_research |
 | design | requirements, task_breakdown |
 | development | implementation_detail, implementation_plan, implementation_result, pull_request |

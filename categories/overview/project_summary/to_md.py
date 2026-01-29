@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""project_summary YAML → Markdown 変換（Mermaid図含む）"""
+"""project_summary YAML → Markdown 変換（Mermaid図含む）
+overview ビルド時に design / development / investigation / verification の
+各 ai_handled.yaml のタスク状態を取得して表示する。"""
 
 import sys
 import argparse
@@ -7,6 +9,77 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent / 'common'))
 from md_base import load_yaml
+
+# タスク状態を集約するカテゴリ（task_breakdown は design 内の doc_type のひとつ）
+TASK_STATE_CATEGORIES = ['design', 'development', 'investigation', 'verification']
+
+
+def get_categories_dir() -> Path:
+    """categories ディレクトリを返す（overview/project_summary から 2 段上）"""
+    return Path(__file__).resolve().parent.parent.parent
+
+
+def collect_task_states() -> list[dict]:
+    """design, development, investigation, verification の各 ai_handled.yaml からタスク状態を収集"""
+    categories_dir = get_categories_dir()
+    entries = []
+    for category in TASK_STATE_CATEGORIES:
+        cat_dir = categories_dir / category
+        if not cat_dir.is_dir():
+            continue
+        for doc_dir in sorted(cat_dir.iterdir()):
+            if not doc_dir.is_dir():
+                continue
+            yaml_path = doc_dir / 'ai_handled.yaml'
+            if not yaml_path.exists():
+                continue
+            try:
+                data = load_yaml(str(yaml_path))
+            except Exception:
+                continue
+            meta = data.get('meta', {})
+            entry = {
+                'category': category,
+                'doc_type': meta.get('doc_type', doc_dir.name),
+                'title': meta.get('title', yaml_path.stem),
+                'status': meta.get('status', ''),
+            }
+            tasks = data.get('tasks', [])
+            if tasks:
+                entry['tasks'] = [
+                    {'id': t.get('id', ''), 'title': t.get('title', ''), 'status': t.get('status', '')}
+                    for t in tasks
+                ]
+            entries.append(entry)
+    return entries
+
+
+def format_task_states_section(entries: list[dict]) -> str:
+    """収集したタスク状態を Markdown セクションとして整形"""
+    if not entries:
+        return ''
+    lines = []
+    lines.append('## カテゴリ別タスク状態')
+    lines.append('')
+    lines.append('design / development / investigation / verification の各 `ai_handled.yaml` のドキュメント状態と、')
+    lines.append('task_breakdown のタスク一覧を表示しています。')
+    lines.append('')
+    for e in entries:
+        cat_doc = f"{e['category']} / {e['doc_type']}"
+        status_str = format_status(e['status']) if e['status'] else '-'
+        lines.append(f"### {cat_doc}")
+        lines.append('')
+        lines.append(f"- **タイトル:** {e['title']}")
+        lines.append(f"- **ドキュメント状態:** {status_str}")
+        if e.get('tasks'):
+            lines.append('')
+            lines.append('| ID | タイトル | 状態 |')
+            lines.append('|----|----------|------|')
+            for t in e['tasks']:
+                ts = format_status(t['status']) if t['status'] else '-'
+                lines.append(f"| {t['id']} | {t['title']} | {ts} |")
+        lines.append('')
+    return '\n'.join(lines)
 
 
 def format_status(status: str) -> str:
@@ -148,6 +221,12 @@ def generate_markdown(data: dict) -> str:
             else:
                 lines.append(f"- {ref.get('title', '-')}")
         lines.append("")
+    
+    # カテゴリ別タスク状態（design, development, investigation, verification の ai_handled.yaml から取得）
+    task_entries = collect_task_states()
+    task_section = format_task_states_section(task_entries)
+    if task_section:
+        lines.append(task_section)
     
     return '\n'.join(lines)
 
