@@ -31,6 +31,15 @@ except ImportError:
     print("   pip install jsonschema でインストールしてください")
     sys.exit(1)
 
+try:
+    from referencing import Registry, Resource
+    from referencing.exceptions import NoSuchResource
+    from referencing.jsonschema import DRAFT7
+except ImportError:
+    print("❌ referencing パッケージがインストールされていません")
+    print("   pip install referencing でインストールしてください")
+    sys.exit(1)
+
 
 def get_schema_path(category: str, doc_type: str) -> Optional[Path]:
     """category/doc_typeに対応するスキーマパスを取得"""
@@ -41,6 +50,47 @@ def get_schema_path(category: str, doc_type: str) -> Optional[Path]:
 def load_schema(schema_path: Path) -> dict:
     with open(schema_path, 'r', encoding='utf-8') as f:
         return json.load(f)
+
+
+def _retrieve_file_uri(uri: str):
+    """file: URI で参照される JSON スキーマを読み込み Resource で返す"""
+    parsed = urlparse(uri)
+    if parsed.scheme != 'file':
+        raise NoSuchResource(ref=uri)
+    path = Path(parsed.path)
+    if not path.exists():
+        raise NoSuchResource(ref=uri)
+    contents = json.loads(path.read_text(encoding='utf-8'))
+    return Resource.from_contents(contents)
+
+
+def _resolve_refs_to_absolute(schema: dict, base_path: Path) -> None:
+    """スキーマ内の相対 $ref を絶対 file: URI に書き換える（in-place）"""
+    if not isinstance(schema, dict):
+        return
+    for key, value in list(schema.items()):
+        if key == '$ref' and isinstance(value, str) and not value.startswith('#'):
+            if value.startswith('..') or value.startswith('/'):
+                ref_path, _, fragment = value.partition('#')
+                resolved = (base_path / ref_path).resolve()
+                schema[key] = resolved.as_uri() + ('#' + fragment if fragment else '')
+        elif isinstance(value, dict):
+            _resolve_refs_to_absolute(value, base_path)
+        elif isinstance(value, list):
+            for item in value:
+                if isinstance(item, dict):
+                    _resolve_refs_to_absolute(item, base_path)
+
+
+def load_schema_and_registry(schema_path: Path) -> tuple[dict, Registry]:
+    """スキーマを読み込み、外部 $ref 解決用の Registry を返す"""
+    schema = load_schema(schema_path)
+    base_path = schema_path.resolve().parent
+    _resolve_refs_to_absolute(schema, base_path)
+    main_uri = schema_path.resolve().as_uri()
+    resource = DRAFT7.create_resource(schema)
+    registry = Registry(retrieve=_retrieve_file_uri).with_resource(uri=main_uri, resource=resource)
+    return schema, registry
 
 
 def detect_category_and_doc_type(yaml_data: dict) -> tuple[Optional[str], Optional[str]]:
@@ -55,8 +105,13 @@ def format_error_path(error: ValidationError) -> str:
     return '(ルート)'
 
 
-def validate_yaml(yaml_data: dict, schema: dict, verbose: bool = False) -> tuple[bool, list[str]]:
-    validator = Draft7Validator(schema)
+def validate_yaml(
+    yaml_data: dict,
+    schema: dict,
+    verbose: bool = False,
+    registry: Optional[Registry] = None,
+) -> tuple[bool, list[str]]:
+    validator = Draft7Validator(schema, registry=registry) if registry else Draft7Validator(schema)
     errors = list(validator.iter_errors(yaml_data))
     
     if not errors:
@@ -204,14 +259,14 @@ def main():
     print()
     
     try:
-        schema = load_schema(schema_path)
+        schema, registry = load_schema_and_registry(schema_path)
     except json.JSONDecodeError as e:
         print(f"❌ スキーマの解析に失敗しました:")
         print(f"   {e}")
         sys.exit(1)
     
     print("🔍 スキーマ検証中...")
-    is_valid, errors = validate_yaml(yaml_data, schema, args.verbose)
+    is_valid, errors = validate_yaml(yaml_data, schema, args.verbose, registry=registry)
     
     if errors:
         print()
