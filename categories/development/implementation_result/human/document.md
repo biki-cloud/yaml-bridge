@@ -3,6 +3,20 @@
 **タイプ:** ✅ 修正結果 | **ステータス:** ✅ Done | **バージョン:** 1.0.0
 **作成者:** 山田太郎
 
+## 背景
+
+セッション管理のRedis移行を実装計画に沿って実施した。
+
+
+## 目的
+
+この資料では実装結果のサマリと変更内容を記録する。
+
+
+### 関連ドキュメント
+
+- [セッション管理実装計画](implementation_plan/session_management.yaml)
+
 **関連計画:** implementation_plan/session_management.yaml
 **関連PR:** https://github.com/example/project/pull/123
 

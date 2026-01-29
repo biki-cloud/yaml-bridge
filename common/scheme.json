@@ -29,25 +29,30 @@
           "minItems": 1,
           "items": {
             "type": "object",
-            "required": ["name", "url"],
+            "required": ["title", "url"],
             "properties": {
-              "name": { "type": "string", "description": "資料名" },
+              "title": { "type": "string", "description": "資料名" },
               "url": { "type": "string", "description": "パスまたはURL" }
             }
           },
-          "description": "関連する資料（name と url で管理）"
+          "description": "関連する資料（title と url で管理）"
         }
       }
     },
     "references": {
       "type": "array",
       "minItems": 1,
+      "description": "参考文献・参照元（title と url で管理）",
       "items": {
         "type": "object",
         "required": ["title", "url"],
         "properties": {
-          "title": { "type": "string" },
-          "url": { "type": "string", "format": "uri" }
+          "title": { "type": "string", "description": "資料名" },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "パスまたはURL"
+          }
         }
       }
     },
@@ -82,7 +87,10 @@
               "id": { "type": "string" },
               "label": { "type": "string" },
               "next": { "type": "string" },
-              "next_condition": { "type": "array", "items": { "type": "string" } }
+              "next_condition": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
             }
           }
         }

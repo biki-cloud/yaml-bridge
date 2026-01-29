@@ -14,9 +14,9 @@ overview:
   goal: |
     リフレッシュトークンのローテーションを実装し、トークン漏洩時のリスクを軽減する。
   related_docs:
-    - name: 認証機能コード理解
+    - title: 認証機能コード理解
       url: investigation/code_understanding_auth.yaml
-    - name: 認証タスク分解
+    - title: 認証タスク分解
       url: overview/task_breakdown_auth.yaml
 
 target:

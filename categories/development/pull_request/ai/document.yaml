@@ -49,7 +49,7 @@ overview:
   goal: |
     このPRではリフレッシュトークンローテーションの実装内容と変更点を説明する。
   related_docs:
-    - name: 実装計画
+    - title: 実装計画
       url: development/implementation_plan/document.yaml
   changes_summary: |
     - src/auth/token.ts: トークンローテーションロジック追加

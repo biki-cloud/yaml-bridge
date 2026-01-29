@@ -17,7 +17,7 @@ summary:
     モダンなアーキテクチャを採用した新ユーザー管理システムを構築し、
     応答時間50%改善、OAuth 2.0対応を実現する。
   related_docs:
-    - name: タスク分解
+    - title: タスク分解
       url: overview/task_breakdown/document.yaml
   scope:
     in:

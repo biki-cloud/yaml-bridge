@@ -3,6 +3,20 @@
 **タイプ:** 📝 動作確認手順 | **ステータス:** 🔄 WIP | **バージョン:** 1.0.0
 **作成者:** 山田太郎
 
+## 背景
+
+ログイン機能のリリースに伴い、動作確認手順を文書化する。
+
+
+## 目的
+
+この資料ではログイン機能の動作確認手順と期待結果を定義する。
+
+
+### 関連ドキュメント
+
+- [動作確認計画](verification_plan/login_verification.yaml)
+
 **関連計画:** verification_plan/login_verification.yaml
 **テスト環境:** ステージング環境（https://staging.example.com）
 

@@ -168,8 +168,8 @@ def format_overview_section(
         lines.append('')
         for doc in overview['related_docs']:
             if isinstance(doc, dict):
-                name, url = doc.get('name', '-'), doc.get('url', '')
-                lines.append(f'- [{name}]({url})' if url else f'- {name}')
+                title, url = doc.get('title', '-'), doc.get('url', '')
+                lines.append(f'- [{title}]({url})' if url else f'- {title}')
             else:
                 lines.append(f'- {doc}')
         lines.append('')

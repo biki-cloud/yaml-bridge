@@ -38,8 +38,8 @@ flowchart TD
 
 ### 関連ドキュメント
 
-- investigation/code_understanding_auth.yaml
-- overview/task_breakdown_auth.yaml
+- [認証機能コード理解](investigation/code_understanding_auth.yaml)
+- [認証タスク分解](overview/task_breakdown_auth.yaml)
 
 ## 対象
 
