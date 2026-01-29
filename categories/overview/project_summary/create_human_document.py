@@ -9,7 +9,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent / 'common'))
 from config import AI_DOCUMENT_YAML, HUMAN_DOCUMENT_MD
-from md_base import load_yaml, format_status, run_create_human_document
+from md_base import load_yaml, format_status, format_references_section, run_create_human_document
 
 CATEGORIES = ['overview', 'design', 'development', 'investigation', 'verification']
 
@@ -197,23 +197,15 @@ def generate_markdown(data: dict) -> str:
             lines.append(f"| {r.get('risk', '-')} | {icon} {r.get('impact', '-')} | {r.get('mitigation', '-')} |")
         lines.append("")
     
-    # References
-    if data.get('references'):
-        lines.append("## 参考資料")
-        lines.append("")
-        for ref in data['references']:
-            if ref.get('url'):
-                lines.append(f"- [{ref.get('title', '-')}]({ref['url']})")
-            else:
-                lines.append(f"- {ref.get('title', '-')}")
-        lines.append("")
-    
     # 全カテゴリの HUMAN_DOCUMENT_MD へのリンク一覧
     doc_links = get_all_doc_links()
     links_section = format_doc_links_section(doc_links)
     if links_section:
         lines.append(links_section)
     
+    ref_section = format_references_section(data)
+    if ref_section:
+        lines.append(ref_section.rstrip())
     return '\n'.join(lines)
 
 

@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent / 'common'))
-from md_base import load_yaml, format_status, run_create_human_document
+from md_base import load_yaml, format_status, format_references_section, run_create_human_document
 
 
 def generate_markdown(data: dict) -> str:
@@ -104,17 +104,9 @@ def generate_markdown(data: dict) -> str:
             lines.append(f"- {icons.get(a.get('priority', ''), '')} {a.get('action', '-')}")
         lines.append("")
     
-    # References
-    if data.get('references'):
-        lines.append("## 参考資料")
-        lines.append("")
-        for ref in data['references']:
-            if ref.get('url'):
-                lines.append(f"- [{ref.get('title', '-')}]({ref['url']})")
-            else:
-                lines.append(f"- {ref.get('title', '-')}")
-        lines.append("")
-    
+    ref_section = format_references_section(data)
+    if ref_section:
+        lines.append(ref_section.rstrip())
     return '\n'.join(lines)
 
 

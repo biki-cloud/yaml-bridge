@@ -91,3 +91,7 @@ test_cases:
       - パスワードに「' OR '1'='1」を入力
       - ログインボタンをクリック
     expected_result: ログインに失敗し、エラーメッセージが表示される
+
+references:
+  - title: 動作確認計画・関連PR
+    url: https://github.com

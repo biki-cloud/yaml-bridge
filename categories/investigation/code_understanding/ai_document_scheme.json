@@ -4,7 +4,7 @@
   "title": "コード理解",
   "description": "既存コードを調査・理解するドキュメント",
   "type": "object",
-  "required": ["meta", "target", "findings"],
+  "required": ["meta", "target", "findings", "references"],
   "properties": {
     "meta": {
       "type": "object",
@@ -68,11 +68,13 @@
     },
     "references": {
       "type": "array",
+      "minItems": 1,
       "items": {
         "type": "object",
+        "required": ["title", "url"],
         "properties": {
           "title": { "type": "string" },
-          "url": { "type": "string" }
+          "url": { "type": "string", "format": "uri" }
         }
       }
     }

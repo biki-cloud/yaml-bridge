@@ -57,3 +57,7 @@ procedures:
       - action: https://staging.example.com/dashboard を開く
         expected: ログインページにリダイレクトされる
     postcondition: セッションが無効化されている
+
+references:
+  - title: 動作確認手順・関連計画
+    url: https://github.com

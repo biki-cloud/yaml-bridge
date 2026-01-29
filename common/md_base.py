@@ -21,6 +21,23 @@ def format_status(status: str) -> str:
     return {'todo': '⬜ TODO', 'wip': '🔄 WIP', 'done': '✅ Done'}.get(status, status)
 
 
+def format_references_section(data: dict) -> str:
+    """
+    data['references'] から「関連資料（エビデンス）」セクションの Markdown 文字列を生成する。
+    全 create_human_document.py で共通利用。
+    """
+    refs = data.get('references', [])
+    if not refs:
+        return ''
+    lines = ['## 関連資料（エビデンス）', '']
+    for r in refs:
+        title = r.get('title', '-')
+        url = r.get('url', '')
+        lines.append(f'- [{title}]({url})')
+    lines.append('')
+    return '\n'.join(lines)
+
+
 def run_create_human_document(generate_markdown_fn: Callable[[dict], str]) -> None:
     """
     create_human_document の共通エントリポイント。

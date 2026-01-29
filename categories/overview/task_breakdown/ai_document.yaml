@@ -65,3 +65,7 @@ risks:
   - risk: "既存クライアントへの影響"
     impact: high
     mitigation: "移行期間を設ける"
+
+references:
+  - title: プロジェクト概要・タスク一覧
+    url: https://github.com

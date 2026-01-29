@@ -4,7 +4,7 @@
   "title": "タスク分解",
   "description": "案件でやることを整理するドキュメント",
   "type": "object",
-  "required": ["meta", "overview", "tasks"],
+  "required": ["meta", "overview", "tasks", "references"],
   "properties": {
     "meta": {
       "type": "object",
@@ -69,6 +69,18 @@
           "risk": { "type": "string" },
           "impact": { "type": "string", "enum": ["high", "medium", "low"] },
           "mitigation": { "type": "string" }
+        }
+      }
+    },
+    "references": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["title", "url"],
+        "properties": {
+          "title": { "type": "string" },
+          "url": { "type": "string", "format": "uri" }
         }
       }
     }

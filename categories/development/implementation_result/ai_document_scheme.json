@@ -4,7 +4,7 @@
   "title": "修正結果",
   "description": "実装の結果をまとめるドキュメント",
   "type": "object",
-  "required": ["meta", "result"],
+  "required": ["meta", "result", "references"],
   "properties": {
     "meta": {
       "type": "object",
@@ -57,6 +57,18 @@
         }
       }
     },
-    "lessons_learned": { "type": "array", "items": { "type": "string" } }
+    "lessons_learned": { "type": "array", "items": { "type": "string" } },
+    "references": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["title", "url"],
+        "properties": {
+          "title": { "type": "string" },
+          "url": { "type": "string", "format": "uri" }
+        }
+      }
+    }
   }
 }

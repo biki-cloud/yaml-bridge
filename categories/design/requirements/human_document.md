@@ -86,3 +86,8 @@ pie showData
 |--------|--------|------|
 | 既存ユーザーの移行で問題が発生する可能性 | 🔴 high | 段階的移行とロールバック計画を準備 |
 | 2FA導入によるサポート問い合わせ増加 | 🟡 medium | FAQとヘルプドキュメントを整備 |
+
+## 関連資料（エビデンス）
+
+- [OAuth 2.0 仕様](https://oauth.net/2/)
+- [OWASP認証チートシート](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html)

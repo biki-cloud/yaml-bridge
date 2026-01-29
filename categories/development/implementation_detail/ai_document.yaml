@@ -70,3 +70,7 @@ notes:
   - Redisの接続プールサイズはデフォルト10に設定
   - セッションTTLは環境変数で設定可能にした
   - 既存のテストケースは全てパス
+
+references:
+  - title: 実装計画・関連Issue
+    url: https://github.com

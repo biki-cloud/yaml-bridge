@@ -4,7 +4,7 @@
   "title": "動作確認手順",
   "description": "動作確認の詳細な手順を記述するドキュメント",
   "type": "object",
-  "required": ["meta", "procedures"],
+  "required": ["meta", "procedures", "references"],
   "properties": {
     "meta": {
       "type": "object",
@@ -48,6 +48,18 @@
             }
           },
           "postcondition": { "type": "string" }
+        }
+      }
+    },
+    "references": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["title", "url"],
+        "properties": {
+          "title": { "type": "string" },
+          "url": { "type": "string", "format": "uri" }
         }
       }
     }

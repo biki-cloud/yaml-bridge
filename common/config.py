@@ -18,3 +18,6 @@ AI_DOCUMENT_GUIDE_YAML = "ai_document_guide.yaml"
 
 # JSON Schema（バリデーション用）
 AI_DOCUMENT_SCHEME_JSON = "ai_document_scheme.json"
+
+# リンクチェック対象の GitHub ホスト（validate.py の 404 チェックで使用）
+GITHUB_LINK_CHECK_HOSTS = ("github.com", "raw.githubusercontent.com")

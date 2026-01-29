@@ -85,3 +85,8 @@ WebSocketサーバーの雛形は存在するが、
 - 🔴 Must WebSocketサーバーの有効化と動作確認
 - 🔴 Must 通知イベントのWebSocketブロードキャスト実装
 - 🟠 Should 既存の非同期処理との統合設計
+
+## 関連資料（エビデンス）
+
+- [notification-serviceリポジトリ](https://github.com/example/notification-service)
+- [AWS SQS ドキュメント](https://docs.aws.amazon.com/sqs/)

@@ -79,10 +79,6 @@ pie showData
 | 既存データの移行で不整合が発生する可能性 | 🔴 high | 移行ツールの事前検証、段階的移行 |
 | 開発遅延によるリリース日程への影響 | 🟡 medium | 週次進捗確認、バッファの確保 |
 
-## 参考資料
-
-- [OAuth 2.0 仕様](https://oauth.net/2/)
-
 ## カテゴリ別ドキュメント一覧
 
 ### overview
@@ -111,3 +107,7 @@ pie showData
 - [ログイン機能の動作確認計画](../../verification/verification_plan/human_document.md)
 - [ログイン機能の動作確認手順](../../verification/verification_procedure/human_document.md)
 - [リフレッシュトークン実装 動作確認結果](../../verification/verification_result/human_document.md)
+
+## 関連資料（エビデンス）
+
+- [OAuth 2.0 仕様](https://oauth.net/2/)

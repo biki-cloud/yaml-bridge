@@ -9,7 +9,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent / 'common'))
 from config import AI_DOCUMENT_YAML
-from md_base import load_yaml, format_status, run_create_human_document
+from md_base import load_yaml, format_status, format_references_section, run_create_human_document
 
 TASK_STATE_CATEGORIES = ['overview', 'design', 'development', 'investigation', 'verification']
 
@@ -225,6 +225,9 @@ def generate_markdown(data: dict) -> str:
     if task_section:
         lines.append(task_section)
     
+    ref_section = format_references_section(data)
+    if ref_section:
+        lines.append(ref_section.rstrip())
     return '\n'.join(lines)
 
 

@@ -63,3 +63,7 @@ testing:
 notes:
   - "移行期間中は旧方式も並行サポート（フラグで切替可能）"
   - "Redis接続エラー時のフォールバック処理はTODOコメントで残している"
+
+references:
+  - title: PR・関連Issue
+    url: https://github.com

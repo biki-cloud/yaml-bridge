@@ -95,6 +95,6 @@ const accessToken = jwt.sign({ userId }, SECRET, { expiresIn: '1h' });
 | 🔴 Must | リフレッシュトークンのローテーション実装を検討 |
 | 🟠 Should | セッションタイムアウトの設定値をレビュー |
 
-## 参考資料
+## 関連資料（エビデンス）
 
 - [JWT Best Practices](https://auth0.com/blog/jwt-best-practices/)

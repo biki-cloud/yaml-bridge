@@ -8,14 +8,18 @@ import yaml
 import json
 import argparse
 import sys
+import time
+import urllib.request
+import urllib.error
 from pathlib import Path
 from typing import Optional
+from urllib.parse import urlparse
 
 # common/ を import するため
 _common_dir = Path(__file__).resolve().parent.parent
 if str(_common_dir) not in sys.path:
     sys.path.insert(0, str(_common_dir))
-from config import AI_DOCUMENT_SCHEME_JSON
+from config import AI_DOCUMENT_SCHEME_JSON, GITHUB_LINK_CHECK_HOSTS
 from paths import get_categories_dir, get_available_categories, get_doc_types
 from md_base import load_yaml
 
@@ -84,6 +88,59 @@ def run_common_checks(yaml_data: dict) -> list[str]:
     return warnings
 
 
+def collect_reference_urls(yaml_data: dict) -> list[str]:
+    """YAML から references[].url を収集する"""
+    urls = []
+    for ref in yaml_data.get('references', []):
+        url = ref.get('url') if isinstance(ref, dict) else None
+        if url and isinstance(url, str) and url.strip():
+            urls.append(url.strip())
+    return urls
+
+
+def is_github_url(url: str) -> bool:
+    """GitHub の URL かどうか（config.GITHUB_LINK_CHECK_HOSTS で定義されたホスト）"""
+    try:
+        parsed = urlparse(url)
+        netloc = (parsed.netloc or '').lower()
+        return any(host in netloc for host in GITHUB_LINK_CHECK_HOSTS)
+    except Exception:
+        return False
+
+
+def check_github_url_not_404(url: str, timeout: int = 5) -> Optional[str]:
+    """
+    GitHub URL に HEAD でアクセスし、404 の場合はエラーメッセージを返す。
+    404 でなければ None。ネットワークエラー等は None（警告扱いにする場合は呼び元で対応可能）。
+    """
+    try:
+        req = urllib.request.Request(url, method='HEAD')
+        req.add_header('User-Agent', 'Mozilla/5.0 (compatible; doc-validate-link-check/1.0)')
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            if resp.status == 404:
+                return f"GitHub リンクが 404: {url}"
+            return None
+    except urllib.error.HTTPError as e:
+        if e.code == 404:
+            return f"GitHub リンクが 404: {url}"
+        return None
+    except Exception:
+        return None
+
+
+def run_github_link_check(yaml_data: dict, timeout: int = 5, sleep_seconds: float = 1.0) -> list[str]:
+    """references[].url のうち GitHub の URL を HEAD で検証し、404 の URL をエラーとして返す"""
+    errors = []
+    urls = collect_reference_urls(yaml_data)
+    github_urls = [u for u in urls if is_github_url(u)]
+    for url in github_urls:
+        err = check_github_url_not_404(url, timeout=timeout)
+        if err:
+            errors.append(err)
+        time.sleep(sleep_seconds)
+    return errors
+
+
 def main():
     parser = argparse.ArgumentParser(description='設計YAMLをバリデートします')
     parser.add_argument('input', nargs='?', help='入力YAMLファイルのパス')
@@ -91,6 +148,7 @@ def main():
     parser.add_argument('-v', '--verbose', action='store_true', help='詳細なエラー情報を表示')
     parser.add_argument('--strict', action='store_true', help='警告もエラーとして扱う')
     parser.add_argument('--list', action='store_true', help='利用可能なcategory/doc_typeを表示')
+    parser.add_argument('--skip-link-check', action='store_true', help='GitHub リンクの 404 チェックをスキップ')
     
     args = parser.parse_args()
     
@@ -171,17 +229,28 @@ def main():
         for warning in warnings:
             print(warning)
     
+    link_errors = []
+    if not args.skip_link_check:
+        print()
+        print("🔍 GitHub リンク確認中...")
+        link_errors = run_github_link_check(yaml_data, timeout=5, sleep_seconds=1.0)
+        if link_errors:
+            print()
+            print("=== リンクエラー ===")
+            for err in link_errors:
+                print(err)
+    
     print()
     print("=" * 40)
     
-    if is_valid and (not warnings or not args.strict):
+    if is_valid and (not warnings or not args.strict) and not link_errors:
         if warnings:
             print(f"✅ バリデーション成功（警告 {len(warnings)} 件）")
         else:
             print("✅ バリデーション成功")
         sys.exit(0)
     else:
-        error_count = len(errors)
+        error_count = len(errors) + len(link_errors)
         warning_count = len(warnings)
         if args.strict:
             print(f"❌ バリデーション失敗（エラー {error_count} 件、警告 {warning_count} 件）")

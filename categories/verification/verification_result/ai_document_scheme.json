@@ -4,7 +4,7 @@
   "title": "動作確認結果",
   "description": "動作確認の結果を記録するドキュメント",
   "type": "object",
-  "required": ["meta", "test_results", "summary"],
+  "required": ["meta", "test_results", "summary", "references"],
   "properties": {
     "meta": {
       "type": "object",
@@ -66,6 +66,18 @@
               "status": { "type": "string", "enum": ["open", "fixed", "wont_fix"] }
             }
           }
+        }
+      }
+    },
+    "references": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["title", "url"],
+        "properties": {
+          "title": { "type": "string" },
+          "url": { "type": "string", "format": "uri" }
         }
       }
     }
