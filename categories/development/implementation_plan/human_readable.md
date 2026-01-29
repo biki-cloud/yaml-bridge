@@ -39,7 +39,7 @@ flowchart TD
 ### 関連ドキュメント
 
 - investigation/code_understanding_auth.yaml
-- design/task_breakdown_auth.yaml
+- overview/task_breakdown_auth.yaml
 
 ## 対象
 

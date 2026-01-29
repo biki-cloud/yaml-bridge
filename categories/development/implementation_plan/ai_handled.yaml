@@ -15,7 +15,7 @@ overview:
     リフレッシュトークンのローテーションを実装し、トークン漏洩時のリスクを軽減する。
   related_docs:
     - "investigation/code_understanding_auth.yaml"
-    - "design/task_breakdown_auth.yaml"
+    - "overview/task_breakdown_auth.yaml"
 
 target:
   endpoint: "/api/auth/refresh"

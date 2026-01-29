@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "design/task_breakdown.schema.json",
+  "$id": "overview/task_breakdown.schema.json",
   "title": "タスク分解",
   "description": "案件でやることを整理するドキュメント",
   "type": "object",
@@ -11,7 +11,7 @@
       "required": ["title", "category", "doc_type", "status", "version"],
       "properties": {
         "title": { "type": "string" },
-        "category": { "const": "design" },
+        "category": { "const": "overview" },
         "doc_type": { "const": "task_breakdown" },
         "status": { "type": "string", "enum": ["todo", "wip", "done"] },
         "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },

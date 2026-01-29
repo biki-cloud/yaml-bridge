@@ -1,6 +1,6 @@
 meta:
   title: "認証機能改修タスク分解"
-  category: design
+  category: overview
   doc_type: task_breakdown
   status: wip
   version: "1.0.0"

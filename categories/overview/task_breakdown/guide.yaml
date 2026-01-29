@@ -4,7 +4,7 @@
 
 meta:
   title: "タスク分解ガイド"
-  category: design
+  category: overview
   doc_type: task_breakdown
   status: done
   version: "1.0.0"
