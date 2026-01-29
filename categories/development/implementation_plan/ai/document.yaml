@@ -16,8 +16,8 @@ overview:
   related_docs:
     - title: 認証機能コード理解
       url: investigation/code_understanding_auth.yaml
-    - title: 認証タスク分解
-      url: overview/task_breakdown_auth.yaml
+    - title: 認証WBS
+      url: overview/wbs_auth.yaml
 
 target:
   endpoint: "/api/auth/refresh"

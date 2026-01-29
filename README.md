@@ -28,7 +28,7 @@ make clean   # 生成したMDを削除
 ### カテゴリ別ビルド
 
 ```bash
-make overview        # プロジェクト概要（task_breakdown にカテゴリ別タスク状態を集約表示）
+make overview        # プロジェクト概要（WBS にカテゴリ別タスク状態を集約表示）
 make investigation   # 調査
 make design          # 設計
 make development     # 開発
@@ -38,7 +38,7 @@ make verification    # 動作確認
 ### 単一YAMLの処理
 
 ```bash
-python3 common/tools/build.py categories/overview/task_breakdown/ai/document.yaml
+python3 common/tools/build.py categories/overview/wbs/ai/document.yaml
 ```
 
 ## ディレクトリ構成
@@ -59,7 +59,7 @@ categories/{category}/{doc_type}/
 
 | カテゴリ | doc_type |
 |----------|----------|
-| overview | project_summary, task_breakdown（カテゴリ別タスク状態の集約表示あり） |
+| overview | project_summary, wbs（WBS・マイルストーン・進捗管理、カテゴリ別タスク状態の集約表示あり） |
 | investigation | code_understanding, domain_knowledge, related_code_research |
 | design | requirements |
 | development | implementation_detail, implementation_plan, implementation_result, pull_request |

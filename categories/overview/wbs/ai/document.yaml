@@ -1,7 +1,7 @@
 meta:
-  title: "認証機能改修タスク分解"
+  title: "認証機能改修 WBS"
   category: overview
-  doc_type: task_breakdown
+  doc_type: wbs
   status: wip
   version: "1.0.0"
   author: "山田太郎"
@@ -22,9 +22,11 @@ overview:
     out:
       - OAuth対応（別案件）
 
-tasks:
+wbs_elements:
   - id: T-001
     title: "リフレッシュトークン設計"
+    type: task
+    wbs_code: "1"
     description: |
       リフレッシュトークンのローテーション方式を設計する。
     category: design
@@ -35,6 +37,8 @@ tasks:
 
   - id: T-002
     title: "リフレッシュトークン実装"
+    type: task
+    wbs_code: "2"
     category: development
     priority: high
     status: done
@@ -44,6 +48,8 @@ tasks:
 
   - id: T-003
     title: "エラーメッセージ改善"
+    type: task
+    wbs_code: "3"
     category: development
     priority: high
     status: wip
@@ -52,6 +58,8 @@ tasks:
 
   - id: T-004
     title: "単体テスト"
+    type: task
+    wbs_code: "4"
     category: verification
     priority: high
     status: todo
@@ -59,6 +67,13 @@ tasks:
       - T-002
       - T-003
     estimated_hours: 4
+
+  - id: M-001
+    title: "単体テスト完了・リリース判定"
+    type: milestone
+    wbs_code: "5"
+    status: todo
+    target_date: "2024-02-03"
 
 constraints:
   - type: time

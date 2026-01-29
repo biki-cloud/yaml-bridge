@@ -17,8 +17,8 @@ overview:
   related_docs:
     - title: プロジェクト概要
       url: overview/project_summary/document.yaml
-    - title: タスク分解
-      url: overview/task_breakdown/document.yaml
+    - title: WBS
+      url: overview/wbs/document.yaml
   scope:
     in:
       - ログイン/ログアウト機能

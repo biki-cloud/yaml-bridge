@@ -82,7 +82,7 @@ pie showData
 
 ### overview
 
-- [認証機能改修タスク分解](../task_breakdown/human/document.md)
+- [認証機能改修 WBS](../wbs/human/document.md)
 
 ### design
 
