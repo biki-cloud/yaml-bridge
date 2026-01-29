@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""project_summary YAML → Markdown 変換（Mermaid図含む）"""
+"""project_summary YAML → Markdown 変換（Mermaid図含む）
+全カテゴリ（overview / design / development / investigation / verification）の
+human_readable.md へのリンク一覧を表示する。"""
 
 import sys
 import argparse
@@ -7,6 +9,66 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent / 'common'))
 from md_base import load_yaml
+
+CATEGORIES = ['overview', 'design', 'development', 'investigation', 'verification']
+
+
+def get_categories_dir() -> Path:
+    """categories ディレクトリを返す（overview/project_summary から 2 段上）"""
+    return Path(__file__).resolve().parent.parent.parent
+
+
+def get_all_doc_links() -> list[tuple[str, str, str]]:
+    """全カテゴリの (category, doc_type, title) 一覧を返す（project_summary 自身を除く）"""
+    categories_dir = get_categories_dir()
+    entries = []
+    for category in CATEGORIES:
+        cat_dir = categories_dir / category
+        if not cat_dir.is_dir():
+            continue
+        for doc_dir in sorted(cat_dir.iterdir()):
+            if not doc_dir.is_dir():
+                continue
+            if category == 'overview' and doc_dir.name == 'project_summary':
+                continue
+            yaml_path = doc_dir / 'ai_handled.yaml'
+            if not yaml_path.exists():
+                continue
+            try:
+                data = load_yaml(str(yaml_path))
+            except Exception:
+                continue
+            meta = data.get('meta', {})
+            title = meta.get('title') or meta.get('doc_type', doc_dir.name)
+            entries.append((category, doc_dir.name, title))
+    return entries
+
+
+def format_doc_links_section(entries: list[tuple[str, str, str]]) -> str:
+    """全カテゴリのドキュメントへのリンク一覧を Markdown で返す（カテゴリ別）"""
+    if not entries:
+        return ''
+    # カテゴリごとにグループ化
+    by_category: dict[str, list[tuple[str, str]]] = {}
+    for category, doc_type, title in entries:
+        by_category.setdefault(category, []).append((doc_type, title))
+    lines = []
+    lines.append('## カテゴリ別ドキュメント一覧')
+    lines.append('')
+    for category in CATEGORIES:
+        if category not in by_category:
+            continue
+        lines.append(f'### {category}')
+        lines.append('')
+        for doc_type, title in by_category[category]:
+            # project_summary/human_readable.md から見た相対パス
+            if category == 'overview':
+                href = f'../{doc_type}/human_readable.md'
+            else:
+                href = f'../../{category}/{doc_type}/human_readable.md'
+            lines.append(f"- [{title}]({href})")
+        lines.append('')
+    return '\n'.join(lines)
 
 
 def format_status(status: str) -> str:
@@ -148,6 +210,12 @@ def generate_markdown(data: dict) -> str:
             else:
                 lines.append(f"- {ref.get('title', '-')}")
         lines.append("")
+    
+    # 全カテゴリの human_readable.md へのリンク一覧
+    doc_links = get_all_doc_links()
+    links_section = format_doc_links_section(doc_links)
+    if links_section:
+        lines.append(links_section)
     
     return '\n'.join(lines)
 
