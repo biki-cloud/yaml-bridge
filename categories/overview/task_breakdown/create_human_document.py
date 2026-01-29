@@ -8,6 +8,7 @@ import argparse
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent / 'common'))
+from config import AI_DOCUMENT_YAML
 from md_base import load_yaml
 
 TASK_STATE_CATEGORIES = ['overview', 'design', 'development', 'investigation', 'verification']
@@ -29,7 +30,7 @@ def collect_task_states() -> list[dict]:
         for doc_dir in sorted(cat_dir.iterdir()):
             if not doc_dir.is_dir():
                 continue
-            yaml_path = doc_dir / 'ai_document.yaml'
+            yaml_path = doc_dir / AI_DOCUMENT_YAML
             if not yaml_path.exists():
                 continue
             try:
@@ -60,7 +61,7 @@ def format_task_states_section(entries: list[dict]) -> str:
     lines = []
     lines.append('## カテゴリ別タスク状態')
     lines.append('')
-    lines.append('overview / design / development / investigation / verification の各 `ai_document.yaml` のドキュメント状態と、')
+    lines.append('overview / design / development / investigation / verification の各 `{}` のドキュメント状態と、'.format(AI_DOCUMENT_YAML))
     lines.append('task_breakdown のタスク一覧を表示しています。')
     lines.append('')
     for e in entries:
@@ -218,7 +219,7 @@ def generate_markdown(data: dict) -> str:
             lines.append(f"| {r.get('risk', '-')} | {icon} {r.get('impact', '-')} | {r.get('mitigation', '-')} |")
         lines.append("")
     
-    # カテゴリ別タスク状態（各 ai_document.yaml から取得）
+    # カテゴリ別タスク状態（各 AI_DOCUMENT_YAML から取得）
     task_entries = collect_task_states()
     task_section = format_task_states_section(task_entries)
     if task_section:

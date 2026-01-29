@@ -11,6 +11,12 @@ import sys
 from pathlib import Path
 from typing import Optional
 
+# common/config.py を import するため
+_common_dir = Path(__file__).resolve().parent.parent
+if str(_common_dir) not in sys.path:
+    sys.path.insert(0, str(_common_dir))
+from config import AI_DOCUMENT_SCHEME_JSON
+
 try:
     import jsonschema
     from jsonschema import Draft7Validator, ValidationError
@@ -30,7 +36,7 @@ def get_categories_dir() -> Path:
 
 def get_schema_path(category: str, doc_type: str) -> Optional[Path]:
     """category/doc_typeに対応するスキーマパスを取得"""
-    schema_path = get_categories_dir() / category / doc_type / 'ai_document_scheme.json'
+    schema_path = get_categories_dir() / category / doc_type / AI_DOCUMENT_SCHEME_JSON
     return schema_path if schema_path.exists() else None
 
 
@@ -105,7 +111,7 @@ def main():
             if cat_dir.is_dir() and not cat_dir.name.startswith('_'):
                 doc_types = []
                 for dt_dir in cat_dir.iterdir():
-                    if dt_dir.is_dir() and (dt_dir / 'ai_document_scheme.json').exists():
+                    if dt_dir.is_dir() and (dt_dir / AI_DOCUMENT_SCHEME_JSON).exists():
                         doc_types.append(dt_dir.name)
                 if doc_types:
                     print(f"\n📦 {cat_dir.name}")

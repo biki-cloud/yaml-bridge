@@ -8,6 +8,7 @@ import argparse
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent / 'common'))
+from config import AI_DOCUMENT_YAML, HUMAN_DOCUMENT_MD
 from md_base import load_yaml
 
 CATEGORIES = ['overview', 'design', 'development', 'investigation', 'verification']
@@ -31,7 +32,7 @@ def get_all_doc_links() -> list[tuple[str, str, str]]:
                 continue
             if category == 'overview' and doc_dir.name == 'project_summary':
                 continue
-            yaml_path = doc_dir / 'ai_document.yaml'
+            yaml_path = doc_dir / AI_DOCUMENT_YAML
             if not yaml_path.exists():
                 continue
             try:
@@ -61,11 +62,11 @@ def format_doc_links_section(entries: list[tuple[str, str, str]]) -> str:
         lines.append(f'### {category}')
         lines.append('')
         for doc_type, title in by_category[category]:
-            # project_summary/human_document.md から見た相対パス
+            # project_summary/HUMAN_DOCUMENT_MD から見た相対パス
             if category == 'overview':
-                href = f'../{doc_type}/human_document.md'
+                href = f'../{doc_type}/{HUMAN_DOCUMENT_MD}'
             else:
-                href = f'../../{category}/{doc_type}/human_document.md'
+                href = f'../../{category}/{doc_type}/{HUMAN_DOCUMENT_MD}'
             lines.append(f"- [{title}]({href})")
         lines.append('')
     return '\n'.join(lines)
@@ -211,7 +212,7 @@ def generate_markdown(data: dict) -> str:
                 lines.append(f"- {ref.get('title', '-')}")
         lines.append("")
     
-    # 全カテゴリの human_document.md へのリンク一覧
+    # 全カテゴリの HUMAN_DOCUMENT_MD へのリンク一覧
     doc_links = get_all_doc_links()
     links_section = format_doc_links_section(doc_links)
     if links_section:
