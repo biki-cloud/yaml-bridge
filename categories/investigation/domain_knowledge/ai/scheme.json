@@ -5,6 +5,10 @@
   "description": "既存の仕様・ドメイン知識を調査・整理するドキュメント",
   "type": "object",
   "required": ["meta", "target", "findings", "references"],
+  "x-ai-guid": {
+    "intro": "既存の仕様・ドメイン知識を調査・整理するドキュメント。",
+    "required_sections": ["meta", "target", "findings", "references"]
+  },
   "properties": {
     "meta": {
       "allOf": [
@@ -15,9 +19,13 @@
             "doc_type": { "const": "domain_knowledge" }
           }
         }
-      ]
+      ],
+      "x-ai-guid": "共通は common/scheme.json#/definitions/meta_base。この doc では category: investigation, doc_type: domain_knowledge。"
     },
-    "overview": { "$ref": "../../../../common/scheme.json#/definitions/overview_background_goal" },
+    "overview": {
+      "$ref": "../../../../common/scheme.json#/definitions/overview_background_goal",
+      "x-ai-guid": "任意。共通は common/scheme.json#/definitions/overview_background_goal。"
+    },
     "target": {
       "type": "object",
       "required": ["description"],
@@ -25,7 +33,8 @@
         "description": { "type": "string" },
         "domain": { "type": "string" },
         "related_docs": { "type": "array", "items": { "type": "string" } }
-      }
+      },
+      "x-ai-guid": "調査対象。description 必須。domain, related_docs（文字列配列）。"
     },
     "questions": {
       "type": "array",
@@ -49,7 +58,8 @@
           "source": { "type": "string" },
           "impact": { "type": "string", "enum": ["high", "medium", "low"] }
         }
-      }
+      },
+      "x-ai-guid": "調査結果一覧。description 必須。question_id, source, impact（high/medium/low）。"
     },
     "glossary": {
       "type": "array",
@@ -59,9 +69,14 @@
           "term": { "type": "string" },
           "definition": { "type": "string" }
         }
-      }
+      },
+      "x-ai-guid": "用語集。term, definition。"
     },
-    "conclusions": { "type": "array", "items": { "type": "string" } },
+    "conclusions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "x-ai-guid": "結論。"
+    },
     "next_actions": {
       "type": "array",
       "items": {
@@ -70,9 +85,16 @@
           "action": { "type": "string" },
           "priority": { "type": "string", "enum": ["must", "should", "could"] }
         }
-      }
+      },
+      "x-ai-guid": "次にやること。action, priority。"
     },
-    "references": { "$ref": "../../../../common/scheme.json#/definitions/references" },
-    "ai_context": { "$ref": "../../../../common/scheme.json#/definitions/ai_context" }
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references",
+      "x-ai-guid": "共通は common/scheme.json#/definitions/references。1件以上の { title, url }。"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context",
+      "x-ai-guid": "任意。共通は common/scheme.json#/definitions/ai_context。"
+    }
   }
 }

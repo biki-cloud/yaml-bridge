@@ -5,6 +5,10 @@
   "description": "既存コードを調査・理解するドキュメント",
   "type": "object",
   "required": ["meta", "target", "findings", "references"],
+  "x-ai-guid": {
+    "intro": "既存コードを調査・理解するドキュメント。",
+    "required_sections": ["meta", "target", "findings", "references"]
+  },
   "properties": {
     "meta": {
       "allOf": [
@@ -15,9 +19,13 @@
             "doc_type": { "const": "code_understanding" }
           }
         }
-      ]
+      ],
+      "x-ai-guid": "共通は common/scheme.json#/definitions/meta_base。この doc では category: investigation, doc_type: code_understanding。"
     },
-    "overview": { "$ref": "../../../../common/scheme.json#/definitions/overview_background_goal" },
+    "overview": {
+      "$ref": "../../../../common/scheme.json#/definitions/overview_background_goal",
+      "x-ai-guid": "任意。共通は common/scheme.json#/definitions/overview_background_goal。"
+    },
     "target": {
       "type": "object",
       "required": ["description"],
@@ -27,7 +35,8 @@
         "files": { "type": "array", "items": { "type": "string" } },
         "components": { "type": "array", "items": { "type": "string" } },
         "related_issues": { "type": "array", "items": { "type": "string" } }
-      }
+      },
+      "x-ai-guid": "調査対象。description 必須。repository, files, components, related_issues。"
     },
     "questions": {
       "type": "array",
@@ -38,7 +47,8 @@
           "question": { "type": "string" },
           "priority": { "type": "string", "enum": ["high", "medium", "low"] }
         }
-      }
+      },
+      "x-ai-guid": "質問一覧。id, question, priority。"
     },
     "findings": {
       "type": "array",
@@ -51,9 +61,14 @@
           "evidence": { "type": "string" },
           "impact": { "type": "string", "enum": ["high", "medium", "low"] }
         }
-      }
+      },
+      "x-ai-guid": "調査結果一覧。description 必須。question_id, evidence, impact（high/medium/low）。"
     },
-    "conclusions": { "type": "array", "items": { "type": "string" } },
+    "conclusions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "x-ai-guid": "結論。"
+    },
     "next_actions": {
       "type": "array",
       "items": {
@@ -62,9 +77,16 @@
           "action": { "type": "string" },
           "priority": { "type": "string", "enum": ["must", "should", "could"] }
         }
-      }
+      },
+      "x-ai-guid": "次にやること。action, priority（must/should/could）。"
     },
-    "references": { "$ref": "../../../../common/scheme.json#/definitions/references" },
-    "ai_context": { "$ref": "../../../../common/scheme.json#/definitions/ai_context" }
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references",
+      "x-ai-guid": "共通は common/scheme.json#/definitions/references。1件以上の { title, url }。"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context",
+      "x-ai-guid": "任意。共通は common/scheme.json#/definitions/ai_context。"
+    }
   }
 }

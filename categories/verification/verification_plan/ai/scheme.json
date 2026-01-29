@@ -5,6 +5,10 @@
   "description": "動作確認の計画を立てるドキュメント",
   "type": "object",
   "required": ["meta", "target", "test_cases", "references"],
+  "x-ai-guid": {
+    "intro": "動作確認の計画を立てるドキュメント。",
+    "required_sections": ["meta", "target", "test_cases", "references"]
+  },
   "properties": {
     "meta": {
       "allOf": [
@@ -15,9 +19,13 @@
             "doc_type": { "const": "verification_plan" }
           }
         }
-      ]
+      ],
+      "x-ai-guid": "共通は common/scheme.json#/definitions/meta_base。この doc では category: verification, doc_type: verification_plan。"
     },
-    "overview": { "$ref": "../../../../common/scheme.json#/definitions/overview_background_goal" },
+    "overview": {
+      "$ref": "../../../../common/scheme.json#/definitions/overview_background_goal",
+      "x-ai-guid": "任意。共通は common/scheme.json#/definitions/overview_background_goal。"
+    },
     "target": {
       "type": "object",
       "required": ["feature"],
@@ -26,14 +34,16 @@
         "pr_url": { "type": "string" },
         "environment": { "type": "string" },
         "related_docs": { "type": "array", "items": { "type": "string" } }
-      }
+      },
+      "x-ai-guid": "対象。feature 必須。pr_url, environment, related_docs（文字列配列）。"
     },
     "scope": {
       "type": "object",
       "properties": {
         "in": { "type": "array", "items": { "type": "string" } },
         "out": { "type": "array", "items": { "type": "string" } }
-      }
+      },
+      "x-ai-guid": "スコープ。in, out。"
     },
     "prerequisites": {
       "type": "array",
@@ -59,9 +69,16 @@
           "steps": { "type": "array", "items": { "type": "string" } },
           "expected_result": { "type": "string" }
         }
-      }
+      },
+      "x-ai-guid": "テストケース一覧。id, title 必須。category, priority, precondition, steps, expected_result。"
     },
-    "references": { "$ref": "../../../../common/scheme.json#/definitions/references" },
-    "ai_context": { "$ref": "../../../../common/scheme.json#/definitions/ai_context" }
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references",
+      "x-ai-guid": "共通は common/scheme.json#/definitions/references。1件以上の { title, url }。"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context",
+      "x-ai-guid": "任意。共通は common/scheme.json#/definitions/ai_context。"
+    }
   }
 }

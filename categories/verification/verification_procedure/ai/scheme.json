@@ -50,9 +50,16 @@
           },
           "postcondition": { "type": "string" }
         }
-      }
+      },
+      "x-ai-guid": "手順一覧。id, title, steps 必須。precondition, steps（action, expected, note）, postcondition。"
     },
-    "references": { "$ref": "../../../../common/scheme.json#/definitions/references" },
-    "ai_context": { "$ref": "../../../../common/scheme.json#/definitions/ai_context" }
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references",
+      "x-ai-guid": "共通は common/scheme.json#/definitions/references。1件以上の { title, url }。"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context",
+      "x-ai-guid": "任意。共通は common/scheme.json#/definitions/ai_context。"
+    }
   }
 }

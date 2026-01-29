@@ -5,6 +5,10 @@
   "description": "実装の結果をまとめるドキュメント",
   "type": "object",
   "required": ["meta", "result", "references"],
+  "x-ai-guid": {
+    "intro": "実装の結果をまとめるドキュメント。",
+    "required_sections": ["meta", "result", "references"]
+  },
   "properties": {
     "meta": {
       "allOf": [
@@ -15,7 +19,8 @@
             "doc_type": { "const": "implementation_result" }
           }
         }
-      ]
+      ],
+      "x-ai-guid": "共通は common/scheme.json#/definitions/meta_base。この doc では category: development, doc_type: implementation_result。"
     },
     "overview": {
       "allOf": [
@@ -26,7 +31,8 @@
             "related_pr": { "type": "string" }
           }
         }
-      ]
+      ],
+      "x-ai-guid": "任意。共通 overview_background_goal + related_plan, related_pr。"
     },
     "result": {
       "type": "object",
@@ -46,7 +52,8 @@
             }
           }
         }
-      }
+      },
+      "x-ai-guid": "実装結果。summary 必須。files_changed, lines_added, lines_deleted, commits（hash, message）。"
     },
     "issues_found": {
       "type": "array",
@@ -56,10 +63,21 @@
           "description": { "type": "string" },
           "resolution": { "type": "string" }
         }
-      }
+      },
+      "x-ai-guid": "発見した問題。description, resolution。"
     },
-    "lessons_learned": { "type": "array", "items": { "type": "string" } },
-    "references": { "$ref": "../../../../common/scheme.json#/definitions/references" },
-    "ai_context": { "$ref": "../../../../common/scheme.json#/definitions/ai_context" }
+    "lessons_learned": {
+      "type": "array",
+      "items": { "type": "string" },
+      "x-ai-guid": "学んだこと。"
+    },
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references",
+      "x-ai-guid": "共通は common/scheme.json#/definitions/references。1件以上の { title, url }。"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context",
+      "x-ai-guid": "任意。共通は common/scheme.json#/definitions/ai_context。"
+    }
   }
 }

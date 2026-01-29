@@ -5,6 +5,10 @@
   "description": "案件でやることを整理するドキュメント",
   "type": "object",
   "required": ["meta", "overview", "tasks", "references"],
+  "x-ai-guid": {
+    "intro": "案件でやることを整理するドキュメント。",
+    "required_sections": ["meta", "overview", "tasks", "references"]
+  },
   "properties": {
     "meta": {
       "allOf": [
@@ -15,7 +19,8 @@
             "doc_type": { "const": "task_breakdown" }
           }
         }
-      ]
+      ],
+      "x-ai-guid": "共通は common/scheme.json#/definitions/meta_base。この doc では category: overview, doc_type: task_breakdown。"
     },
     "overview": {
       "allOf": [
@@ -31,7 +36,8 @@
             }
           }
         }
-      ]
+      ],
+      "x-ai-guid": "背景・ゴール・related_docs。形式は common/scheme.json#/definitions/overview_background_goal。scope.in/out はこの doc 固有。"
     },
     "tasks": {
       "type": "array",
@@ -48,7 +54,8 @@
           "dependencies": { "type": "array", "items": { "type": "string" } },
           "estimated_hours": { "type": "number" }
         }
-      }
+      },
+      "x-ai-guid": "タスク一覧。id, title 必須。category, priority, status, dependencies, estimated_hours。"
     },
     "constraints": {
       "type": "array",
@@ -58,7 +65,8 @@
           "type": { "type": "string", "enum": ["technical", "business", "resource", "time"] },
           "description": { "type": "string" }
         }
-      }
+      },
+      "x-ai-guid": "制約一覧。type は technical / business / resource / time。"
     },
     "risks": {
       "type": "array",
@@ -69,9 +77,16 @@
           "impact": { "type": "string", "enum": ["high", "medium", "low"] },
           "mitigation": { "type": "string" }
         }
-      }
+      },
+      "x-ai-guid": "リスク一覧。risk, impact（high/medium/low）, mitigation。"
     },
-    "references": { "$ref": "../../../../common/scheme.json#/definitions/references" },
-    "ai_context": { "$ref": "../../../../common/scheme.json#/definitions/ai_context" }
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references",
+      "x-ai-guid": "共通は common/scheme.json#/definitions/references。1件以上の { title, url }。"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context",
+      "x-ai-guid": "任意。共通は common/scheme.json#/definitions/ai_context。"
+    }
   }
 }

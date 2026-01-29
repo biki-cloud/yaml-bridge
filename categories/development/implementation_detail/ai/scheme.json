@@ -5,6 +5,10 @@
   "description": "実装の詳細を記述するドキュメント",
   "type": "object",
   "required": ["meta", "changes", "references"],
+  "x-ai-guid": {
+    "intro": "実装の詳細を記述するドキュメント。",
+    "required_sections": ["meta", "changes", "references"]
+  },
   "properties": {
     "meta": {
       "allOf": [
@@ -16,7 +20,8 @@
             "target_type": { "type": "string", "enum": ["api", "batch", "web", "cli", "library", "infrastructure", "other"] }
           }
         }
-      ]
+      ],
+      "x-ai-guid": "共通は common/scheme.json#/definitions/meta_base。この doc では category: development, doc_type: implementation_detail。target_type は api/batch/web/cli/library/infrastructure/other。"
     },
     "overview": {
       "allOf": [
@@ -27,7 +32,8 @@
             "related_plan": { "type": "string" }
           }
         }
-      ]
+      ],
+      "x-ai-guid": "任意。共通 overview_background_goal + summary, related_plan。"
     },
     "changes": {
       "type": "array",
@@ -41,10 +47,21 @@
           "before": { "type": "string" },
           "after": { "type": "string" }
         }
-      }
+      },
+      "x-ai-guid": "変更一覧。file 必須。change_type（add/modify/delete/rename）, description, before, after。"
     },
-    "notes": { "type": "array", "items": { "type": "string" } },
-    "references": { "$ref": "../../../../common/scheme.json#/definitions/references" },
-    "ai_context": { "$ref": "../../../../common/scheme.json#/definitions/ai_context" }
+    "notes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "x-ai-guid": "実装時のメモ。"
+    },
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references",
+      "x-ai-guid": "共通は common/scheme.json#/definitions/references。1件以上の { title, url }。"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context",
+      "x-ai-guid": "任意。共通は common/scheme.json#/definitions/ai_context。"
+    }
   }
 }

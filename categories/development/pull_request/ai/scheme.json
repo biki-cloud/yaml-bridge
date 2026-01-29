@@ -5,6 +5,10 @@
   "description": "Pull Requestの情報をまとめるドキュメント",
   "type": "object",
   "required": ["meta", "pull_request", "references"],
+  "x-ai-guid": {
+    "intro": "Pull Requestの情報をまとめるドキュメント。",
+    "required_sections": ["meta", "pull_request", "references"]
+  },
   "properties": {
     "meta": {
       "allOf": [
@@ -15,7 +19,8 @@
             "doc_type": { "const": "pull_request" }
           }
         }
-      ]
+      ],
+      "x-ai-guid": "共通は common/scheme.json#/definitions/meta_base。この doc では category: development, doc_type: pull_request。"
     },
     "pull_request": {
       "type": "object",
@@ -38,7 +43,8 @@
             }
           }
         }
-      }
+      },
+      "x-ai-guid": "PR情報。title 必須。url, description, branch, base_branch, reviewers, labels, checklist（item, done）。"
     },
     "overview": {
       "allOf": [
@@ -48,17 +54,29 @@
             "changes_summary": { "type": "string" }
           }
         }
-      ]
+      ],
+      "x-ai-guid": "任意。共通 overview_background_goal + changes_summary。"
     },
     "testing": {
       "type": "object",
       "properties": {
         "tested_items": { "type": "array", "items": { "type": "string" } },
         "not_tested": { "type": "array", "items": { "type": "string" } }
-      }
+      },
+      "x-ai-guid": "tested_items, not_tested。"
     },
-    "notes": { "type": "array", "items": { "type": "string" } },
-    "references": { "$ref": "../../../../common/scheme.json#/definitions/references" },
-    "ai_context": { "$ref": "../../../../common/scheme.json#/definitions/ai_context" }
+    "notes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "x-ai-guid": "レビュー時の注意点等。"
+    },
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references",
+      "x-ai-guid": "共通は common/scheme.json#/definitions/references。1件以上の { title, url }。"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context",
+      "x-ai-guid": "任意。共通は common/scheme.json#/definitions/ai_context。"
+    }
   }
 }

@@ -24,7 +24,8 @@
         "feature": { "type": "string" },
         "pr_url": { "type": "string" },
         "environment": { "type": "string" }
-      }
+      },
+      "x-ai-guid": "対象。feature, pr_url, environment。"
     },
     "test_results": {
       "type": "array",
@@ -38,7 +39,8 @@
           "actual_result": { "type": "string" },
           "notes": { "type": "string" }
         }
-      }
+      },
+      "x-ai-guid": "テスト結果一覧。id, status（pass/fail/blocked/skipped）必須。title, actual_result, notes。"
     },
     "summary": {
       "type": "object",
@@ -65,9 +67,16 @@
             }
           }
         }
-      }
+      },
+      "x-ai-guid": "サマリー。conclusion 必須。executed_at, executed_by, total, passed, failed, blocked, skipped, pass_rate, issues_found。"
     },
-    "references": { "$ref": "../../../../common/scheme.json#/definitions/references" },
-    "ai_context": { "$ref": "../../../../common/scheme.json#/definitions/ai_context" }
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references",
+      "x-ai-guid": "共通は common/scheme.json#/definitions/references。1件以上の { title, url }。"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context",
+      "x-ai-guid": "任意。共通は common/scheme.json#/definitions/ai_context。"
+    }
   }
 }
