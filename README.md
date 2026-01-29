@@ -41,6 +41,19 @@ make verification    # 動作確認
 python3 common/tools/build.py categories/overview/wbs/ai/document.yaml
 ```
 
+## 誰が何を読むか
+
+各カテゴリの `human/document.md` は、YAML からビルドされた人間向けドキュメントです。ロール別の推奨は以下のとおりです。
+
+| ロール | 主に読む doc_type（human/document.md） |
+|--------|----------------------------------------|
+| プロジェクト全体の把握 | overview / project_summary, overview / wbs |
+| 設計担当 | design / requirements |
+| 開発担当 | development / implementation_plan, implementation_detail, implementation_result, pull_request |
+| 調査・検証担当 | investigation（code_understanding, domain_knowledge, related_code_research）, verification（verification_plan, verification_procedure, verification_result） |
+
+全体の流れは overview → investigation → design → development → verification の順で参照するとよいです。
+
 ## ディレクトリ構成
 
 ```
@@ -66,6 +79,10 @@ categories/{category}/{doc_type}/
 | verification | verification_plan, verification_procedure, verification_result |
 
 各YAMLには `meta.category` と `meta.doc_type` を指定し、対応するスキーマで検証されます。
+
+## Done の基準
+
+`meta.status` が `done` であるとは、その doc_type としての記載が一通り揃い、必要に応じてレビュー済みである状態を指します。Done とする前に、`make validate` によるリンクチェック（ファイルパス・GitHub URL の 404 チェック）の通過を前提とします。詳細は [思想.md](思想.md) や各 doc_type の scheme の `x-ai-guid` を参照してください。
 
 ## 共通ツール
 
