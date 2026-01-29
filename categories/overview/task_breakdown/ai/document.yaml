@@ -69,3 +69,16 @@ risks:
 references:
   - title: プロジェクト概要・タスク一覧
     url: https://github.com
+
+# AIの現在の考え・次のアクション（任意。人間用MDでフローチャート等の図になる）
+ai_context:
+  current_thinking:
+    - T-004 単体テスト着手前に T-002/T-003 の完了を確認する
+    - 工数見積の妥当性をレビューで確認する
+  next_actions:
+    - id: A1
+      label: T-003 エラーメッセージ改善の完了
+    - id: A2
+      label: T-004 単体テスト実施
+    - id: A3
+      label: 動作確認計画の更新

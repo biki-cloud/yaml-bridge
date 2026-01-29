@@ -81,3 +81,25 @@ references:
     url: https://oauth.net/2/
   - title: OWASP認証チートシート
     url: https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
+
+# AIの現在の考え・次のアクション（任意。人間用MDでフローチャート等の図になる）
+ai_context:
+  current_thinking:
+    - 要件REQ-002とREQ-003の優先度を担当者とすり合わせる必要がある
+    - 既存DBスキーマとの整合を確認する
+  next_actions:
+    - id: A1
+      label: 担当者とMust/Shouldのすり合わせ
+    - id: A2
+      label: 制約「既存ユーザーDB」の詳細を確認
+    - id: A3
+      label: リスク「移行」のロールバック手順を追記
+  decision_flow:
+    - id: N1
+      label: 要件確定
+      next: N2
+    - id: N2
+      label: 設計着手
+      next: N3
+    - id: N3
+      label: 実装

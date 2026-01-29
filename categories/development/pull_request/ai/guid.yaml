@@ -1,6 +1,10 @@
 # PR情報 (pull_request) ガイド
 #
 # Pull Requestの情報をまとめるドキュメント
+#
+# document.yaml には任意で ai_context を書けます。
+# current_thinking（現在の考え）, next_actions（これからのアクション）,
+# decision_flow（判断・進め方の流れ）を書くと、人間用MDでフローチャート等の図になります。
 
 meta:
   title: "PR情報ガイド"

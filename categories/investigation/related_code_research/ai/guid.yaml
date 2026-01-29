@@ -1,6 +1,10 @@
 # 関連コード調査 (related_code_research) ガイド
 #
 # プロジェクト関連のコードを調査するドキュメント
+#
+# document.yaml には任意で ai_context を書けます。
+# current_thinking（現在の考え）, next_actions（これからのアクション）,
+# decision_flow（判断・進め方の流れ）を書くと、人間用MDでフローチャート等の図になります。
 
 meta:
   title: "関連コード調査ガイド"

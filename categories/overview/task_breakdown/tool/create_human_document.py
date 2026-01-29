@@ -9,7 +9,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent.parent / 'common'))
 from config import AI_DOCUMENT_YAML
-from md_base import load_yaml, format_status, format_references_section, run_create_human_document
+from md_base import load_yaml, format_status, format_references_section, format_ai_context_section, run_create_human_document
 
 TASK_STATE_CATEGORIES = ['overview', 'design', 'development', 'investigation', 'verification']
 
@@ -96,7 +96,10 @@ def generate_markdown(data: dict) -> str:
     if meta.get('author'):
         lines.append(f"**作成者:** {meta['author']}")
     lines.append("")
-    
+    ai_section = format_ai_context_section(data)
+    if ai_section:
+        lines.append(ai_section)
+        lines.append("")
     # Overview
     overview = data.get('overview', {})
     if overview.get('background'):

@@ -85,6 +85,43 @@
           "url": { "type": "string", "format": "uri" }
         }
       }
+    },
+    "ai_context": {
+      "type": "object",
+      "description": "AIの現在の考え・次のアクション（人間用MDで図化される）",
+      "properties": {
+        "current_thinking": {
+          "oneOf": [
+            { "type": "string" },
+            { "type": "array", "items": { "type": "string" } }
+          ]
+        },
+        "next_actions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "label"],
+            "properties": {
+              "id": { "type": "string" },
+              "label": { "type": "string" },
+              "detail": { "type": "string" }
+            }
+          }
+        },
+        "decision_flow": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "label"],
+            "properties": {
+              "id": { "type": "string" },
+              "label": { "type": "string" },
+              "next": { "type": "string" },
+              "next_condition": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      }
     }
   }
 }

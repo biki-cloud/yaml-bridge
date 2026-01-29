@@ -1,6 +1,10 @@
 # 動作確認手順 (verification_procedure) ガイド
 #
 # 動作確認の詳細な手順を記述するドキュメント
+#
+# document.yaml には任意で ai_context を書けます。
+# current_thinking（現在の考え）, next_actions（これからのアクション）,
+# decision_flow（判断・進め方の流れ）を書くと、人間用MDでフローチャート等の図になります。
 
 meta:
   title: "動作確認手順ガイド"
