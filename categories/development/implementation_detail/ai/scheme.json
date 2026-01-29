@@ -7,19 +7,16 @@
   "required": ["meta", "changes", "references"],
   "properties": {
     "meta": {
-      "type": "object",
-      "required": ["title", "category", "doc_type", "status", "version"],
-      "properties": {
-        "title": { "type": "string" },
-        "category": { "const": "development" },
-        "doc_type": { "const": "implementation_detail" },
-        "target_type": { "type": "string", "enum": ["api", "batch", "web", "cli", "library", "infrastructure", "other"] },
-        "status": { "type": "string", "enum": ["todo", "wip", "done"] },
-        "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
-        "author": { "type": "string" },
-        "created_at": { "type": "string" },
-        "updated_at": { "type": "string" }
-      }
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "development" },
+            "doc_type": { "const": "implementation_detail" },
+            "target_type": { "type": "string", "enum": ["api", "batch", "web", "cli", "library", "infrastructure", "other"] }
+          }
+        }
+      ]
     },
     "overview": {
       "type": "object",

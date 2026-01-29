@@ -7,18 +7,15 @@
   "required": ["meta", "overview", "tasks", "references"],
   "properties": {
     "meta": {
-      "type": "object",
-      "required": ["title", "category", "doc_type", "status", "version"],
-      "properties": {
-        "title": { "type": "string" },
-        "category": { "const": "overview" },
-        "doc_type": { "const": "task_breakdown" },
-        "status": { "type": "string", "enum": ["todo", "wip", "done"] },
-        "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
-        "author": { "type": "string" },
-        "created_at": { "type": "string" },
-        "updated_at": { "type": "string" }
-      }
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "overview" },
+            "doc_type": { "const": "task_breakdown" }
+          }
+        }
+      ]
     },
     "overview": {
       "type": "object",

@@ -7,18 +7,15 @@
   "required": ["meta", "overview", "requirements", "references"],
   "properties": {
     "meta": {
-      "type": "object",
-      "required": ["title", "category", "doc_type", "status", "version"],
-      "properties": {
-        "title": { "type": "string" },
-        "category": { "const": "design" },
-        "doc_type": { "const": "requirements" },
-        "status": { "type": "string", "enum": ["todo", "wip", "done"] },
-        "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
-        "author": { "type": "string" },
-        "created_at": { "type": "string" },
-        "updated_at": { "type": "string" }
-      }
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "design" },
+            "doc_type": { "const": "requirements" }
+          }
+        }
+      ]
     },
     "overview": {
       "type": "object",
