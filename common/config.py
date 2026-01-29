@@ -5,19 +5,19 @@ build / validate / 各 create_human_document.py で参照する。
 """
 
 # AI が編集する YAML（ビルド対象）
-AI_DOCUMENT_YAML = "ai_document.yaml"
+AI_DOCUMENT_YAML = "ai/document.yaml"
 
 # 生成される Markdown（人間向け）
-HUMAN_DOCUMENT_MD = "human_document.md"
+HUMAN_DOCUMENT_MD = "human/document.md"
 
 # YAML → Markdown 生成スクリプト
-CREATE_HUMAN_DOCUMENT_SCRIPT = "create_human_document.py"
+CREATE_HUMAN_DOCUMENT_SCRIPT = "tool/create_human_document.py"
 
 # ガイド・テンプレート（ビルド対象外）
-AI_DOCUMENT_GUIDE_YAML = "ai_document_guide.yaml"
+AI_DOCUMENT_GUIDE_YAML = "ai/guid.yaml"
 
 # JSON Schema（バリデーション用）
-AI_DOCUMENT_SCHEME_JSON = "ai_document_scheme.json"
+AI_DOCUMENT_SCHEME_JSON = "ai/scheme.json"
 
 # リンクチェック対象の GitHub ホスト（validate.py の 404 チェックで使用）
 GITHUB_LINK_CHECK_HOSTS = ("github.com", "raw.githubusercontent.com")

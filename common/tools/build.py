@@ -5,7 +5,7 @@ YAMLファイルのバリデーション → Markdown生成（Mermaid図含む�
 
 使い方:
   # 単一ファイルを処理
-  python3 common/tools/build.py categories/development/implementation_plan/ai_document.yaml
+  python3 common/tools/build.py categories/development/implementation_plan/ai/document.yaml
 
   # 全doc_typesを処理
   python3 common/tools/build.py --all
@@ -118,8 +118,13 @@ def process_yaml(yaml_path: Path, validate_only: bool = False) -> bool:
 
 def process_doc_type(category: str, doc_type: str, validate_only: bool = False) -> tuple[int, int]:
     doc_type_dir = get_categories_dir() / category / doc_type
-    yaml_files = list(doc_type_dir.glob('*.yaml')) + list(doc_type_dir.glob('*.yml'))
-    yaml_files = [f for f in yaml_files if f.name != AI_DOCUMENT_GUIDE_YAML and not f.name.startswith('invalid_')]
+    ai_dir = doc_type_dir / "ai"
+    yaml_files = (
+        list(ai_dir.glob("*.yaml")) + list(ai_dir.glob("*.yml"))
+        if ai_dir.exists() else []
+    )
+    guide_name = Path(AI_DOCUMENT_GUIDE_YAML).name
+    yaml_files = [f for f in yaml_files if f.name != guide_name and not f.name.startswith("invalid_")]
 
     if not yaml_files:
         return 0, 0
