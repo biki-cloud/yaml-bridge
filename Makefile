@@ -81,6 +81,6 @@ help:
 	@echo "    to_md.py              Markdown生成"
 	@echo "    to_mermaid.py         Mermaid図生成"
 	@echo "    guide.yaml            ガイド・テンプレート"
-	@echo "    ai_created.yaml       AIが生成した例（ビルド対象）"
+	@echo "    ai_handled.yaml       AIが扱うファイル（ビルド対象）"
 	@echo "    human_readable.md     生成されたMarkdown"
 	@echo ""

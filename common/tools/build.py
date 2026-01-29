@@ -5,7 +5,7 @@ YAMLファイルのバリデーション → Markdown生成（Mermaid図含む�
 
 使い方:
   # 単一ファイルを処理
-  python3 common/tools/build.py categories/development/implementation_plan/ai_created.yaml
+  python3 common/tools/build.py categories/development/implementation_plan/ai_handled.yaml
 
   # 全doc_typesを処理
   python3 common/tools/build.py --all
@@ -102,7 +102,7 @@ def process_yaml(yaml_path: Path, validate_only: bool = False) -> bool:
         return False
     
     stem = yaml_path.stem
-    md_name = "human_readable.md" if stem == "ai_created" else f"{stem}.md"
+    md_name = "human_readable.md" if stem == "ai_handled" else f"{stem}.md"
     md_output = doc_type_dir / md_name
     
     print(f"\n📄 処理中: {yaml_path.name} ({category}/{doc_type})")

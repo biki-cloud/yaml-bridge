@@ -38,7 +38,7 @@ make verification    # 動作確認
 ### 単一YAMLの処理
 
 ```bash
-python3 common/tools/build.py categories/design/task_breakdown/ai_created.yaml
+python3 common/tools/build.py categories/design/task_breakdown/ai_handled.yaml
 ```
 
 ## ディレクトリ構成
@@ -48,7 +48,7 @@ categories/{category}/{doc_type}/
   schema.json     # JSON Schema（バリデーション用）
   to_md.py        # YAML → Markdown（Mermaid図はここで埋め込み）
   guide.yaml      # ガイド・テンプレート
-  ai_created.yaml # AIが生成した例（ビルド対象）
+  ai_handled.yaml # AIが扱うファイル（ビルド対象）
   human_readable.md # 生成されたMarkdown
 ```
 
