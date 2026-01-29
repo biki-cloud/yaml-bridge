@@ -565,32 +565,6 @@ def generate_api_design_diagrams(data: dict) -> str:
     return '\n'.join(lines)
 
 
-def generate_feature_design_diagrams(data: dict) -> str:
-    """新機能設計用の全図を生成"""
-    lines = []
-    title = data.get('meta', {}).get('title', '新機能設計')
-    lines.append(f"# {title} - Mermaid図")
-    lines.append("")
-    
-    sections = [
-        ("要件優先度", "機能要件の優先度分布です。", generate_requirements_chart(data)),
-        ("アーキテクチャ", "アーキテクチャの概要です。", generate_architecture_diagram(data)),
-        ("コンポーネント構成", "コンポーネント間の依存関係です。", generate_component_diagram(data)),
-        ("リスクマトリクス", "深刻度と発生確率に基づくリスクの分布です。", generate_risk_matrix(data)),
-    ]
-    
-    for title, desc, diagram in sections:
-        if diagram:
-            lines.append(f"## {title}")
-            lines.append("")
-            lines.append(desc)
-            lines.append("")
-            lines.append(diagram)
-            lines.append("")
-    
-    return '\n'.join(lines)
-
-
 def generate_bugfix_diagrams(data: dict) -> str:
     """バグ修正用の全図を生成"""
     lines = []
@@ -616,41 +590,13 @@ def generate_bugfix_diagrams(data: dict) -> str:
     return '\n'.join(lines)
 
 
-def generate_infrastructure_diagrams(data: dict) -> str:
-    """インフラ構築用の全図を生成"""
-    lines = []
-    title = data.get('meta', {}).get('title', 'インフラ構築')
-    lines.append(f"# {title} - Mermaid図")
-    lines.append("")
-    
-    sections = [
-        ("インフラ構成", "目標のインフラ構成です。", generate_infra_diagram(data)),
-        ("移行フロー", "移行ステップとロールバック手順です。", generate_migration_flowchart(data)),
-        ("コスト内訳", "月額コストの内訳です。", generate_cost_chart(data)),
-        ("リスクマトリクス", "深刻度と発生確率に基づくリスクの分布です。", generate_risk_matrix(data)),
-    ]
-    
-    for title, desc, diagram in sections:
-        if diagram:
-            lines.append(f"## {title}")
-            lines.append("")
-            lines.append(desc)
-            lines.append("")
-            lines.append(diagram)
-            lines.append("")
-    
-    return '\n'.join(lines)
-
-
 def generate_all_diagrams(data: dict) -> str:
     """ドキュメントタイプに応じた全図を生成"""
     doc_type = data.get('meta', {}).get('type', 'api_design')
     
     generators = {
         'api_design': generate_api_design_diagrams,
-        'feature_design': generate_feature_design_diagrams,
         'bugfix': generate_bugfix_diagrams,
-        'infrastructure': generate_infrastructure_diagrams,
     }
     
     generator = generators.get(doc_type, generate_api_design_diagrams)
@@ -671,7 +617,7 @@ def main():
     )
     parser.add_argument(
         '-t', '--type',
-        choices=['api_design', 'feature_design', 'bugfix', 'infrastructure'],
+        choices=['api_design', 'bugfix'],
         default=None,
         help='ドキュメントタイプを明示的に指定（省略時はmeta.typeから自動検出）'
     )

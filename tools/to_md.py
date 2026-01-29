@@ -84,9 +84,7 @@ def format_type_badge(doc_type: str) -> str:
     """ドキュメントタイプをバッジで表示"""
     badges = {
         'api_design': '🔌 API設計',
-        'feature_design': '✨ 新機能設計',
         'bugfix': '🐛 バグ修正',
-        'infrastructure': '🏗️ インフラ構築'
     }
     return badges.get(doc_type, doc_type)
 
@@ -983,23 +981,6 @@ def generate_api_design_markdown(data: dict) -> str:
     return '\n'.join(lines)
 
 
-def generate_feature_design_markdown(data: dict) -> str:
-    """新機能設計用Markdown生成"""
-    lines = []
-    lines.extend(generate_meta_section(data))
-    lines.extend(generate_background_section(data))
-    lines.extend(generate_scope_section(data))
-    lines.extend(generate_requirements_section(data))
-    lines.extend(generate_architecture_section(data))
-    lines.extend(generate_components_section(data))
-    lines.extend(generate_milestones_section(data))
-    lines.extend(generate_risks_section(data))
-    lines.extend(generate_testing_section(data))
-    lines.extend(generate_custom_section(data))
-    
-    return '\n'.join(lines)
-
-
 def generate_bugfix_markdown(data: dict) -> str:
     """バグ修正用Markdown生成"""
     lines = []
@@ -1017,35 +998,13 @@ def generate_bugfix_markdown(data: dict) -> str:
     return '\n'.join(lines)
 
 
-def generate_infrastructure_markdown(data: dict) -> str:
-    """インフラ構築用Markdown生成"""
-    lines = []
-    lines.extend(generate_meta_section(data))
-    lines.extend(generate_background_section(data))
-    lines.extend(generate_scope_section(data))
-    lines.extend(generate_infra_state_section(data, 'current_state', '現状のインフラ構成'))
-    lines.extend(generate_infra_state_section(data, 'target_state', '目標のインフラ構成'))
-    lines.extend(generate_resources_section(data))
-    lines.extend(generate_security_section(data))
-    lines.extend(generate_monitoring_section(data))
-    lines.extend(generate_migration_section(data))
-    lines.extend(generate_cost_section(data))
-    lines.extend(generate_risks_section(data))
-    lines.extend(generate_testing_section(data))
-    lines.extend(generate_custom_section(data))
-    
-    return '\n'.join(lines)
-
-
 def generate_markdown(data: dict) -> str:
     """YAMLデータからMarkdownを生成する"""
     doc_type = data.get('meta', {}).get('type', 'api_design')
     
     generators = {
         'api_design': generate_api_design_markdown,
-        'feature_design': generate_feature_design_markdown,
         'bugfix': generate_bugfix_markdown,
-        'infrastructure': generate_infrastructure_markdown,
     }
     
     generator = generators.get(doc_type, generate_api_design_markdown)
@@ -1066,7 +1025,7 @@ def main():
     )
     parser.add_argument(
         '-t', '--type',
-        choices=['api_design', 'feature_design', 'bugfix', 'infrastructure'],
+        choices=['api_design', 'bugfix'],
         default=None,
         help='ドキュメントタイプを明示的に指定（省略時はmeta.typeから自動検出）'
     )

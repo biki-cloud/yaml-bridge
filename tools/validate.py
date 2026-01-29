@@ -23,9 +23,7 @@ except ImportError:
 # 案件タイプとスキーマファイルの対応
 SCHEMA_MAP = {
     'api_design': 'api_design.schema.json',
-    'feature_design': 'feature_design.schema.json',
     'bugfix': 'bugfix.schema.json',
-    'infrastructure': 'infrastructure.schema.json',
 }
 
 
@@ -151,24 +149,6 @@ def run_api_design_checks(yaml_data: dict) -> list[str]:
     return warnings
 
 
-def run_feature_design_checks(yaml_data: dict) -> list[str]:
-    """新機能設計固有のチェック"""
-    warnings = []
-    
-    # 必須要件がない場合の警告
-    requirements = yaml_data.get('requirements', {})
-    functional = requirements.get('functional', [])
-    must_requirements = [r for r in functional if r.get('priority') == 'must']
-    if functional and not must_requirements:
-        warnings.append("⚠️ must優先度の機能要件がありません")
-    
-    # アーキテクチャ決定がない場合の警告
-    if 'architecture' not in yaml_data:
-        warnings.append("⚠️ アーキテクチャ設計(architecture)が定義されていません")
-    
-    return warnings
-
-
 def run_bugfix_checks(yaml_data: dict) -> list[str]:
     """バグ修正固有のチェック"""
     warnings = []
@@ -189,29 +169,6 @@ def run_bugfix_checks(yaml_data: dict) -> list[str]:
     return warnings
 
 
-def run_infrastructure_checks(yaml_data: dict) -> list[str]:
-    """インフラ構築固有のチェック"""
-    warnings = []
-    
-    # 現状構成がない場合の警告
-    if 'current_state' not in yaml_data:
-        warnings.append("⚠️ 現状のインフラ構成(current_state)が定義されていません")
-    
-    # セキュリティ設計がない場合の警告
-    if 'security' not in yaml_data:
-        warnings.append("⚠️ セキュリティ設計(security)が定義されていません")
-    
-    # 監視設計がない場合の警告
-    if 'monitoring' not in yaml_data:
-        warnings.append("⚠️ 監視設計(monitoring)が定義されていません")
-    
-    # コスト見積もりがない場合の警告
-    if 'cost' not in yaml_data:
-        warnings.append("⚠️ コスト見積もり(cost)が定義されていません")
-    
-    return warnings
-
-
 def run_additional_checks(yaml_data: dict, schema_type: str) -> tuple[bool, list[str]]:
     """
     スキーマでは表現しにくい追加のビジネスルールチェック
@@ -227,9 +184,7 @@ def run_additional_checks(yaml_data: dict, schema_type: str) -> tuple[bool, list
     # タイプ固有のチェック
     type_checks = {
         'api_design': run_api_design_checks,
-        'feature_design': run_feature_design_checks,
         'bugfix': run_bugfix_checks,
-        'infrastructure': run_infrastructure_checks,
     }
     
     if schema_type in type_checks:

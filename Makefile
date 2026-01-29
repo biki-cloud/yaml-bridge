@@ -40,12 +40,6 @@ api:
 bugfix:
 	@$(PYTHON) $(TOOLS_DIR)/build.py $(INPUT_DIR)/bugfix_sample.yaml
 
-feature:
-	@$(PYTHON) $(TOOLS_DIR)/build.py $(INPUT_DIR)/feature_design_sample.yaml
-
-infra:
-	@$(PYTHON) $(TOOLS_DIR)/build.py $(INPUT_DIR)/infrastructure_sample.yaml
-
 # 出力ファイルを削除
 clean:
 	@echo "🗑️  出力ファイルを削除中..."
@@ -66,8 +60,6 @@ help:
 	@echo "ショートカット:"
 	@echo "  make api                API設計サンプルをビルド"
 	@echo "  make bugfix             バグ修正サンプルをビルド"
-	@echo "  make feature            新機能設計サンプルをビルド"
-	@echo "  make infra              インフラ設計サンプルをビルド"
 	@echo ""
 	@echo "ディレクトリ:"
 	@echo "  入力: $(INPUT_DIR)/"

@@ -17,7 +17,7 @@
         },
         "type": {
           "type": "string",
-          "enum": ["api_design", "feature_design", "bugfix", "infrastructure"],
+          "enum": ["api_design", "bugfix"],
           "description": "案件タイプ"
         },
         "version": {
