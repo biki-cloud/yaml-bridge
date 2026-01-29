@@ -1,0 +1,37 @@
+# 関連コード調査 (related_code_research) ガイド
+#
+# プロジェクト関連のコードを調査するドキュメント
+
+meta:
+  title: "関連コード調査ガイド"
+  category: investigation
+  doc_type: related_code_research
+  status: done
+  version: "1.0.0"
+
+target:
+  description: |
+    調査の目的・対象を記述
+  project_context: "認証機能改修に伴う関連コード調査"
+  search_scope:
+    - "認証モジュール"
+    - "セッション管理"
+
+questions:
+  - id: Q1
+    question: "影響を受けるコードはどこか？"
+    priority: high
+
+findings:
+  - question_id: Q1
+    description: |
+      発見した関連コード
+    location: "src/auth/session.ts"
+    relevance: high
+
+conclusions:
+  - "結論1"
+
+next_actions:
+  - action: "次にやること"
+    priority: should

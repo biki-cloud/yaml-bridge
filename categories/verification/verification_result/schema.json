@@ -1,0 +1,73 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "verification/verification_result.schema.json",
+  "title": "動作確認結果",
+  "description": "動作確認の結果を記録するドキュメント",
+  "type": "object",
+  "required": ["meta", "test_results", "summary"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["title", "category", "doc_type", "status", "version"],
+      "properties": {
+        "title": { "type": "string" },
+        "category": { "const": "verification" },
+        "doc_type": { "const": "verification_result" },
+        "status": { "type": "string", "enum": ["todo", "wip", "done"] },
+        "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "author": { "type": "string" },
+        "created_at": { "type": "string" },
+        "updated_at": { "type": "string" }
+      }
+    },
+    "target": {
+      "type": "object",
+      "properties": {
+        "feature": { "type": "string" },
+        "pr_url": { "type": "string" },
+        "environment": { "type": "string" }
+      }
+    },
+    "test_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "status"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "status": { "type": "string", "enum": ["pass", "fail", "blocked", "skipped"] },
+          "actual_result": { "type": "string" },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["conclusion"],
+      "properties": {
+        "executed_at": { "type": "string" },
+        "executed_by": { "type": "string" },
+        "total": { "type": "integer" },
+        "passed": { "type": "integer" },
+        "failed": { "type": "integer" },
+        "blocked": { "type": "integer" },
+        "skipped": { "type": "integer" },
+        "pass_rate": { "type": "number" },
+        "conclusion": { "type": "string" },
+        "issues_found": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "description": { "type": "string" },
+              "severity": { "type": "string", "enum": ["blocker", "critical", "major", "minor"] },
+              "status": { "type": "string", "enum": ["open", "fixed", "wont_fix"] }
+            }
+          }
+        }
+      }
+    }
+  }
+}

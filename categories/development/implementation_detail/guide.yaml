@@ -1,0 +1,28 @@
+# 実装詳細 (implementation_detail) ガイド
+#
+# 実装の詳細（Before/After）を記述するドキュメント
+
+meta:
+  title: "実装詳細ガイド"
+  category: development
+  doc_type: implementation_detail
+  target_type: api
+  status: done
+  version: "1.0.0"
+
+overview:
+  summary: |
+    実装の概要
+  related_plan: "implementation_plan.yaml"
+
+changes:
+  - file: "src/example.ts"
+    change_type: modify
+    description: "変更内容"
+    before: |
+      // 変更前のコード
+    after: |
+      // 変更後のコード
+
+notes:
+  - "実装時のメモ"

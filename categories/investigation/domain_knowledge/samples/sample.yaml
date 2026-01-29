@@ -1,0 +1,77 @@
+meta:
+  title: 決済システムのドメイン知識調査
+  category: investigation
+  doc_type: domain_knowledge
+  status: done
+  version: 1.0.0
+  author: 山田太郎
+  created_at: "2024-01-25"
+
+target:
+  description: |
+    決済システムの改修にあたり、現行の決済フローと
+    関連する業務ルールを理解する。
+  domain: 決済・課金
+  related_docs:
+    - 決済仕様書v2.1.pdf
+    - 経理部門業務フロー.xlsx
+
+questions:
+  - id: Q1
+    question: 決済のキャンセル可能期間は？
+    priority: high
+  - id: Q2
+    question: 部分返金は可能か？
+    priority: high
+  - id: Q3
+    question: 決済手数料の計算ルールは？
+    priority: medium
+
+glossary:
+  - term: オーソリ
+    definition: クレジットカードの与信枠確保。実際の請求前に利用可能かを確認する処理。
+  - term: キャプチャ
+    definition: オーソリ済みの取引を確定し、実際に請求を行う処理。
+  - term: チャージバック
+    definition: カード会社が売上を取り消し、加盟店に返金を求める処理。
+  - term: 3Dセキュア
+    definition: オンライン決済での本人認証サービス。不正利用防止のため導入が推奨される。
+
+findings:
+  - question_id: Q1
+    description: |
+      決済のキャンセルは、キャプチャ前であれば即座に可能。
+      キャプチャ後は返金処理となり、最大30日以内に申請が必要。
+    source: 決済仕様書v2.1 3.4節
+    impact: high
+  - question_id: Q2
+    description: |
+      部分返金は対応している。ただし、同一取引に対する
+      部分返金は最大3回まで。
+    source: 経理部門ヒアリング
+    impact: medium
+  - question_id: Q3
+    description: |
+      決済手数料は決済金額の3.6%。
+      月間決済額が1000万円を超える場合は3.2%に割引。
+    source: 決済代行会社契約書
+    impact: medium
+
+conclusions:
+  - 決済キャンセルはタイミングによって処理が異なるため、UIでの案内が重要
+  - 部分返金の回数制限はシステムでも制御が必要
+  - 手数料計算は月次バッチで再計算される仕組みが必要
+
+next_actions:
+  - action: 決済キャンセルフローの詳細設計
+    priority: must
+  - action: 部分返金回数のバリデーション実装
+    priority: should
+  - action: 手数料計算ロジックのレビュー
+    priority: could
+
+references:
+  - title: 決済仕様書v2.1
+    url: https://docs.internal/payment-spec-v2.1.pdf
+  - title: PCI DSS準拠ガイドライン
+    url: https://www.pcisecuritystandards.org/

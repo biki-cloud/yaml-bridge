@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "design/task_breakdown.schema.json",
+  "title": "タスク分解",
+  "description": "案件でやることを整理するドキュメント",
+  "type": "object",
+  "required": ["meta", "overview", "tasks"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["title", "category", "doc_type", "status", "version"],
+      "properties": {
+        "title": { "type": "string" },
+        "category": { "const": "design" },
+        "doc_type": { "const": "task_breakdown" },
+        "status": { "type": "string", "enum": ["todo", "wip", "done"] },
+        "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "author": { "type": "string" },
+        "created_at": { "type": "string" },
+        "updated_at": { "type": "string" }
+      }
+    },
+    "overview": {
+      "type": "object",
+      "properties": {
+        "background": { "type": "string" },
+        "goal": { "type": "string" },
+        "scope": {
+          "type": "object",
+          "properties": {
+            "in": { "type": "array", "items": { "type": "string" } },
+            "out": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "category": { "type": "string", "enum": ["investigation", "design", "development", "verification"] },
+          "priority": { "type": "string", "enum": ["high", "medium", "low"] },
+          "status": { "type": "string", "enum": ["todo", "wip", "done"] },
+          "dependencies": { "type": "array", "items": { "type": "string" } },
+          "estimated_hours": { "type": "number" }
+        }
+      }
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string", "enum": ["technical", "business", "resource", "time"] },
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "risk": { "type": "string" },
+          "impact": { "type": "string", "enum": ["high", "medium", "low"] },
+          "mitigation": { "type": "string" }
+        }
+      }
+    }
+  }
+}

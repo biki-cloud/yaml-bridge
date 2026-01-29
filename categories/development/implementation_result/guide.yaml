@@ -1,0 +1,31 @@
+# 修正結果 (implementation_result) ガイド
+#
+# 実装の結果をまとめるドキュメント
+
+meta:
+  title: "修正結果ガイド"
+  category: development
+  doc_type: implementation_result
+  status: done
+  version: "1.0.0"
+
+overview:
+  related_plan: "implementation_plan.yaml"
+  related_pr: "https://github.com/example/repo/pull/123"
+
+result:
+  summary: |
+    実装結果のサマリー
+  files_changed: 5
+  lines_added: 150
+  lines_deleted: 30
+  commits:
+    - hash: "abc1234"
+      message: "feat: add feature"
+
+issues_found:
+  - description: "発見した問題"
+    resolution: "解決方法"
+
+lessons_learned:
+  - "学んだこと"

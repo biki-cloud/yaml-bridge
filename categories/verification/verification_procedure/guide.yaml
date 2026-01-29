@@ -1,0 +1,24 @@
+# 動作確認手順 (verification_procedure) ガイド
+#
+# 動作確認の詳細な手順を記述するドキュメント
+
+meta:
+  title: "動作確認手順ガイド"
+  category: verification
+  doc_type: verification_procedure
+  status: done
+  version: "1.0.0"
+
+overview:
+  related_plan: "verification_plan.yaml"
+  environment: "staging"
+
+procedures:
+  - id: PROC-001
+    title: "手順タイトル"
+    precondition: "事前条件"
+    steps:
+      - action: "操作内容"
+        expected: "期待する結果"
+        note: "補足"
+    postcondition: "事後条件"

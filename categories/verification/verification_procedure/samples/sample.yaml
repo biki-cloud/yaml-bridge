@@ -1,0 +1,59 @@
+meta:
+  title: ログイン機能の動作確認手順
+  category: verification
+  doc_type: verification_procedure
+  status: wip
+  version: 1.0.0
+  author: 山田太郎
+  created_at: "2024-02-22"
+
+overview:
+  related_plan: verification_plan/login_verification.yaml
+  environment: ステージング環境（https://staging.example.com）
+
+procedures:
+  - id: PROC-001
+    title: 正常ログインの確認
+    precondition: テストユーザー（test@example.com / Test1234!）が作成済み
+    steps:
+      - action: ブラウザで https://staging.example.com/login を開く
+        expected: ログインフォームが表示される
+        note: Chrome最新版を使用
+      - action: メールアドレス欄に「test@example.com」を入力
+        expected: 入力値が表示される
+      - action: パスワード欄に「Test1234!」を入力
+        expected: パスワードがマスク表示される
+      - action: 「ログイン」ボタンをクリック
+        expected: ローディングインジケータが表示される
+      - action: 画面遷移を待つ
+        expected: ダッシュボード（/dashboard）にリダイレクトされる
+        note: 3秒以内に遷移すること
+    postcondition: ユーザーセッションが作成されている
+
+  - id: PROC-002
+    title: ログイン失敗時のエラー表示確認
+    precondition: なし
+    steps:
+      - action: ブラウザで https://staging.example.com/login を開く
+        expected: ログインフォームが表示される
+      - action: メールアドレス欄に「test@example.com」を入力
+        expected: 入力値が表示される
+      - action: パスワード欄に「WrongPassword」を入力
+        expected: パスワードがマスク表示される
+      - action: 「ログイン」ボタンをクリック
+        expected: エラーメッセージ「メールアドレスまたはパスワードが正しくありません」が赤字で表示される
+        note: パスワード欄はクリアされること
+    postcondition: ログインページに留まっている
+
+  - id: PROC-003
+    title: セッション維持の確認
+    precondition: PROC-001でログイン済み
+    steps:
+      - action: 新しいタブで https://staging.example.com/profile を開く
+        expected: プロフィールページが表示される（ログイン状態が維持されている）
+      - action: ブラウザを閉じて再度開く
+        expected: ブラウザが閉じられる
+        note: Remember me機能がOFFの場合
+      - action: https://staging.example.com/dashboard を開く
+        expected: ログインページにリダイレクトされる
+    postcondition: セッションが無効化されている

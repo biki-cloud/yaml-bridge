@@ -1,0 +1,65 @@
+meta:
+  title: "リフレッシュトークンローテーション PR"
+  category: development
+  doc_type: pull_request
+  status: wip
+  version: "1.0.0"
+  author: "山田太郎"
+  created_at: "2024-02-01"
+
+pull_request:
+  url: "https://github.com/example/auth-service/pull/456"
+  title: "feat: implement refresh token rotation"
+  description: |
+    ## 概要
+    リフレッシュトークンのローテーションを実装します。
+    
+    ## 変更内容
+    - トークン発行時にファミリーIDを付与
+    - トークン使用時に新しいペアを発行し、旧トークンを無効化
+    - トークン再利用を検出してファミリー全体を無効化
+    
+    ## 関連Issue
+    - AUTH-123
+    - AUTH-456
+  branch: "feature/token-rotation"
+  base_branch: "develop"
+  reviewers:
+    - "sato"
+    - "suzuki"
+  labels:
+    - "enhancement"
+    - "security"
+    - "ready for review"
+  checklist:
+    - item: "セルフレビュー完了"
+      done: true
+    - item: "ユニットテスト追加"
+      done: true
+    - item: "結合テスト追加"
+      done: true
+    - item: "ドキュメント更新"
+      done: false
+    - item: "動作確認完了"
+      done: false
+
+overview:
+  background: |
+    セキュリティ監査でリフレッシュトークンのローテーションが必要との指摘を受けた。
+  changes_summary: |
+    - src/auth/token.ts: トークンローテーションロジック追加
+    - src/auth/tokenStore.ts: 新規追加、Redis連携
+    - src/types/token.ts: familyId追加
+
+testing:
+  tested_items:
+    - "ユニットテスト: 正常系トークンローテーション"
+    - "ユニットテスト: トークン再利用検出"
+    - "結合テスト: 認証フロー全体"
+  not_tested:
+    - "負荷テスト"
+    - "既存クライアントとの互換性テスト"
+
+notes:
+  - "移行期間中は旧方式も並行サポート（フラグで切替可能）"
+  - "Redis接続エラー時のフォールバック処理はTODOコメントで残している"

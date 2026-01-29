@@ -1,49 +1,60 @@
 # YAML → MD/Mermaid ビルドツール
 # 
 # 使い方:
-#   make build          # 全YAMLをビルド
-#   make validate       # 全YAMLをバリデーションのみ
-#   make build FILE=xxx # 特定ファイルをビルド
-#   make clean          # 出力ファイルを削除
-#   make help           # ヘルプ表示
+#   make build              # 全doc_typesをビルド
+#   make validate           # 全YAMLをバリデーションのみ
+#   make list               # 利用可能なcategory/doc_typeを表示
+#
+# カテゴリ別:
+#   make overview           # プロジェクト概要
+#   make investigation      # 調査
+#   make design             # 設計
+#   make development        # 開発
+#   make verification       # 動作確認
+#
+#   make clean              # 出力ファイルを削除
+#   make help               # ヘルプ表示
 
 PYTHON := python3
-TOOLS_DIR := tools
-INPUT_DIR := yaml_created_from_ai
-OUTPUT_DIR := output_for_human_read
+BUILD_SCRIPT := common/tools/build.py
 
-.PHONY: build validate clean help watch
+.PHONY: build validate clean help list
+.PHONY: overview investigation design development verification
 
-# デフォルトターゲット
 .DEFAULT_GOAL := help
 
-# 全YAMLをビルド
+# 全doc_typesをビルド
 build:
-ifdef FILE
-	@$(PYTHON) $(TOOLS_DIR)/build.py $(FILE)
-else
-	@$(PYTHON) $(TOOLS_DIR)/build.py --all
-endif
+	@$(PYTHON) $(BUILD_SCRIPT) --all
 
 # 全YAMLをバリデーションのみ
 validate:
-ifdef FILE
-	@$(PYTHON) $(TOOLS_DIR)/build.py $(FILE) --validate-only
-else
-	@$(PYTHON) $(TOOLS_DIR)/build.py --all --validate-only
-endif
+	@$(PYTHON) $(BUILD_SCRIPT) --all --validate-only
 
-# 特定のタイプのみビルド（例: make api, make bugfix）
-api:
-	@$(PYTHON) $(TOOLS_DIR)/build.py $(INPUT_DIR)/user_api_redesign.yaml
+# カテゴリ別ビルド
+overview:
+	@$(PYTHON) $(BUILD_SCRIPT) --category overview
 
-bugfix:
-	@$(PYTHON) $(TOOLS_DIR)/build.py $(INPUT_DIR)/bugfix_sample.yaml
+investigation:
+	@$(PYTHON) $(BUILD_SCRIPT) --category investigation
+
+design:
+	@$(PYTHON) $(BUILD_SCRIPT) --category design
+
+development:
+	@$(PYTHON) $(BUILD_SCRIPT) --category development
+
+verification:
+	@$(PYTHON) $(BUILD_SCRIPT) --category verification
+
+# 利用可能なcategory/doc_typeを表示
+list:
+	@$(PYTHON) $(BUILD_SCRIPT) --list
 
 # 出力ファイルを削除
 clean:
 	@echo "🗑️  出力ファイルを削除中..."
-	@rm -f $(OUTPUT_DIR)/*.md
+	@rm -f categories/*/*/output/*.md
 	@echo "✅ 完了"
 
 # ヘルプ表示
@@ -51,17 +62,25 @@ help:
 	@echo ""
 	@echo "📘 YAML → MD/Mermaid ビルドツール"
 	@echo ""
-	@echo "使い方:"
-	@echo "  make build              全YAMLをビルド（validate → MD → Mermaid）"
+	@echo "基本コマンド:"
+	@echo "  make build              全doc_typesをビルド"
 	@echo "  make validate           全YAMLをバリデーションのみ"
-	@echo "  make build FILE=path    特定ファイルをビルド"
+	@echo "  make list               利用可能なcategory/doc_typeを表示"
 	@echo "  make clean              出力ファイルを削除"
 	@echo ""
-	@echo "ショートカット:"
-	@echo "  make api                API設計サンプルをビルド"
-	@echo "  make bugfix             バグ修正サンプルをビルド"
+	@echo "カテゴリ別ビルド:"
+	@echo "  make overview           プロジェクト概要"
+	@echo "  make investigation      調査"
+	@echo "  make design             設計"
+	@echo "  make development        開発"
+	@echo "  make verification       動作確認"
 	@echo ""
-	@echo "ディレクトリ:"
-	@echo "  入力: $(INPUT_DIR)/"
-	@echo "  出力: $(OUTPUT_DIR)/"
+	@echo "ディレクトリ構成:"
+	@echo "  categories/{category}/{doc_type}/"
+	@echo "    schema.json           スキーマ定義"
+	@echo "    to_md.py              Markdown生成"
+	@echo "    to_mermaid.py         Mermaid図生成"
+	@echo "    guide.yaml            ガイド・テンプレート"
+	@echo "    samples/              サンプルYAML"
+	@echo "    output/               生成されたMD/Mermaid"
 	@echo ""

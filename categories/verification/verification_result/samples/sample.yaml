@@ -1,0 +1,65 @@
+meta:
+  title: "リフレッシュトークン実装 動作確認結果"
+  category: verification
+  doc_type: verification_result
+  status: done
+  version: "1.0.0"
+  author: "佐藤花子"
+  created_at: "2024-02-05"
+
+target:
+  feature: "リフレッシュトークンローテーション"
+  pr_url: "https://github.com/example/auth-service/pull/456"
+  environment: "staging"
+
+test_results:
+  - id: TC-001
+    title: "正常系: リフレッシュトークンで新トークンを取得"
+    status: pass
+    actual_result: "新しいトークンペアが正常に返却された"
+
+  - id: TC-002
+    title: "正常系: 旧リフレッシュトークンが無効化される"
+    status: pass
+    actual_result: "401 Token reuse detected エラーが返却された"
+
+  - id: TC-003
+    title: "異常系: 期限切れトークンでエラー"
+    status: pass
+    actual_result: "401 Token expired エラーが返却された"
+
+  - id: TC-004
+    title: "異常系: 不正なトークン形式"
+    status: pass
+    actual_result: "400 Invalid token format エラーが返却された"
+
+  - id: TC-005
+    title: "セキュリティ: トークン再利用でファミリー全体が無効化"
+    status: pass
+    actual_result: "両方とも401エラー。ファミリー無効化が正常に動作"
+
+  - id: TC-006
+    title: "境界値: 有効期限ギリギリでのリフレッシュ"
+    status: pass
+    actual_result: "正常に発行された"
+    notes: "タイミングによっては失敗する可能性あり"
+
+  - id: TC-007
+    title: "性能: 連続リフレッシュのレスポンスタイム"
+    status: pass
+    actual_result: "平均78ms、最大120ms"
+
+summary:
+  executed_at: "2024-02-05 14:30"
+  executed_by: "佐藤花子"
+  total: 7
+  passed: 7
+  failed: 0
+  blocked: 0
+  skipped: 0
+  pass_rate: 100.0
+  conclusion: |
+    全テストケースがPassしました。
+    リフレッシュトークンローテーション機能は正常に動作しています。
+    本番リリース可能と判断します。
+  issues_found: []

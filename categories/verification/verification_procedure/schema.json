@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "verification/verification_procedure.schema.json",
+  "title": "動作確認手順",
+  "description": "動作確認の詳細な手順を記述するドキュメント",
+  "type": "object",
+  "required": ["meta", "procedures"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["title", "category", "doc_type", "status", "version"],
+      "properties": {
+        "title": { "type": "string" },
+        "category": { "const": "verification" },
+        "doc_type": { "const": "verification_procedure" },
+        "status": { "type": "string", "enum": ["todo", "wip", "done"] },
+        "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "author": { "type": "string" },
+        "created_at": { "type": "string" },
+        "updated_at": { "type": "string" }
+      }
+    },
+    "overview": {
+      "type": "object",
+      "properties": {
+        "related_plan": { "type": "string" },
+        "environment": { "type": "string" }
+      }
+    },
+    "procedures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "steps"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "precondition": { "type": "string" },
+          "steps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "action": { "type": "string" },
+                "expected": { "type": "string" },
+                "note": { "type": "string" }
+              }
+            }
+          },
+          "postcondition": { "type": "string" }
+        }
+      }
+    }
+  }
+}

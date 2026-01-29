@@ -1,0 +1,88 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "investigation/domain_knowledge.schema.json",
+  "title": "ドメイン知識",
+  "description": "既存の仕様・ドメイン知識を調査・整理するドキュメント",
+  "type": "object",
+  "required": ["meta", "target", "findings"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["title", "category", "doc_type", "status", "version"],
+      "properties": {
+        "title": { "type": "string" },
+        "category": { "const": "investigation" },
+        "doc_type": { "const": "domain_knowledge" },
+        "status": { "type": "string", "enum": ["todo", "wip", "done"] },
+        "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "author": { "type": "string" },
+        "created_at": { "type": "string" },
+        "updated_at": { "type": "string" }
+      }
+    },
+    "target": {
+      "type": "object",
+      "required": ["description"],
+      "properties": {
+        "description": { "type": "string" },
+        "domain": { "type": "string" },
+        "related_docs": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "question": { "type": "string" },
+          "priority": { "type": "string", "enum": ["high", "medium", "low"] }
+        }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["description"],
+        "properties": {
+          "question_id": { "type": "string" },
+          "description": { "type": "string" },
+          "source": { "type": "string" },
+          "impact": { "type": "string", "enum": ["high", "medium", "low"] }
+        }
+      }
+    },
+    "glossary": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "term": { "type": "string" },
+          "definition": { "type": "string" }
+        }
+      }
+    },
+    "conclusions": { "type": "array", "items": { "type": "string" } },
+    "next_actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "action": { "type": "string" },
+          "priority": { "type": "string", "enum": ["must", "should", "could"] }
+        }
+      }
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string" },
+          "url": { "type": "string" }
+        }
+      }
+    }
+  }
+}

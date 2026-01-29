@@ -1,0 +1,59 @@
+# プロジェクト概要 (project_summary) ガイド
+#
+# プロジェクト全体の概要を記述するドキュメント
+
+meta:
+  title: "プロジェクト概要ガイド"
+  category: overview
+  doc_type: project_summary
+  status: done
+  version: "1.0.0"
+
+# ============================================
+# 必須セクション
+# ============================================
+# - meta: メタ情報
+# - summary: 背景、ゴール、スコープ
+
+summary:
+  background: |
+    プロジェクトの背景・経緯を記述
+  goal: |
+    プロジェクトのゴール・目的を記述
+  scope:
+    in:
+      - スコープ内の項目
+    out:
+      - スコープ外の項目
+  success_criteria:
+    - 成功基準1
+
+# ============================================
+# オプションセクション
+# ============================================
+
+stakeholders:
+  - name: "担当者名"
+    role: "役割"
+    contact: "email@example.com"
+
+timeline:
+  start_date: "2024-01-01"
+  end_date: "2024-03-31"
+  milestones:
+    - name: "マイルストーン1"
+      date: "2024-01-15"
+      description: "説明"
+
+constraints:
+  - type: technical
+    description: "技術的な制約"
+
+risks:
+  - risk: "リスク内容"
+    impact: high
+    mitigation: "対策"
+
+references:
+  - title: "参考資料"
+    url: "https://example.com"

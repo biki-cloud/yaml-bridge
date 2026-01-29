@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "verification/verification_plan.schema.json",
+  "title": "動作確認計画",
+  "description": "動作確認の計画を立てるドキュメント",
+  "type": "object",
+  "required": ["meta", "target", "test_cases"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["title", "category", "doc_type", "status", "version"],
+      "properties": {
+        "title": { "type": "string" },
+        "category": { "const": "verification" },
+        "doc_type": { "const": "verification_plan" },
+        "status": { "type": "string", "enum": ["todo", "wip", "done"] },
+        "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "author": { "type": "string" },
+        "created_at": { "type": "string" },
+        "updated_at": { "type": "string" }
+      }
+    },
+    "target": {
+      "type": "object",
+      "required": ["feature"],
+      "properties": {
+        "feature": { "type": "string" },
+        "pr_url": { "type": "string" },
+        "environment": { "type": "string" },
+        "related_docs": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "properties": {
+        "in": { "type": "array", "items": { "type": "string" } },
+        "out": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "prerequisites": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "description": { "type": "string" },
+          "verified": { "type": "boolean" }
+        }
+      }
+    },
+    "test_cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "category": { "type": "string", "enum": ["normal", "boundary", "error", "performance", "security"] },
+          "priority": { "type": "string", "enum": ["high", "medium", "low"] },
+          "precondition": { "type": "string" },
+          "steps": { "type": "array", "items": { "type": "string" } },
+          "expected_result": { "type": "string" }
+        }
+      }
+    }
+  }
+}

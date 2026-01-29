@@ -1,0 +1,67 @@
+meta:
+  title: "認証機能改修タスク分解"
+  category: design
+  doc_type: task_breakdown
+  status: wip
+  version: "1.0.0"
+  author: "山田太郎"
+  created_at: "2024-01-20"
+
+overview:
+  background: |
+    認証機能のセキュリティ改善が必要。
+  goal: |
+    セキュリティ要件を満たす認証機能を実装する。
+  scope:
+    in:
+      - リフレッシュトークンのローテーション実装
+      - エラーメッセージの汎化
+    out:
+      - OAuth対応（別案件）
+
+tasks:
+  - id: T-001
+    title: "リフレッシュトークン設計"
+    description: |
+      リフレッシュトークンのローテーション方式を設計する。
+    category: design
+    priority: high
+    status: done
+    dependencies: []
+    estimated_hours: 4
+
+  - id: T-002
+    title: "リフレッシュトークン実装"
+    category: development
+    priority: high
+    status: wip
+    dependencies:
+      - T-001
+    estimated_hours: 8
+
+  - id: T-003
+    title: "エラーメッセージ改善"
+    category: development
+    priority: high
+    status: todo
+    dependencies: []
+    estimated_hours: 2
+
+  - id: T-004
+    title: "単体テスト"
+    category: verification
+    priority: high
+    status: todo
+    dependencies:
+      - T-002
+      - T-003
+    estimated_hours: 4
+
+constraints:
+  - type: time
+    description: "2週間以内にリリース"
+
+risks:
+  - risk: "既存クライアントへの影響"
+    impact: high
+    mitigation: "移行期間を設ける"

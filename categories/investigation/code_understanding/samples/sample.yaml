@@ -1,0 +1,67 @@
+meta:
+  title: "認証モジュールのコード理解"
+  category: investigation
+  doc_type: code_understanding
+  status: done
+  version: "1.0.0"
+  author: "山田太郎"
+  created_at: "2024-01-15"
+
+target:
+  description: |
+    ユーザー認証モジュールの現行実装を理解する。
+  repository: "https://github.com/example/auth-service"
+  files:
+    - "src/auth/session.ts"
+    - "src/auth/token.ts"
+  components:
+    - "SessionManager"
+    - "TokenGenerator"
+  related_issues:
+    - "AUTH-123: セッションタイムアウトの問題"
+
+questions:
+  - id: Q1
+    question: "セッションはどこに保存されているか？"
+    priority: high
+  - id: Q2
+    question: "トークンの有効期限はどう管理されているか？"
+    priority: high
+
+findings:
+  - question_id: Q1
+    description: |
+      セッションはRedisに保存されている。
+      SessionManagerクラスがRedisクライアントをラップしている。
+    evidence: |
+      class SessionManager {
+        private redis: RedisClient;
+        async createSession(userId: string): Promise<string> {
+          const sessionId = uuid();
+          await this.redis.set(`session:${sessionId}`, userId, 'EX', 3600);
+          return sessionId;
+        }
+      }
+    impact: medium
+
+  - question_id: Q2
+    description: |
+      トークンはJWTで発行され、有効期限は1時間。
+      リフレッシュトークンのローテーションは未実装。
+    evidence: |
+      const accessToken = jwt.sign({ userId }, SECRET, { expiresIn: '1h' });
+    impact: high
+
+conclusions:
+  - "セッション管理はRedisベースで基本実装はできている"
+  - "トークン管理にセキュリティ上の課題がある"
+
+next_actions:
+  - action: "リフレッシュトークンのローテーション実装を検討"
+    priority: must
+  - action: "セッションタイムアウトの設定値をレビュー"
+    priority: should
+
+references:
+  - title: "JWT Best Practices"
+    url: "https://auth0.com/blog/jwt-best-practices/"

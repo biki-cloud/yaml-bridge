@@ -1,0 +1,38 @@
+# 動作確認計画 (verification_plan) ガイド
+#
+# 動作確認の計画を立てるドキュメント
+
+meta:
+  title: "動作確認計画ガイド"
+  category: verification
+  doc_type: verification_plan
+  status: done
+  version: "1.0.0"
+
+target:
+  feature: "対象機能"
+  pr_url: "https://github.com/example/repo/pull/123"
+  environment: "staging"
+  related_docs:
+    - "development/implementation_plan.yaml"
+
+scope:
+  in:
+    - "テスト対象1"
+  out:
+    - "テスト対象外1"
+
+prerequisites:
+  - description: "環境が起動していること"
+    verified: false
+
+test_cases:
+  - id: TC-001
+    title: "テストケースタイトル"
+    category: normal
+    priority: high
+    precondition: "事前条件"
+    steps:
+      - "手順1"
+      - "手順2"
+    expected_result: "期待結果"

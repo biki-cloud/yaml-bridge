@@ -1,0 +1,40 @@
+# ドメイン知識 (domain_knowledge) ガイド
+#
+# 既存の仕様・ドメイン知識を調査・整理するドキュメント
+
+meta:
+  title: "ドメイン知識ガイド"
+  category: investigation
+  doc_type: domain_knowledge
+  status: done
+  version: "1.0.0"
+
+target:
+  description: |
+    調査対象のドメイン・仕様を記述
+  domain: "認証・認可"
+  related_docs:
+    - "仕様書へのリンク"
+
+glossary:
+  - term: "用語1"
+    definition: "定義"
+
+questions:
+  - id: Q1
+    question: "この仕様はどうなっているか？"
+    priority: high
+
+findings:
+  - question_id: Q1
+    description: |
+      調査結果
+    source: "仕様書 p.10"
+    impact: medium
+
+conclusions:
+  - "結論1"
+
+next_actions:
+  - action: "次にやること"
+    priority: should

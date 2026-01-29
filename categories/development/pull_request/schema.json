@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "development/pull_request.schema.json",
+  "title": "PR情報",
+  "description": "Pull Requestの情報をまとめるドキュメント",
+  "type": "object",
+  "required": ["meta", "pull_request"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["title", "category", "doc_type", "status", "version"],
+      "properties": {
+        "title": { "type": "string" },
+        "category": { "const": "development" },
+        "doc_type": { "const": "pull_request" },
+        "status": { "type": "string", "enum": ["todo", "wip", "done"] },
+        "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "author": { "type": "string" },
+        "created_at": { "type": "string" },
+        "updated_at": { "type": "string" }
+      }
+    },
+    "pull_request": {
+      "type": "object",
+      "required": ["title"],
+      "properties": {
+        "url": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "branch": { "type": "string" },
+        "base_branch": { "type": "string" },
+        "reviewers": { "type": "array", "items": { "type": "string" } },
+        "labels": { "type": "array", "items": { "type": "string" } },
+        "checklist": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "item": { "type": "string" },
+              "done": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    "overview": {
+      "type": "object",
+      "properties": {
+        "background": { "type": "string" },
+        "changes_summary": { "type": "string" }
+      }
+    },
+    "testing": {
+      "type": "object",
+      "properties": {
+        "tested_items": { "type": "array", "items": { "type": "string" } },
+        "not_tested": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "notes": { "type": "array", "items": { "type": "string" } }
+  }
+}

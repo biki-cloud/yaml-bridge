@@ -1,0 +1,83 @@
+meta:
+  title: ユーザー認証機能の要件整理
+  category: design
+  doc_type: requirements
+  status: wip
+  version: 1.0.0
+  author: 山田太郎
+  created_at: "2024-01-20"
+
+overview:
+  background: |
+    現行システムの認証機能はセキュリティ要件を満たしていないため、
+    OAuth 2.0準拠の新認証機能を実装する必要がある。
+  goal: |
+    セキュアで使いやすい認証機能を提供し、
+    ユーザー体験を向上させる。
+  scope:
+    in:
+      - ログイン/ログアウト機能
+      - パスワードリセット機能
+      - 二要素認証
+    out:
+      - ソーシャルログイン（フェーズ2）
+      - 生体認証（将来検討）
+
+requirements:
+  - id: REQ-001
+    description: ユーザーはメールアドレスとパスワードでログインできる
+    type: functional
+    priority: must
+    acceptance_criteria:
+      - 有効な認証情報でログインできる
+      - 無効な認証情報でエラーメッセージが表示される
+      - ログイン後、ダッシュボードにリダイレクトされる
+
+  - id: REQ-002
+    description: パスワードは8文字以上で英数字記号を含む必要がある
+    type: non_functional
+    priority: must
+    acceptance_criteria:
+      - 8文字未満のパスワードは拒否される
+      - 英字のみのパスワードは拒否される
+      - 条件を満たすパスワードは受け入れられる
+
+  - id: REQ-003
+    description: ログイン失敗が5回続くとアカウントが一時ロックされる
+    type: functional
+    priority: should
+    acceptance_criteria:
+      - 5回連続失敗でロックされる
+      - ロック中はログインできない
+      - 30分後に自動解除される
+
+  - id: REQ-004
+    description: 二要素認証をオプションで有効化できる
+    type: functional
+    priority: could
+    acceptance_criteria:
+      - 設定画面から2FAを有効化できる
+      - TOTP（Google Authenticator等）に対応
+      - バックアップコードを発行できる
+
+constraints:
+  - type: technical
+    description: 既存のユーザーDBスキーマとの互換性を維持
+  - type: time
+    description: Q2末までにリリース必須
+  - type: resource
+    description: 開発者2名で対応
+
+risks:
+  - risk: 既存ユーザーの移行で問題が発生する可能性
+    impact: high
+    mitigation: 段階的移行とロールバック計画を準備
+  - risk: 2FA導入によるサポート問い合わせ増加
+    impact: medium
+    mitigation: FAQとヘルプドキュメントを整備
+
+references:
+  - title: OAuth 2.0 仕様
+    url: https://oauth.net/2/
+  - title: OWASP認証チートシート
+    url: https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html

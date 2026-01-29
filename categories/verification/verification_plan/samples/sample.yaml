@@ -1,0 +1,93 @@
+meta:
+  title: ログイン機能の動作確認計画
+  category: verification
+  doc_type: verification_plan
+  status: wip
+  version: 1.0.0
+  author: 山田太郎
+  created_at: "2024-02-20"
+
+target:
+  feature: ユーザーログイン機能
+  pr_url: https://github.com/example/project/pull/456
+  environment: ステージング環境
+  related_docs:
+    - design/requirements/login_requirements.yaml
+    - development/implementation_plan/login_impl.yaml
+
+scope:
+  in:
+    - メールアドレス/パスワードによるログイン
+    - ログイン失敗時のエラー表示
+    - ログイン成功後のリダイレクト
+    - セッション管理
+  out:
+    - ソーシャルログイン（別PR）
+    - パスワードリセット（別PR）
+
+prerequisites:
+  - description: ステージング環境にデプロイ済み
+    verified: true
+  - description: テストユーザーアカウントを作成済み
+    verified: true
+  - description: Redisサーバーが稼働中
+    verified: false
+
+test_cases:
+  - id: TC-001
+    title: 正常ログイン
+    category: normal
+    priority: high
+    precondition: 有効なユーザーアカウントが存在する
+    steps:
+      - ログインページにアクセス
+      - メールアドレスを入力
+      - パスワードを入力
+      - ログインボタンをクリック
+    expected_result: ダッシュボードにリダイレクトされる
+
+  - id: TC-002
+    title: 無効なパスワードでログイン失敗
+    category: error
+    priority: high
+    precondition: 有効なユーザーアカウントが存在する
+    steps:
+      - ログインページにアクセス
+      - 正しいメールアドレスを入力
+      - 間違ったパスワードを入力
+      - ログインボタンをクリック
+    expected_result: エラーメッセージ「メールアドレスまたはパスワードが正しくありません」が表示される
+
+  - id: TC-003
+    title: 存在しないユーザーでログイン
+    category: error
+    priority: high
+    precondition: なし
+    steps:
+      - ログインページにアクセス
+      - 存在しないメールアドレスを入力
+      - 任意のパスワードを入力
+      - ログインボタンをクリック
+    expected_result: エラーメッセージ「メールアドレスまたはパスワードが正しくありません」が表示される
+
+  - id: TC-004
+    title: 空のフォームで送信
+    category: boundary
+    priority: medium
+    precondition: なし
+    steps:
+      - ログインページにアクセス
+      - 何も入力せずにログインボタンをクリック
+    expected_result: バリデーションエラー「メールアドレスは必須です」が表示される
+
+  - id: TC-005
+    title: SQLインジェクション対策確認
+    category: security
+    priority: high
+    precondition: なし
+    steps:
+      - ログインページにアクセス
+      - メールアドレスに「' OR '1'='1」を入力
+      - パスワードに「' OR '1'='1」を入力
+      - ログインボタンをクリック
+    expected_result: ログインに失敗し、エラーメッセージが表示される
