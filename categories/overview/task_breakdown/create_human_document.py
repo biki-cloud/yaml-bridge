@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """task_breakdown YAML → Markdown 変換（Mermaid図含む）
-overview / design / development / investigation / verification の各 ai_handled.yaml の
+overview / design / development / investigation / verification の各 ai_document.yaml の
 タスク状態を集約表示する。"""
 
 import sys
@@ -19,7 +19,7 @@ def get_categories_dir() -> Path:
 
 
 def collect_task_states() -> list[dict]:
-    """各カテゴリの ai_handled.yaml からタスク状態を収集"""
+    """各カテゴリの ai_document.yaml からタスク状態を収集"""
     categories_dir = get_categories_dir()
     entries = []
     for category in TASK_STATE_CATEGORIES:
@@ -29,7 +29,7 @@ def collect_task_states() -> list[dict]:
         for doc_dir in sorted(cat_dir.iterdir()):
             if not doc_dir.is_dir():
                 continue
-            yaml_path = doc_dir / 'ai_handled.yaml'
+            yaml_path = doc_dir / 'ai_document.yaml'
             if not yaml_path.exists():
                 continue
             try:
@@ -60,7 +60,7 @@ def format_task_states_section(entries: list[dict]) -> str:
     lines = []
     lines.append('## カテゴリ別タスク状態')
     lines.append('')
-    lines.append('overview / design / development / investigation / verification の各 `ai_handled.yaml` のドキュメント状態と、')
+    lines.append('overview / design / development / investigation / verification の各 `ai_document.yaml` のドキュメント状態と、')
     lines.append('task_breakdown のタスク一覧を表示しています。')
     lines.append('')
     for e in entries:
@@ -218,7 +218,7 @@ def generate_markdown(data: dict) -> str:
             lines.append(f"| {r.get('risk', '-')} | {icon} {r.get('impact', '-')} | {r.get('mitigation', '-')} |")
         lines.append("")
     
-    # カテゴリ別タスク状態（各 ai_handled.yaml から取得）
+    # カテゴリ別タスク状態（各 ai_document.yaml から取得）
     task_entries = collect_task_states()
     task_section = format_task_states_section(task_entries)
     if task_section:

@@ -87,27 +87,27 @@ pie showData
 
 ### overview
 
-- [認証機能改修タスク分解](../task_breakdown/human_readable.md)
+- [認証機能改修タスク分解](../task_breakdown/human_document.md)
 
 ### design
 
-- [ユーザー認証機能の要件整理](../../design/requirements/human_readable.md)
+- [ユーザー認証機能の要件整理](../../design/requirements/human_document.md)
 
 ### development
 
-- [セッション管理の実装詳細](../../development/implementation_detail/human_readable.md)
-- [リフレッシュトークンローテーション実装計画](../../development/implementation_plan/human_readable.md)
-- [セッション管理改善の修正結果](../../development/implementation_result/human_readable.md)
-- [リフレッシュトークンローテーション PR](../../development/pull_request/human_readable.md)
+- [セッション管理の実装詳細](../../development/implementation_detail/human_document.md)
+- [リフレッシュトークンローテーション実装計画](../../development/implementation_plan/human_document.md)
+- [セッション管理改善の修正結果](../../development/implementation_result/human_document.md)
+- [リフレッシュトークンローテーション PR](../../development/pull_request/human_document.md)
 
 ### investigation
 
-- [認証モジュールのコード理解](../../investigation/code_understanding/human_readable.md)
-- [決済システムのドメイン知識調査](../../investigation/domain_knowledge/human_readable.md)
-- [通知システムの関連コード調査](../../investigation/related_code_research/human_readable.md)
+- [認証モジュールのコード理解](../../investigation/code_understanding/human_document.md)
+- [決済システムのドメイン知識調査](../../investigation/domain_knowledge/human_document.md)
+- [通知システムの関連コード調査](../../investigation/related_code_research/human_document.md)
 
 ### verification
 
-- [ログイン機能の動作確認計画](../../verification/verification_plan/human_readable.md)
-- [ログイン機能の動作確認手順](../../verification/verification_procedure/human_readable.md)
-- [リフレッシュトークン実装 動作確認結果](../../verification/verification_result/human_readable.md)
+- [ログイン機能の動作確認計画](../../verification/verification_plan/human_document.md)
+- [ログイン機能の動作確認手順](../../verification/verification_procedure/human_document.md)
+- [リフレッシュトークン実装 動作確認結果](../../verification/verification_result/human_document.md)

@@ -38,18 +38,18 @@ make verification    # 動作確認
 ### 単一YAMLの処理
 
 ```bash
-python3 common/tools/build.py categories/overview/task_breakdown/ai_handled.yaml
+python3 common/tools/build.py categories/overview/task_breakdown/ai_document.yaml
 ```
 
 ## ディレクトリ構成
 
 ```
 categories/{category}/{doc_type}/
-  schema.json     # JSON Schema（バリデーション用）
-  to_md.py        # YAML → Markdown（Mermaid図はここで埋め込み）
-  guide.yaml      # ガイド・テンプレート
-  ai_handled.yaml # AIが扱うファイル（ビルド対象）
-  human_readable.md # 生成されたMarkdown
+  ai_document_scheme.json  # JSON Schema（バリデーション用）
+  create_human_document.py # YAML → Markdown（Mermaid図はここで埋め込み）
+  ai_document_guide.yaml   # ガイド・テンプレート
+  ai_document.yaml         # AIが扱うファイル（ビルド対象）
+  human_document.md       # 生成されたMarkdown
 ```
 
 ## カテゴリと doc_type
@@ -68,4 +68,4 @@ categories/{category}/{doc_type}/
 
 - **common/tools/build.py** … バリデーション → Markdown生成の一括実行
 - **common/tools/validate.py** … 単体のYAMLをバリデート（`meta` からスキーマを自動検出）
-- **common/md_base.py** … 各 to_md.py が利用するYAML読み込みヘルパー
+- **common/md_base.py** … 各 create_human_document.py が利用するYAML読み込みヘルパー

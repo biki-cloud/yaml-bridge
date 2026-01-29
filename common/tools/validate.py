@@ -30,7 +30,7 @@ def get_categories_dir() -> Path:
 
 def get_schema_path(category: str, doc_type: str) -> Optional[Path]:
     """category/doc_typeに対応するスキーマパスを取得"""
-    schema_path = get_categories_dir() / category / doc_type / 'schema.json'
+    schema_path = get_categories_dir() / category / doc_type / 'ai_document_scheme.json'
     return schema_path if schema_path.exists() else None
 
 
@@ -105,7 +105,7 @@ def main():
             if cat_dir.is_dir() and not cat_dir.name.startswith('_'):
                 doc_types = []
                 for dt_dir in cat_dir.iterdir():
-                    if dt_dir.is_dir() and (dt_dir / 'schema.json').exists():
+                    if dt_dir.is_dir() and (dt_dir / 'ai_document_scheme.json').exists():
                         doc_types.append(dt_dir.name)
                 if doc_types:
                     print(f"\n📦 {cat_dir.name}")

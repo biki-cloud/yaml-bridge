@@ -54,7 +54,7 @@ list:
 # 出力ファイルを削除
 clean:
 	@echo "🗑️  出力ファイルを削除中..."
-	@rm -f categories/*/*/human_readable.md
+	@rm -f categories/*/*/human_document.md
 	@echo "✅ 完了"
 
 # ヘルプ表示
@@ -77,10 +77,10 @@ help:
 	@echo ""
 	@echo "ディレクトリ構成:"
 	@echo "  categories/{category}/{doc_type}/"
-	@echo "    schema.json           スキーマ定義"
-	@echo "    to_md.py              Markdown生成"
-	@echo "    to_mermaid.py         Mermaid図生成"
-	@echo "    guide.yaml            ガイド・テンプレート"
-	@echo "    ai_handled.yaml       AIが扱うファイル（ビルド対象）"
-	@echo "    human_readable.md     生成されたMarkdown"
+	@echo "    ai_document_scheme.json  スキーマ定義"
+	@echo "    create_human_document.py  Markdown生成"
+	@echo "    to_mermaid.py             Mermaid図生成"
+	@echo "    ai_document_guide.yaml    ガイド・テンプレート"
+	@echo "    ai_document.yaml          AIが扱うファイル（ビルド対象）"
+	@echo "    human_document.md         生成されたMarkdown"
 	@echo ""

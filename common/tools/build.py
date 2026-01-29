@@ -5,7 +5,7 @@ YAMLファイルのバリデーション → Markdown生成（Mermaid図含む�
 
 使い方:
   # 単一ファイルを処理
-  python3 common/tools/build.py categories/development/implementation_plan/ai_handled.yaml
+  python3 common/tools/build.py categories/development/implementation_plan/ai_document.yaml
 
   # 全doc_typesを処理
   python3 common/tools/build.py --all
@@ -43,7 +43,7 @@ def get_available_categories() -> list[str]:
         if d.is_dir() and not d.name.startswith('_'):
             # doc_typeサブディレクトリがあるカテゴリのみ
             for sub in d.iterdir():
-                if sub.is_dir() and (sub / 'schema.json').exists():
+                if sub.is_dir() and (sub / 'ai_document_scheme.json').exists():
                     categories.append(d.name)
                     break
     return sorted(categories)
@@ -56,7 +56,7 @@ def get_doc_types(category: str) -> list[str]:
     
     doc_types = []
     for d in category_dir.iterdir():
-        if d.is_dir() and (d / 'schema.json').exists():
+        if d.is_dir() and (d / 'ai_document_scheme.json').exists():
             doc_types.append(d.name)
     return sorted(doc_types)
 
@@ -102,7 +102,7 @@ def process_yaml(yaml_path: Path, validate_only: bool = False) -> bool:
         return False
     
     stem = yaml_path.stem
-    md_name = "human_readable.md" if stem == "ai_handled" else f"{stem}.md"
+    md_name = "human_document.md" if stem == "ai_document" else f"{stem}.md"
     md_output = doc_type_dir / md_name
     
     print(f"\n📄 処理中: {yaml_path.name} ({category}/{doc_type})")
@@ -122,13 +122,13 @@ def process_yaml(yaml_path: Path, validate_only: bool = False) -> bool:
         return success
     
     # 2. Markdown生成（Mermaid図含む）
-    to_md_script = doc_type_dir / 'to_md.py'
+    to_md_script = doc_type_dir / 'create_human_document.py'
     if to_md_script.exists():
         cmd = [sys.executable, str(to_md_script), str(yaml_path), '-o', str(md_output)]
         if not run_command(cmd, f"Markdown生成 → {md_output.name}"):
             success = False
     else:
-        print(f"  ⚠️  to_md.py が見つかりません")
+        print(f"  ⚠️  create_human_document.py が見つかりません")
         success = False
     
     return success
@@ -137,7 +137,7 @@ def process_yaml(yaml_path: Path, validate_only: bool = False) -> bool:
 def process_doc_type(category: str, doc_type: str, validate_only: bool = False) -> tuple[int, int]:
     doc_type_dir = get_categories_dir() / category / doc_type
     yaml_files = list(doc_type_dir.glob('*.yaml')) + list(doc_type_dir.glob('*.yml'))
-    yaml_files = [f for f in yaml_files if f.name != 'guide.yaml' and not f.name.startswith('invalid_')]
+    yaml_files = [f for f in yaml_files if f.name != 'ai_document_guide.yaml' and not f.name.startswith('invalid_')]
 
     if not yaml_files:
         return 0, 0

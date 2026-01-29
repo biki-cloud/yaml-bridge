@@ -74,7 +74,7 @@ flowchart LR
 
 ## カテゴリ別タスク状態
 
-overview / design / development / investigation / verification の各 `ai_handled.yaml` のドキュメント状態と、
+overview / design / development / investigation / verification の各 `ai_document.yaml` のドキュメント状態と、
 task_breakdown のタスク一覧を表示しています。
 
 ### overview / project_summary

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Markdown生成用の共通ヘルパー関数
-各タイプのto_md.pyから利用されます。
+各タイプの create_human_document.py から利用されます。
 """
 
 import yaml

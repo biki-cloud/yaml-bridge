@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """project_summary YAML → Markdown 変換（Mermaid図含む）
 全カテゴリ（overview / design / development / investigation / verification）の
-human_readable.md へのリンク一覧を表示する。"""
+human_document.md へのリンク一覧を表示する。"""
 
 import sys
 import argparse
@@ -31,7 +31,7 @@ def get_all_doc_links() -> list[tuple[str, str, str]]:
                 continue
             if category == 'overview' and doc_dir.name == 'project_summary':
                 continue
-            yaml_path = doc_dir / 'ai_handled.yaml'
+            yaml_path = doc_dir / 'ai_document.yaml'
             if not yaml_path.exists():
                 continue
             try:
@@ -61,11 +61,11 @@ def format_doc_links_section(entries: list[tuple[str, str, str]]) -> str:
         lines.append(f'### {category}')
         lines.append('')
         for doc_type, title in by_category[category]:
-            # project_summary/human_readable.md から見た相対パス
+            # project_summary/human_document.md から見た相対パス
             if category == 'overview':
-                href = f'../{doc_type}/human_readable.md'
+                href = f'../{doc_type}/human_document.md'
             else:
-                href = f'../../{category}/{doc_type}/human_readable.md'
+                href = f'../../{category}/{doc_type}/human_document.md'
             lines.append(f"- [{title}]({href})")
         lines.append('')
     return '\n'.join(lines)
@@ -211,7 +211,7 @@ def generate_markdown(data: dict) -> str:
                 lines.append(f"- {ref.get('title', '-')}")
         lines.append("")
     
-    # 全カテゴリの human_readable.md へのリンク一覧
+    # 全カテゴリの human_document.md へのリンク一覧
     doc_links = get_all_doc_links()
     links_section = format_doc_links_section(doc_links)
     if links_section:
