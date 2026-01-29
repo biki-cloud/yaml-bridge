@@ -5,7 +5,7 @@ YAMLファイルのバリデーション → Markdown生成（Mermaid図含む�
 
 使い方:
   # 単一ファイルを処理
-  python3 common/tools/build.py categories/development/implementation_plan/samples/sample.yaml
+  python3 common/tools/build.py categories/development/implementation_plan/ai_created.yaml
 
   # 全doc_typesを処理
   python3 common/tools/build.py --all
@@ -101,11 +101,9 @@ def process_yaml(yaml_path: Path, validate_only: bool = False) -> bool:
         print(f"  ⚠️  doc_typeディレクトリが見つかりません: {doc_type_dir}")
         return False
     
-    output_dir = doc_type_dir / 'output'
-    output_dir.mkdir(parents=True, exist_ok=True)
-    
     stem = yaml_path.stem
-    md_output = output_dir / f"{stem}.md"
+    md_name = "human_readable.md" if stem == "ai_created" else f"{stem}.md"
+    md_output = doc_type_dir / md_name
     
     print(f"\n📄 処理中: {yaml_path.name} ({category}/{doc_type})")
     print("-" * 40)
@@ -138,14 +136,9 @@ def process_yaml(yaml_path: Path, validate_only: bool = False) -> bool:
 
 def process_doc_type(category: str, doc_type: str, validate_only: bool = False) -> tuple[int, int]:
     doc_type_dir = get_categories_dir() / category / doc_type
-    samples_dir = doc_type_dir / 'samples'
-    
-    if not samples_dir.exists():
-        return 0, 0
-    
-    yaml_files = list(samples_dir.glob('*.yaml')) + list(samples_dir.glob('*.yml'))
-    yaml_files = [f for f in yaml_files if not f.name.startswith('invalid_')]
-    
+    yaml_files = list(doc_type_dir.glob('*.yaml')) + list(doc_type_dir.glob('*.yml'))
+    yaml_files = [f for f in yaml_files if f.name != 'guide.yaml' and not f.name.startswith('invalid_')]
+
     if not yaml_files:
         return 0, 0
     

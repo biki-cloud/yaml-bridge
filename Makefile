@@ -54,7 +54,7 @@ list:
 # 出力ファイルを削除
 clean:
 	@echo "🗑️  出力ファイルを削除中..."
-	@rm -f categories/*/*/output/*.md
+	@rm -f categories/*/*/human_readable.md
 	@echo "✅ 完了"
 
 # ヘルプ表示
@@ -81,6 +81,6 @@ help:
 	@echo "    to_md.py              Markdown生成"
 	@echo "    to_mermaid.py         Mermaid図生成"
 	@echo "    guide.yaml            ガイド・テンプレート"
-	@echo "    samples/              サンプルYAML"
-	@echo "    output/               生成されたMD/Mermaid"
+	@echo "    ai_created.yaml       AIが生成した例（ビルド対象）"
+	@echo "    human_readable.md     生成されたMarkdown"
 	@echo ""
