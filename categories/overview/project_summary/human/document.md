@@ -82,19 +82,19 @@ pie showData
 
 ### overview
 
-- [受入・サインオフ一覧](../acceptance_sign_off/human/document.md)
-- [プロジェクト変更履歴](../change_log/human/document.md)
-- [プロジェクト決定ログ](../decisions/human/document.md)
-- [外部依存](../dependency_external/human/document.md)
-- [概要カテゴリの汎用ドキュメント](../document/human/document.md)
-- [用語集](../glossary/human/document.md)
-- [振り返り・教訓](../lessons_learned/human/document.md)
-- [案件全体の検討事項・不明点](../open_items/human/document.md)
-- [品質・受入基準](../quality_criteria/human/document.md)
-- [リリースログ](../release_log/human/document.md)
-- [プロジェクトリスク登録簿](../risk_register/human/document.md)
-- [ステークホルダー・RACI](../stakeholder_raci/human/document.md)
-- [認証機能改修 WBS](../wbs/human/document.md)
+- [受入・サインオフ一覧](../../acceptance_sign_off/human/document.md)
+- [プロジェクト変更履歴](../../change_log/human/document.md)
+- [プロジェクト決定ログ](../../decisions/human/document.md)
+- [外部依存](../../dependency_external/human/document.md)
+- [概要カテゴリの汎用ドキュメント](../../document/human/document.md)
+- [用語集](../../glossary/human/document.md)
+- [振り返り・教訓](../../lessons_learned/human/document.md)
+- [案件全体の検討事項・不明点](../../open_items/human/document.md)
+- [品質・受入基準](../../quality_criteria/human/document.md)
+- [リリースログ](../../release_log/human/document.md)
+- [プロジェクトリスク登録簿](../../risk_register/human/document.md)
+- [ステークホルダー・RACI](../../stakeholder_raci/human/document.md)
+- [認証機能改修 WBS](../../wbs/human/document.md)
 
 ### design
 

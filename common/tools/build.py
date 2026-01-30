@@ -189,10 +189,19 @@ def main():
     
     if args.all:
         success, fail = process_all(args.validate_only)
+        # 全 human/document.md 作成後に MD 内相対リンクを検証
         print("\n" + "=" * 50)
-        print(f"📊 結果: 成功 {success} / 失敗 {fail}")
+        print("🔍 MD リンク検証（human/document.md 内の相対リンク）")
         print("=" * 50)
-        sys.exit(0 if fail == 0 else 1)
+        validate_script = get_project_root() / 'common' / 'tools' / 'validate.py'
+        md_link_ok = run_command(
+            [sys.executable, str(validate_script), '--check-md-links', '--all'],
+            "MD リンク検証"
+        )
+        print("\n" + "=" * 50)
+        print(f"📊 結果: 成功 {success} / 失敗 {fail}" + (" / MD リンク OK" if md_link_ok else " / MD リンク NG"))
+        print("=" * 50)
+        sys.exit(0 if (fail == 0 and md_link_ok) else 1)
     
     elif args.category:
         available = get_available_categories()

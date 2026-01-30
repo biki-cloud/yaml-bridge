@@ -4,6 +4,7 @@
 meta.category + meta.doc_type からスキーマを自動検出して検証します。
 """
 
+import re
 import yaml
 import json
 import argparse
@@ -19,7 +20,7 @@ from urllib.parse import urlparse
 _common_dir = Path(__file__).resolve().parent.parent
 if str(_common_dir) not in sys.path:
     sys.path.insert(0, str(_common_dir))
-from config import AI_DOCUMENT_SCHEME_JSON, GITHUB_LINK_CHECK_HOSTS
+from config import AI_DOCUMENT_SCHEME_JSON, GITHUB_LINK_CHECK_HOSTS, HUMAN_DOCUMENT_MD
 from paths import get_categories_dir, get_available_categories, get_doc_types, get_project_root
 from md_base import load_yaml
 
@@ -266,17 +267,121 @@ def run_github_link_check(yaml_data: dict, timeout: int = 5, sleep_seconds: floa
     return errors
 
 
+# --- 生成済み human/document.md 内の相対リンク検証 ---
+
+_MD_LINK_PATTERN = re.compile(r'\]\(([^)]+)\)')
+
+
+def extract_md_relative_links(content: str) -> list[str]:
+    """
+    Markdown 本文から相対パスのリンク href を抽出する。
+    ](href) の形式で、href が # のみまたは http(s) で始まるものは除外する。
+    """
+    hrefs = []
+    for m in _MD_LINK_PATTERN.finditer(content):
+        href = m.group(1).strip()
+        if not href:
+            continue
+        if href.startswith('#'):
+            continue
+        if href.lower().startswith('http://') or href.lower().startswith('https://'):
+            continue
+        if href.startswith('mailto:'):
+            continue
+        hrefs.append(href)
+    return hrefs
+
+
+def check_md_file_links(md_path: Path, project_root: Path) -> list[str]:
+    """
+    human/document.md 内の相対リンクが、そのファイルの位置（human ディレクトリ）から解決できるか検証する。
+    リンクをクリックしたときに正しく飛べるかどうかは、この基準でしか判定できない。
+    """
+    if not md_path.exists():
+        return [f"ファイルが存在しません: {md_path}"]
+    try:
+        content = md_path.read_text(encoding='utf-8')
+    except OSError as e:
+        return [f"読み込み失敗 {md_path}: {e}"]
+    human_dir = md_path.resolve().parent  # document.md があるディレクトリ = 相対パスの解決基準
+    errors = []
+    for href in extract_md_relative_links(content):
+        try:
+            resolved = (human_dir / href).resolve()
+            if not resolved.exists():
+                errors.append(f"リンク先が存在しません: {md_path} 内の {href} → {resolved}")
+        except OSError:
+            errors.append(f"リンク先を解決できません: {md_path} 内の {href}")
+    return errors
+
+
+def run_md_links_check(project_root: Optional[Path] = None) -> list[str]:
+    """
+    categories 配下の全 human/document.md を走査し、
+    相対リンクのファイル存在チェックを行う。エラーがあればメッセージリストを返す。
+    """
+    root = project_root or get_project_root()
+    categories_dir = get_categories_dir()
+    if not categories_dir.exists():
+        return []
+    all_errors = []
+    for category in get_available_categories():
+        for doc_type in get_doc_types(category):
+            md_path = categories_dir / category / doc_type / HUMAN_DOCUMENT_MD
+            if not md_path.exists():
+                continue
+            errs = check_md_file_links(md_path, root)
+            all_errors.extend(errs)
+    return all_errors
+
+
+def main_md_links_check(args) -> int:
+    """--check-md-links 用のエントリ。全 human/document.md のリンク検証を行い exit code を返す。"""
+    project_root = get_project_root()
+    if args.input and Path(args.input).exists():
+        md_path = Path(args.input).resolve()
+        if not md_path.is_file():
+            print(f"❌ 指定パスはファイルではありません: {md_path}")
+            return 1
+        errors = check_md_file_links(md_path, project_root)
+    else:
+        errors = run_md_links_check(project_root)
+    if errors:
+        print()
+        print("=== MD リンクエラー ===")
+        for err in errors:
+            print(err)
+        print()
+        print("=" * 40)
+        print(f"❌ MD リンク検証失敗（{len(errors)} 件）")
+        return 1
+    print()
+    print("=" * 40)
+    print("✅ MD リンク検証成功")
+    return 0
+
+
 def main():
     parser = argparse.ArgumentParser(description='設計YAMLをバリデートします')
-    parser.add_argument('input', nargs='?', help='入力YAMLファイルのパス')
+    parser.add_argument('input', nargs='?', help='入力YAMLファイルのパス（--check-md-links 時は human/document.md のパス、省略時は --all で全件）')
     parser.add_argument('-s', '--schema', default=None, help='JSON Schemaファイルのパス')
     parser.add_argument('-v', '--verbose', action='store_true', help='詳細なエラー情報を表示')
     parser.add_argument('--strict', action='store_true', help='警告もエラーとして扱う')
     parser.add_argument('--list', action='store_true', help='利用可能なcategory/doc_typeを表示')
     parser.add_argument('--skip-link-check', action='store_true', help='GitHub リンクの 404 チェックをスキップ')
     parser.add_argument('--skip-file-path-check', action='store_true', help='related_docs/references のファイルパス存在チェックをスキップ')
+    parser.add_argument('--check-md-links', action='store_true', help='生成済み human/document.md 内の相対リンクのファイル存在を検証')
+    parser.add_argument('--all', '-a', action='store_true', help='--check-md-links 時: 全 human/document.md を対象にする')
     
     args = parser.parse_args()
+    
+    if args.check_md_links:
+        if args.all or not args.input:
+            # 全 human/document.md を対象
+            code = main_md_links_check(argparse.Namespace(input=None))
+        else:
+            code = main_md_links_check(args)
+        sys.exit(code)
     
     if args.list:
         print("利用可能なcategory/doc_type:")

@@ -62,12 +62,11 @@ def format_doc_links_section(entries: list[tuple[str, str, str]]) -> str:
         lines.append(f'### {category}')
         lines.append('')
         for doc_type, title in by_category[category]:
-            # project_summary は categories/overview/project_summary/human/ にあるので、
-            # 他カテゴリへは 3 段上がって categories/ から下る
+            # human/document.md からの相対パス（human ディレクトリ基準でクリックで飛べるようにする）
             if category == 'overview':
-                href = f'../{doc_type}/{HUMAN_DOCUMENT_MD}'
+                href = f'../../{doc_type}/{HUMAN_DOCUMENT_MD}'  # human/ → overview → 同 category の doc_type
             else:
-                href = f'../../../{category}/{doc_type}/{HUMAN_DOCUMENT_MD}'
+                href = f'../../../{category}/{doc_type}/{HUMAN_DOCUMENT_MD}'  # human/ → overview → categories → 他 category
             lines.append(f"- [{title}]({href})")
         lines.append('')
     return '\n'.join(lines)

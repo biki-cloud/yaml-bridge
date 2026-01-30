@@ -23,7 +23,7 @@ def generate_markdown(data: dict, output_path=None) -> str:
     if meta.get('author'):
         lines.append(f"**作成者:** {meta['author']}")
     lines.append("")
-    lines.append("**この doc_type の役割:** スコープ・計画・体制の変更履歴を記録する。いつ・何を・なぜ変更したか、承認有無を残す。本番リリースの日時・バージョン・変更内容は [リリースログ](../release_log/human/document.md) を参照する。")
+    lines.append("**この doc_type の役割:** スコープ・計画・体制の変更履歴を記録する。いつ・何を・なぜ変更したか、承認有無を残す。本番リリースの日時・バージョン・変更内容は [リリースログ](../../release_log/human/document.md) を参照する。")
     lines.append("")
 
     ai_section = format_ai_context_section(data)

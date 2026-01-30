@@ -98,10 +98,10 @@ categories/{category}/{doc_type}/
 
 ## Done の基準
 
-`meta.status` が `done` であるとは、その doc_type としての記載が一通り揃い、必要に応じてレビュー済みである状態を指します。Done とする前に、`make validate` によるリンクチェック（ファイルパス・GitHub URL の 404 チェック）の通過を前提とします。詳細は [思想.md](思想.md) や各 doc_type の scheme の `x-ai-guid` を参照してください。
+`meta.status` が `done` であるとは、その doc_type としての記載が一通り揃い、必要に応じてレビュー済みである状態を指します。Done とする前に、`make validate` によるリンクチェック（YAML 内のファイルパス・GitHub URL の 404 チェック）の通過を前提とします。`make build` 実行時には、全 human/document.md 生成後に MD 内の相対リンクのファイル存在チェックも行い、失敗時はビルドが失敗します。詳細は [思想.md](思想.md) や各 doc_type の scheme の `x-ai-guid` を参照してください。
 
 ## 共通ツール
 
 - **common/tools/build.py** … バリデーション → Markdown生成の一括実行
-- **common/tools/validate.py** … 単体のYAMLをバリデート（`meta` からスキーマを自動検出）
+- **common/tools/validate.py** … 単体のYAMLをバリデート（`meta` からスキーマを自動検出）。`--check-md-links --all` で生成済み human/document.md 内の相対リンクのファイル存在を検証可能。
 - **common/md_base.py** … 各 create_human_document.py が利用するYAML読み込みヘルパー
