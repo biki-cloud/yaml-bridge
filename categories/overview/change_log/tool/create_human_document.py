@@ -9,6 +9,7 @@ from md_base import (
     format_ai_context_section,
     format_references_section,
     format_status,
+    rel_path_to_human_doc,
     run_create_human_document,
 )
 
@@ -23,7 +24,8 @@ def generate_markdown(data: dict, output_path=None) -> str:
     if meta.get('author'):
         lines.append(f"**作成者:** {meta['author']}")
     lines.append("")
-    lines.append("**この doc_type の役割:** スコープ・計画・体制の変更履歴を記録する。いつ・何を・なぜ変更したか、承認有無を残す。本番リリースの日時・バージョン・変更内容は [リリースログ](../../release_log/human/document.md) を参照する。")
+    release_log_href = rel_path_to_human_doc(output_path, 'overview', 'release_log')
+    lines.append(f"**この doc_type の役割:** スコープ・計画・体制の変更履歴を記録する。いつ・何を・なぜ変更したか、承認有無を残す。本番リリースの日時・バージョン・変更内容は [リリースログ]({release_log_href}) を参照する。")
     lines.append("")
 
     ai_section = format_ai_context_section(data)

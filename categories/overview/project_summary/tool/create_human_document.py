@@ -8,8 +8,8 @@ import argparse
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent.parent / 'common'))
-from config import AI_DOCUMENT_YAML, HUMAN_DOCUMENT_MD
-from md_base import load_yaml, format_status, format_references_section, format_ai_context_section, format_overview_section, run_create_human_document
+from config import AI_DOCUMENT_YAML
+from md_base import load_yaml, format_status, format_references_section, format_ai_context_section, format_overview_section, rel_path_to_human_doc, run_create_human_document
 
 CATEGORIES = ['overview', 'design', 'development', 'investigation', 'verification']
 
@@ -45,7 +45,7 @@ def get_all_doc_links() -> list[tuple[str, str, str]]:
     return entries
 
 
-def format_doc_links_section(entries: list[tuple[str, str, str]]) -> str:
+def format_doc_links_section(entries: list[tuple[str, str, str]], output_path=None) -> str:
     """全カテゴリのドキュメントへのリンク一覧を Markdown で返す（カテゴリ別）"""
     if not entries:
         return ''
@@ -62,11 +62,7 @@ def format_doc_links_section(entries: list[tuple[str, str, str]]) -> str:
         lines.append(f'### {category}')
         lines.append('')
         for doc_type, title in by_category[category]:
-            # human/document.md からの相対パス（human ディレクトリ基準でクリックで飛べるようにする）
-            if category == 'overview':
-                href = f'../../{doc_type}/{HUMAN_DOCUMENT_MD}'  # human/ → overview → 同 category の doc_type
-            else:
-                href = f'../../../{category}/{doc_type}/{HUMAN_DOCUMENT_MD}'  # human/ → overview → categories → 他 category
+            href = rel_path_to_human_doc(output_path, category, doc_type)
             lines.append(f"- [{title}]({href})")
         lines.append('')
     return '\n'.join(lines)
@@ -216,9 +212,9 @@ def generate_markdown(data: dict, output_path=None) -> str:
             lines.append(f"| {rd.get('title', '-')} | {rd.get('path_or_url', '-')} | {rd.get('reason') or '-'} | {rd.get('status') or '-'} |")
         lines.append("")
     
-    # 全カテゴリの HUMAN_DOCUMENT_MD へのリンク一覧
+    # 全カテゴリの human/document.md へのリンク一覧
     doc_links = get_all_doc_links()
-    links_section = format_doc_links_section(doc_links)
+    links_section = format_doc_links_section(doc_links, output_path)
     if links_section:
         lines.append(links_section)
     

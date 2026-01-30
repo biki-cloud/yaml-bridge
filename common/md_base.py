@@ -10,6 +10,8 @@ import yaml
 from pathlib import Path
 from typing import Callable, Optional
 
+from config import HUMAN_DOCUMENT_MD
+
 
 def load_yaml(file_path: str) -> dict:
     """YAMLファイルを読み込む"""
@@ -120,6 +122,25 @@ def format_ai_context_section(data: dict) -> str:
         lines.append('')
 
     return '\n'.join(lines).rstrip()
+
+
+def rel_path_to_human_doc(
+    from_output_path: Optional[Path],
+    to_category: str,
+    to_doc_type: str,
+) -> str:
+    """
+    現在の human/document.md の出力パスから、指定した (category, doc_type) の
+    human/document.md への相対パスを返す。human ディレクトリ基準でクリックで飛べるようにする。
+    from_output_path が None のときは、同 category 内を仮定したフォールバック文字列を返す。
+    """
+    if from_output_path is None:
+        return f"../../{to_doc_type}/{HUMAN_DOCUMENT_MD}"
+    from_dir = from_output_path.resolve().parent
+    categories_dir = from_dir.parent.parent.parent
+    target = categories_dir / to_category / to_doc_type / HUMAN_DOCUMENT_MD
+    rel = os.path.relpath(target, from_dir)
+    return rel.replace('\\', '/')
 
 
 def _ref_url_for_markdown(url: str, output_path: Optional[Path]) -> str:
@@ -233,10 +254,14 @@ def generate_open_items_markdown(data: dict, output_path: Optional[Path] = None)
     if meta.get('category') == 'overview':
         lines.append("**この doc_type の役割:** プロジェクト全体の検討事項・不明点の**目次**として使う。各カテゴリの未決事項は以下に分散している。ここでは「全体で何が未決か」を一覧し、必要に応じて各カテゴリの open_items へリンクする。")
         lines.append("")
-        lines.append("- [設計の検討事項・不明点](../../../design/open_items/human/document.md)")
-        lines.append("- [開発の検討事項・不明点](../../../development/open_items/human/document.md)")
-        lines.append("- [調査の検討事項・不明点](../../../investigation/open_items/human/document.md)")
-        lines.append("- [検証の検討事項・不明点](../../../verification/open_items/human/document.md)")
+        for cat, label in [
+            ('design', '設計の検討事項・不明点'),
+            ('development', '開発の検討事項・不明点'),
+            ('investigation', '調査の検討事項・不明点'),
+            ('verification', '検証の検討事項・不明点'),
+        ]:
+            href = rel_path_to_human_doc(output_path, cat, 'open_items')
+            lines.append(f"- [{label}]({href})")
         lines.append("")
 
     ai_section = format_ai_context_section(data)
