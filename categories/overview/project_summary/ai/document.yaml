@@ -18,7 +18,7 @@ summary:
     応答時間50%改善、OAuth 2.0対応を実現する。
   related_docs:
     - title: WBS
-      url: overview/wbs/document.yaml
+      url: categories/overview/wbs/ai/document.yaml
   scope:
     in:
       - ユーザー認証・認可機能の刷新

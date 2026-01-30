@@ -16,9 +16,9 @@ overview:
     ユーザー体験を向上させる。
   related_docs:
     - title: プロジェクト概要
-      url: overview/project_summary/document.yaml
+      url: categories/overview/project_summary/ai/document.yaml
     - title: WBS
-      url: overview/wbs/document.yaml
+      url: categories/overview/wbs/ai/document.yaml
   scope:
     in:
       - ログイン/ログアウト機能

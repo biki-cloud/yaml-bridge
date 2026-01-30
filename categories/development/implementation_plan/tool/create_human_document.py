@@ -8,7 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent.pare
 from md_base import load_yaml, format_status, format_references_section, format_ai_context_section, format_overview_section, run_create_human_document
 
 
-def generate_markdown(data: dict) -> str:
+def generate_markdown(data: dict, output_path=None) -> str:
     lines = []
     meta = data.get('meta', {})
     
@@ -148,7 +148,7 @@ def generate_markdown(data: dict) -> str:
             lines.append(f"| {r.get('risk', '-')} | {icon} {r.get('impact', '-')} | {r.get('mitigation', '-')} |")
         lines.append("")
     
-    ref_section = format_references_section(data)
+    ref_section = format_references_section(data, output_path=output_path)
     if ref_section:
         lines.append(ref_section.rstrip())
     return '\n'.join(lines)

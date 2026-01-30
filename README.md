@@ -70,13 +70,23 @@ categories/{category}/{doc_type}/
 
 | カテゴリ      | doc_type                                                                                  |
 | ------------- | ----------------------------------------------------------------------------------------- |
-| overview      | project_summary, wbs（WBS・マイルストーン・進捗管理、カテゴリ別タスク状態の集約表示あり） |
-| investigation | code_understanding, domain_knowledge, related_code_research                               |
-| design        | requirements                                                                              |
-| development   | implementation_detail, implementation_plan, implementation_result, pull_request           |
-| verification  | verification_plan, verification_procedure, verification_result                            |
+| overview      | project_summary, wbs, open_items（検討事項・不明点）                                      |
+| investigation | code_understanding, domain_knowledge, related_code_research, open_items, tasks（詳細タスク） |
+| design        | requirements, open_items, tasks                                                          |
+| development   | implementation_detail, implementation_plan, implementation_result, pull_request, open_items, tasks |
+| verification  | verification_plan, verification_procedure, verification_result, open_items, tasks         |
+
+- **open_items**: 各カテゴリの「検討事項」（決まらないと先に進めないこと）と「不明点」を 1 doc_type で管理。ブロッカー紐付けは project_summary / WBS で行う。
+- **tasks**: design / development / investigation / verification の各カテゴリの**詳細タスク**。WBS の wbs_code で紐付け可能。WBS の human/document.md ビルド時にカテゴリ別詳細タスクを集約表示する。
 
 各YAMLには `meta.category` と `meta.doc_type` を指定し、対応するスキーマで検証されます。
+
+## タスク管理方針
+
+- **タスクの定義・一覧・進捗**: WBS（overview/wbs）がサマリ・マイルストーンを保持。**細かいタスク**は各カテゴリの **doc_type: tasks** で保持する。
+- **カテゴリ別詳細タスク**: design / development / investigation / verification の各 `tasks/ai/document.yaml` に、そのカテゴリのタスク一覧（id, title, wbs_code, status, estimated_hours 等）を記述。WBS の create_human_document が各カテゴリの tasks を読み、「カテゴリ別詳細タスク」として WBS の Markdown に集約表示する。
+- **検討事項・不明点**: 各カテゴリの **open_items** に open_decisions（検討事項）と unclear_points（不明点）を記述。ブロッカーは **project_summary** または **WBS** の blockers セクションで案件・WBS 要素に紐付ける。
+- **階層**: WBS の wbs_elements は wbs_code（1, 1.1, 1.1.1）と type: summary / task / milestone で階層を表現。カテゴリ tasks の各タスクは wbs_code で WBS のまとまりに対応付ける。
 
 ## Done の基準
 

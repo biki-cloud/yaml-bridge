@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "verification/open_items.schema.json",
+  "title": "検討事項・不明点（verification）",
+  "description": "このカテゴリで決めたいこと・不明なことを管理するドキュメント",
+  "type": "object",
+  "required": ["meta", "open_decisions", "unclear_points", "references"],
+  "x-ai-guid": {
+    "intro": "このカテゴリの検討事項・不明点を管理する。open_decisions と unclear_points の2セクションを持つ。",
+    "required_sections": ["meta", "open_decisions", "unclear_points", "references"]
+  },
+  "properties": {
+    "meta": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "verification" },
+            "doc_type": { "const": "open_items" }
+          }
+        }
+      ]
+    },
+    "open_decisions": {
+      "type": "array",
+      "description": "検討事項（決まらないと先に進めないこと）",
+      "items": { "$ref": "../../../../common/scheme.json#/definitions/open_decision" }
+    },
+    "unclear_points": {
+      "type": "array",
+      "description": "不明点",
+      "items": { "$ref": "../../../../common/scheme.json#/definitions/unclear_point" }
+    },
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context"
+    }
+  }
+}

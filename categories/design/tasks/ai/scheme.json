@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "design/tasks.schema.json",
+  "title": "詳細タスク（design）",
+  "description": "このカテゴリの詳細タスク一覧。WBS の wbs_code で紐付け可能。",
+  "type": "object",
+  "required": ["meta", "tasks", "references"],
+  "x-ai-guid": {
+    "intro": "このカテゴリの詳細タスクを管理する。tasks 配列に id, title, status, wbs_code 等。",
+    "required_sections": ["meta", "tasks", "references"]
+  },
+  "properties": {
+    "meta": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "design" },
+            "doc_type": { "const": "tasks" }
+          }
+        }
+      ]
+    },
+    "tasks": {
+      "type": "array",
+      "description": "詳細タスク一覧",
+      "items": { "$ref": "../../../../common/scheme.json#/definitions/category_task" }
+    },
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context"
+    }
+  }
+}

@@ -13,8 +13,8 @@ target:
     関連する業務ルールを理解する。
   domain: 決済・課金
   related_docs:
-    - 決済仕様書v2.1.pdf
-    - 経理部門業務フロー.xlsx
+    - https://example.com/docs/決済仕様書v2.1.pdf
+    - https://example.com/docs/経理部門業務フロー.xlsx
 
 questions:
   - id: Q1

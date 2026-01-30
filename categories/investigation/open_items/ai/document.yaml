@@ -1,0 +1,14 @@
+meta:
+  title: "調査の検討事項・不明点"
+  category: investigation
+  doc_type: open_items
+  status: todo
+  version: "1.0.0"
+
+open_decisions: []
+
+unclear_points: []
+
+references:
+  - title: コード理解
+    url: categories/investigation/code_understanding/ai/document.yaml

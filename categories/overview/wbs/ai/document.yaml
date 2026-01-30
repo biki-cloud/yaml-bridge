@@ -14,7 +14,7 @@ overview:
     セキュリティ要件を満たす認証機能を実装する。
   related_docs:
     - title: 要件整理
-      url: design/requirements/document.yaml
+      url: categories/design/requirements/ai/document.yaml
   scope:
     in:
       - リフレッシュトークンのローテーション実装

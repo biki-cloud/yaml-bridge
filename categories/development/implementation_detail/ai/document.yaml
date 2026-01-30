@@ -15,11 +15,11 @@ overview:
     この資料ではセッション管理をRedisベースに移行した実装の詳細を説明する。
   related_docs:
     - title: セッション管理実装計画
-      url: implementation_plan/session_management.yaml
+      url: categories/development/implementation_plan/ai/document.yaml
   summary: |
     セッション管理をRedisベースに移行し、
     スケーラビリティとパフォーマンスを改善する。
-  related_plan: implementation_plan/session_management.yaml
+  related_plan: categories/development/implementation_plan/ai/document.yaml
 
 changes:
   - file: src/auth/session.ts

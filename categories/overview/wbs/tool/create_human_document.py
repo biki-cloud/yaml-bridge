@@ -83,6 +83,62 @@ def collect_task_states() -> list[dict]:
     return entries
 
 
+def collect_category_tasks() -> list[dict]:
+    """各カテゴリの doc_type: tasks から詳細タスクを収集（WBS で集約表示用）"""
+    categories_dir = get_categories_dir()
+    entries = []
+    for category in TASK_STATE_CATEGORIES:
+        if category == 'overview':
+            continue
+        tasks_dir = categories_dir / category / 'tasks'
+        yaml_path = tasks_dir / 'ai' / 'document.yaml'
+        if not yaml_path.exists():
+            continue
+        try:
+            data = load_yaml(str(yaml_path))
+        except Exception:
+            continue
+        meta = data.get('meta', {})
+        tasks = data.get('tasks', [])
+        entries.append({
+            'category': category,
+            'title': meta.get('title', ''),
+            'status': meta.get('status', ''),
+            'tasks': [
+                {'id': t.get('id', ''), 'title': t.get('title', ''), 'wbs_code': t.get('wbs_code', ''), 'status': t.get('status', ''), 'estimated_hours': t.get('estimated_hours')}
+                for t in tasks
+            ]
+        })
+    return entries
+
+
+def format_category_tasks_section(entries: list[dict]) -> str:
+    """カテゴリ別詳細タスク（doc_type: tasks）を Markdown セクションとして整形"""
+    if not entries:
+        return ''
+    lines = []
+    lines.append('## カテゴリ別詳細タスク')
+    lines.append('')
+    lines.append('各カテゴリの `tasks` doc_type から読み込んだ詳細タスク一覧（WBS の wbs_code で紐付け）。')
+    lines.append('')
+    for e in entries:
+        cat = e['category']
+        status_str = format_status(e['status']) if e['status'] else '-'
+        lines.append(f"### {cat} / tasks")
+        lines.append('')
+        lines.append(f"- **タイトル:** {e['title']}")
+        lines.append(f"- **ドキュメント状態:** {status_str}")
+        if e.get('tasks'):
+            lines.append('')
+            lines.append('| ID | WBS | タスク | ステータス | 見積(h) |')
+            lines.append('|----|-----|--------|----------|---------|')
+            for t in sorted(e['tasks'], key=lambda x: _wbs_code_sort_key(x.get('wbs_code') or '')):
+                ts = format_status_display(t.get('status', ''))
+                lines.append(f"| {t.get('id', '-')} | {t.get('wbs_code') or '-'} | {t.get('title', '-')} | {ts} | {t.get('estimated_hours', '-')} |")
+        lines.append('')
+    return '\n'.join(lines)
+
+
 def format_task_states_section(entries: list[dict]) -> str:
     """収集したタスク状態を Markdown セクションとして整形"""
     if not entries:
@@ -115,7 +171,7 @@ def format_status_display(status: str) -> str:
     return {'todo': '⬜ TODO', 'wip': '🔄 WIP', 'done': '✅ Done'}.get(status, status)
 
 
-def generate_markdown(data: dict) -> str:
+def generate_markdown(data: dict, output_path=None) -> str:
     lines = []
     meta = data.get('meta', {})
     overview = data.get('overview', {})
@@ -304,12 +360,28 @@ def generate_markdown(data: dict) -> str:
             lines.append(f"| {r.get('risk', '-')} | {icon} {r.get('impact', '-')} | {r.get('mitigation', '-')} |")
         lines.append("")
 
+    # Blockers（WBS 要素に紐付くブロッカー）
+    if data.get('blockers'):
+        lines.append("## ブロッカー")
+        lines.append("")
+        lines.append("| ID | 説明 | 紐付く要素 | 解消 |")
+        lines.append("|----|------|------------|------|")
+        for b in data['blockers']:
+            resolved = "✅ 解消" if b.get('resolved') else "⬜ 未解消"
+            lines.append(f"| {b.get('id', '-')} | {b.get('description', '-')} | {b.get('related_element_id', '-')} | {resolved} |")
+        lines.append("")
+
     task_entries = collect_task_states()
     task_section = format_task_states_section(task_entries)
     if task_section:
         lines.append(task_section)
 
-    ref_section = format_references_section(data)
+    category_task_entries = collect_category_tasks()
+    category_tasks_section = format_category_tasks_section(category_task_entries)
+    if category_tasks_section:
+        lines.append(category_tasks_section)
+
+    ref_section = format_references_section(data, output_path=output_path)
     if ref_section:
         lines.append(ref_section.rstrip())
     return '\n'.join(lines)

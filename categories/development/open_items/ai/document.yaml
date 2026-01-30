@@ -1,0 +1,14 @@
+meta:
+  title: "開発の検討事項・不明点"
+  category: development
+  doc_type: open_items
+  status: todo
+  version: "1.0.0"
+
+open_decisions: []
+
+unclear_points: []
+
+references:
+  - title: 実装計画
+    url: categories/development/implementation_plan/ai/document.yaml

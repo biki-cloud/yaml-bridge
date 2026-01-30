@@ -50,7 +50,7 @@ overview:
     このPRではリフレッシュトークンローテーションの実装内容と変更点を説明する。
   related_docs:
     - title: 実装計画
-      url: development/implementation_plan/document.yaml
+      url: categories/development/implementation_plan/ai/document.yaml
   changes_summary: |
     - src/auth/token.ts: トークンローテーションロジック追加
     - src/auth/tokenStore.ts: 新規追加、Redis連携

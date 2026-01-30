@@ -1,0 +1,12 @@
+meta:
+  title: "検証の詳細タスク"
+  category: verification
+  doc_type: tasks
+  status: todo
+  version: "1.0.0"
+
+tasks: []
+
+references:
+  - title: 動作確認計画
+    url: categories/verification/verification_plan/ai/document.yaml

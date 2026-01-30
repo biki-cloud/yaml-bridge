@@ -15,9 +15,9 @@
 
 ### 関連ドキュメント
 
-- [セッション管理実装計画](implementation_plan/session_management.yaml)
+- [セッション管理実装計画](categories/development/implementation_plan/ai/document.yaml)
 
-**関連計画:** implementation_plan/session_management.yaml
+**関連計画:** categories/development/implementation_plan/ai/document.yaml
 **関連PR:** https://github.com/example/project/pull/123
 
 ## 修正結果

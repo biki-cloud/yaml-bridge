@@ -1,0 +1,12 @@
+meta:
+  title: "設計の詳細タスク"
+  category: design
+  doc_type: tasks
+  status: todo
+  version: "1.0.0"
+
+tasks: []
+
+references:
+  - title: 要件整理
+    url: categories/design/requirements/ai/document.yaml

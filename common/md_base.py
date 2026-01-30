@@ -5,9 +5,10 @@ Markdown生成用の共通ヘルパー関数
 """
 
 import argparse
+import os
 import yaml
 from pathlib import Path
-from typing import Callable
+from typing import Callable, Optional
 
 
 def load_yaml(file_path: str) -> dict:
@@ -121,9 +122,41 @@ def format_ai_context_section(data: dict) -> str:
     return '\n'.join(lines).rstrip()
 
 
-def format_references_section(data: dict) -> str:
+def _ref_url_for_markdown(url: str, output_path: Optional[Path]) -> str:
+    """
+    参照URLを Markdown 用のリンク先に変換する。
+    output_path が渡された場合、プロジェクトルート基準のファイルパスを
+    出力ファイル位置からの相対パスに変換する（クリックで辿れるようにする）。
+    人が読むため、ai/document.yaml は human/document.md へのリンクに変換する。
+    """
+    if not url or not url.strip():
+        return url
+    s = url.strip()
+    if s.startswith('http://') or s.startswith('https://') or s.startswith('file://'):
+        return s
+    if output_path is None:
+        return s
+    try:
+        # 人が読む用なので ai/document.yaml → human/document.md に差し替え
+        if 'ai/document.yaml' in s:
+            s = s.replace('ai/document.yaml', 'human/document.md')
+        elif 'ai/document.yml' in s:
+            s = s.replace('ai/document.yml', 'human/document.md')
+        out_dir = output_path.resolve().parent
+        project_root = out_dir.parent.parent.parent.parent
+        target = (project_root / s).resolve()
+        if not target.exists():
+            return s
+        rel = os.path.relpath(target, out_dir)
+        return rel.replace('\\', '/')
+    except (ValueError, OSError):
+        return s
+
+
+def format_references_section(data: dict, output_path: Optional[Path] = None) -> str:
     """
     data['references'] から「関連資料（エビデンス）」セクションの Markdown 文字列を生成する。
+    output_path を渡すと、ファイルパスを出力ファイルからの相対パスに変換する。
     全 create_human_document.py で共通利用。
     """
     refs = data.get('references', [])
@@ -133,7 +166,8 @@ def format_references_section(data: dict) -> str:
     for r in refs:
         title = r.get('title', '-')
         url = r.get('url', '')
-        lines.append(f'- [{title}]({url})')
+        link = _ref_url_for_markdown(url, output_path)
+        lines.append(f'- [{title}]({link})')
     lines.append('')
     return '\n'.join(lines)
 
@@ -178,6 +212,92 @@ def format_overview_section(
     return '\n'.join(lines).rstrip() + '\n'
 
 
+def generate_open_items_markdown(data: dict, output_path: Optional[Path] = None) -> str:
+    """
+    open_items YAML から検討事項・不明点の Markdown を生成する。
+    全カテゴリの open_items/tool/create_human_document.py で共通利用。
+    """
+    lines = []
+    meta = data.get('meta', {})
+
+    lines.append(f"# {meta.get('title', '検討事項・不明点')}")
+    lines.append("")
+    lines.append(f"**タイプ:** 📋 検討事項・不明点 | **ステータス:** {format_status(meta.get('status', 'todo'))} | **バージョン:** {meta.get('version', '-')}")
+    if meta.get('author'):
+        lines.append(f"**作成者:** {meta['author']}")
+    lines.append("")
+
+    ai_section = format_ai_context_section(data)
+    if ai_section:
+        lines.append(ai_section)
+        lines.append("")
+
+    open_decisions = data.get('open_decisions', [])
+    if open_decisions:
+        lines.append("## 検討事項")
+        lines.append("")
+        lines.append("決まらないと先に進めないこと。")
+        lines.append("")
+        lines.append("| ID | 決めること | 詳細 | ブロックするタスク | 状態 | 担当 | 期限 |")
+        lines.append("|----|------------|------|-------------------|------|------|------|")
+        for d in open_decisions:
+            blocks = ", ".join(d.get('blocks_tasks') or []) or "-"
+            status = (d.get('status') or 'open').lower()
+            status_display = "✅ 解消" if status == 'resolved' else "⬜ 未解消"
+            detail_s = (d.get('detail') or '-')
+            detail_short = detail_s[:30] + ('...' if len(detail_s) > 30 else '')
+            lines.append(f"| {d.get('id', '-')} | {d.get('decision_needed', '-')} | {detail_short} | {blocks} | {status_display} | {d.get('owner') or '-'} | {d.get('due') or '-'} |")
+        lines.append("")
+        for d in open_decisions:
+            if d.get('detail'):
+                lines.append(f"### {d.get('id', '-')}: {d.get('decision_needed', '')}")
+                lines.append("")
+                lines.append(d['detail'])
+                lines.append("")
+    else:
+        lines.append("## 検討事項")
+        lines.append("")
+        lines.append("（なし）")
+        lines.append("")
+
+    unclear_points = data.get('unclear_points', [])
+    if unclear_points:
+        lines.append("## 不明点")
+        lines.append("")
+        lines.append("仕様・前提が不明な点。")
+        lines.append("")
+        lines.append("| ID | 不明点 | 詳細 | 状態 |")
+        lines.append("|----|--------|------|------|")
+        for u in unclear_points:
+            status = (u.get('status') or 'open').lower()
+            status_display = "✅ 解消" if status == 'resolved' else "⬜ 未解消"
+            detail_s = (u.get('detail') or '-')
+            detail_short = detail_s[:40] + ('...' if len(detail_s) > 40 else '')
+            lines.append(f"| {u.get('id', '-')} | {u.get('point', '-')} | {detail_short} | {status_display} |")
+        lines.append("")
+        for u in unclear_points:
+            if u.get('detail'):
+                lines.append(f"### {u.get('id', '-')}: {u.get('point', '')}")
+                lines.append("")
+                lines.append(u['detail'])
+                if u.get('related_docs'):
+                    lines.append("")
+                    lines.append("**関連資料:**")
+                    for rd in u['related_docs']:
+                        lines.append(f"- [{rd.get('title', '-')}]({rd.get('url', '')})")
+                lines.append("")
+    else:
+        lines.append("## 不明点")
+        lines.append("")
+        lines.append("（なし）")
+        lines.append("")
+
+    ref_section = format_references_section(data, output_path=output_path)
+    if ref_section:
+        lines.append(ref_section.rstrip())
+    return '\n'.join(lines)
+
+
 def run_create_human_document(generate_markdown_fn: Callable[[dict], str]) -> None:
     """
     create_human_document の共通エントリポイント。
@@ -189,7 +309,8 @@ def run_create_human_document(generate_markdown_fn: Callable[[dict], str]) -> No
     args = parser.parse_args()
 
     data = load_yaml(args.input)
-    md = generate_markdown_fn(data)
+    output_path = Path(args.output).resolve() if args.output else None
+    md = generate_markdown_fn(data, output_path=output_path)
 
     if args.output:
         out_path = Path(args.output)

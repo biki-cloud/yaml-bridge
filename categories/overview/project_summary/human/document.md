@@ -82,30 +82,39 @@ pie showData
 
 ### overview
 
+- [案件全体の検討事項・不明点](../open_items/human/document.md)
 - [認証機能改修 WBS](../wbs/human/document.md)
 
 ### design
 
-- [ユーザー認証機能の要件整理](../../design/requirements/human/document.md)
+- [設計の検討事項・不明点](../../../design/open_items/human/document.md)
+- [ユーザー認証機能の要件整理](../../../design/requirements/human/document.md)
+- [設計の詳細タスク](../../../design/tasks/human/document.md)
 
 ### development
 
-- [セッション管理の実装詳細](../../development/implementation_detail/human/document.md)
-- [リフレッシュトークンローテーション実装計画](../../development/implementation_plan/human/document.md)
-- [セッション管理改善の修正結果](../../development/implementation_result/human/document.md)
-- [リフレッシュトークンローテーション PR](../../development/pull_request/human/document.md)
+- [セッション管理の実装詳細](../../../development/implementation_detail/human/document.md)
+- [リフレッシュトークンローテーション実装計画](../../../development/implementation_plan/human/document.md)
+- [セッション管理改善の修正結果](../../../development/implementation_result/human/document.md)
+- [開発の検討事項・不明点](../../../development/open_items/human/document.md)
+- [リフレッシュトークンローテーション PR](../../../development/pull_request/human/document.md)
+- [開発の詳細タスク](../../../development/tasks/human/document.md)
 
 ### investigation
 
-- [認証モジュールのコード理解](../../investigation/code_understanding/human/document.md)
-- [決済システムのドメイン知識調査](../../investigation/domain_knowledge/human/document.md)
-- [通知システムの関連コード調査](../../investigation/related_code_research/human/document.md)
+- [認証モジュールのコード理解](../../../investigation/code_understanding/human/document.md)
+- [決済システムのドメイン知識調査](../../../investigation/domain_knowledge/human/document.md)
+- [調査の検討事項・不明点](../../../investigation/open_items/human/document.md)
+- [通知システムの関連コード調査](../../../investigation/related_code_research/human/document.md)
+- [調査の詳細タスク](../../../investigation/tasks/human/document.md)
 
 ### verification
 
-- [ログイン機能の動作確認計画](../../verification/verification_plan/human/document.md)
-- [ログイン機能の動作確認手順](../../verification/verification_procedure/human/document.md)
-- [リフレッシュトークン実装 動作確認結果](../../verification/verification_result/human/document.md)
+- [検証の検討事項・不明点](../../../verification/open_items/human/document.md)
+- [検証の詳細タスク](../../../verification/tasks/human/document.md)
+- [ログイン機能の動作確認計画](../../../verification/verification_plan/human/document.md)
+- [ログイン機能の動作確認手順](../../../verification/verification_procedure/human/document.md)
+- [リフレッシュトークン実装 動作確認結果](../../../verification/verification_result/human/document.md)
 
 ## 関連資料（エビデンス）
 

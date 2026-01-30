@@ -14,8 +14,8 @@ overview:
     この資料では実装結果のサマリと変更内容を記録する。
   related_docs:
     - title: セッション管理実装計画
-      url: implementation_plan/session_management.yaml
-  related_plan: implementation_plan/session_management.yaml
+      url: categories/development/implementation_plan/ai/document.yaml
+  related_plan: categories/development/implementation_plan/ai/document.yaml
   related_pr: https://github.com/example/project/pull/123
 
 result:

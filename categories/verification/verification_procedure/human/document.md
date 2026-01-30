@@ -15,9 +15,9 @@
 
 ### 関連ドキュメント
 
-- [動作確認計画](verification_plan/login_verification.yaml)
+- [動作確認計画](categories/verification/verification_plan/ai/document.yaml)
 
-**関連計画:** verification_plan/login_verification.yaml
+**関連計画:** categories/verification/verification_plan/ai/document.yaml
 **テスト環境:** ステージング環境（https://staging.example.com）
 
 ## テストフロー

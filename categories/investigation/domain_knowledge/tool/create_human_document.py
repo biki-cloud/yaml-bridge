@@ -8,7 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent.pare
 from md_base import load_yaml, format_status, format_references_section, format_ai_context_section, format_overview_section, run_create_human_document
 
 
-def generate_markdown(data: dict) -> str:
+def generate_markdown(data: dict, output_path=None) -> str:
     lines = []
     meta = data.get('meta', {})
     title = meta.get('title', 'ドメイン知識')
@@ -111,7 +111,7 @@ def generate_markdown(data: dict) -> str:
             lines.append(f"- {icons.get(a.get('priority', ''), '')} {a.get('action', '-')}")
         lines.append("")
     
-    ref_section = format_references_section(data)
+    ref_section = format_references_section(data, output_path=output_path)
     if ref_section:
         lines.append(ref_section.rstrip())
     return '\n'.join(lines)

@@ -12,8 +12,8 @@ target:
   pr_url: https://github.com/example/project/pull/456
   environment: ステージング環境
   related_docs:
-    - design/requirements/login_requirements.yaml
-    - development/implementation_plan/login_impl.yaml
+    - categories/design/requirements/ai/document.yaml
+    - categories/development/implementation_plan/ai/document.yaml
 
 scope:
   in:

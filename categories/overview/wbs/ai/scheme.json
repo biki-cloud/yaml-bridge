@@ -99,6 +99,12 @@
       },
       "x-ai-guid": "リスク一覧。risk, impact（high/medium/low）, mitigation。"
     },
+    "blockers": {
+      "type": "array",
+      "description": "WBS要素に紐付くブロッカー",
+      "items": { "$ref": "../../../../common/scheme.json#/definitions/blocker_wbs" },
+      "x-ai-guid": "任意。id, description, related_element_id, resolved。"
+    },
     "references": {
       "$ref": "../../../../common/scheme.json#/definitions/references",
       "x-ai-guid": "共通は common/scheme.json#/definitions/references。1件以上の { title, url }。"

@@ -1,0 +1,12 @@
+meta:
+  title: "調査の詳細タスク"
+  category: investigation
+  doc_type: tasks
+  status: todo
+  version: "1.0.0"
+
+tasks: []
+
+references:
+  - title: コード理解
+    url: categories/investigation/code_understanding/ai/document.yaml

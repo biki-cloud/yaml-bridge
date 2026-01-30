@@ -15,7 +15,7 @@
 
 ### 関連ドキュメント
 
-- [セッション管理実装計画](implementation_plan/session_management.yaml)
+- [セッション管理実装計画](categories/development/implementation_plan/ai/document.yaml)
 
 ## 概要
 
@@ -23,7 +23,7 @@
 スケーラビリティとパフォーマンスを改善する。
 
 
-**関連計画:** implementation_plan/session_management.yaml
+**関連計画:** categories/development/implementation_plan/ai/document.yaml
 
 ## 変更内容
 

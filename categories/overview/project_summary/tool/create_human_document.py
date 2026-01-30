@@ -62,17 +62,18 @@ def format_doc_links_section(entries: list[tuple[str, str, str]]) -> str:
         lines.append(f'### {category}')
         lines.append('')
         for doc_type, title in by_category[category]:
-            # project_summary/HUMAN_DOCUMENT_MD から見た相対パス
+            # project_summary は categories/overview/project_summary/human/ にあるので、
+            # 他カテゴリへは 3 段上がって categories/ から下る
             if category == 'overview':
                 href = f'../{doc_type}/{HUMAN_DOCUMENT_MD}'
             else:
-                href = f'../../{category}/{doc_type}/{HUMAN_DOCUMENT_MD}'
+                href = f'../../../{category}/{doc_type}/{HUMAN_DOCUMENT_MD}'
             lines.append(f"- [{title}]({href})")
         lines.append('')
     return '\n'.join(lines)
 
 
-def generate_markdown(data: dict) -> str:
+def generate_markdown(data: dict, output_path=None) -> str:
     lines = []
     meta = data.get('meta', {})
     
@@ -194,6 +195,27 @@ def generate_markdown(data: dict) -> str:
             icon = impact_icons.get(r.get('impact', ''), '')
             lines.append(f"| {r.get('risk', '-')} | {icon} {r.get('impact', '-')} | {r.get('mitigation', '-')} |")
         lines.append("")
+
+    # Blockers（案件またはWBSタスクに紐付くブロッカー）
+    if data.get('blockers'):
+        lines.append("## ブロッカー")
+        lines.append("")
+        lines.append("| ID | 説明 | 紐付け先 | 解消 |")
+        lines.append("|----|------|----------|------|")
+        for b in data['blockers']:
+            resolved = "✅ 解消" if b.get('resolved') else "⬜ 未解消"
+            lines.append(f"| {b.get('id', '-')} | {b.get('description', '-')} | {b.get('linked_to', '-')} | {resolved} |")
+        lines.append("")
+
+    # 新規必要ファイル
+    if data.get('required_docs'):
+        lines.append("## 新規必要ファイル")
+        lines.append("")
+        lines.append("| タイトル | パス/URL | 理由 | 状態 |")
+        lines.append("|----------|----------|------|------|")
+        for rd in data['required_docs']:
+            lines.append(f"| {rd.get('title', '-')} | {rd.get('path_or_url', '-')} | {rd.get('reason') or '-'} | {rd.get('status') or '-'} |")
+        lines.append("")
     
     # 全カテゴリの HUMAN_DOCUMENT_MD へのリンク一覧
     doc_links = get_all_doc_links()
@@ -201,7 +223,7 @@ def generate_markdown(data: dict) -> str:
     if links_section:
         lines.append(links_section)
     
-    ref_section = format_references_section(data)
+    ref_section = format_references_section(data, output_path=output_path)
     if ref_section:
         lines.append(ref_section.rstrip())
     return '\n'.join(lines)

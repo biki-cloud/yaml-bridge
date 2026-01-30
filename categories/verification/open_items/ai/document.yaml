@@ -1,0 +1,14 @@
+meta:
+  title: "検証の検討事項・不明点"
+  category: verification
+  doc_type: open_items
+  status: todo
+  version: "1.0.0"
+
+open_decisions: []
+
+unclear_points: []
+
+references:
+  - title: 動作確認計画
+    url: categories/verification/verification_plan/ai/document.yaml

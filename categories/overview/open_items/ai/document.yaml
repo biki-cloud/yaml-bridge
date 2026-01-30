@@ -1,0 +1,14 @@
+meta:
+  title: "案件全体の検討事項・不明点"
+  category: overview
+  doc_type: open_items
+  status: todo
+  version: "1.0.0"
+
+open_decisions: []
+
+unclear_points: []
+
+references:
+  - title: プロジェクト概要
+    url: categories/overview/project_summary/ai/document.yaml

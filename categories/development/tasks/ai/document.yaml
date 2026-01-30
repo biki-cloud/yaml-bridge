@@ -1,0 +1,12 @@
+meta:
+  title: "開発の詳細タスク"
+  category: development
+  doc_type: tasks
+  status: todo
+  version: "1.0.0"
+
+tasks: []
+
+references:
+  - title: 実装計画
+    url: categories/development/implementation_plan/ai/document.yaml

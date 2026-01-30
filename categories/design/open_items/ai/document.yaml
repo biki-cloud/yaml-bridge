@@ -1,0 +1,14 @@
+meta:
+  title: "設計の検討事項・不明点"
+  category: design
+  doc_type: open_items
+  status: todo
+  version: "1.0.0"
+
+open_decisions: []
+
+unclear_points: []
+
+references:
+  - title: 要件整理
+    url: categories/design/requirements/ai/document.yaml

@@ -33,3 +33,9 @@
 | ビルド/生成                       | ✅ `build.py` → Markdown/Mermaid 生成 |
 
 なので、「ドキュメントをコード化している」という言い方で問題なく、`思想.md` の「YAML を介した共通言語」「ツールでマークダウンや Mermaid を作成」という設計が、そのまま「Documentation as Code」の形で実現されていると言えます。
+
+## タスク管理方針
+
+- **タスクの正**: WBS（overview/wbs）がサマリ・マイルストーンを保持。細かいタスクは各カテゴリの **doc_type: tasks** で保持し、WBS のビルド時にカテゴリ別詳細タスクとして集約表示する。
+- **検討事項・不明点**: 各カテゴリの **open_items**（open_decisions / unclear_points）で管理。ブロッカーは project_summary または WBS の blockers で案件・WBS 要素に紐付ける。
+- 詳細は [README.md](README.md) の「タスク管理方針」を参照。

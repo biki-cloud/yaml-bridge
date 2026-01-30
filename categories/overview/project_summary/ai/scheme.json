@@ -102,6 +102,18 @@
       },
       "x-ai-guid": "リスク一覧。risk, impact（high/medium/low）, mitigation。"
     },
+    "blockers": {
+      "type": "array",
+      "description": "案件またはWBSタスクに紐付くブロッカー",
+      "items": { "$ref": "../../../../common/scheme.json#/definitions/blocker" },
+      "x-ai-guid": "任意。id, description, linked_to（project_summary/wbs/task_id）, resolved。"
+    },
+    "required_docs": {
+      "type": "array",
+      "description": "案件で新たに必要になったファイル",
+      "items": { "$ref": "../../../../common/scheme.json#/definitions/required_doc" },
+      "x-ai-guid": "任意。title, path_or_url, reason, status。"
+    },
     "references": {
       "$ref": "../../../../common/scheme.json#/definitions/references",
       "x-ai-guid": "共通は common/scheme.json#/definitions/references。1件以上の { title, url }。"

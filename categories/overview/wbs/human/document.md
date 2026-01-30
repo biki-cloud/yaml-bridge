@@ -139,6 +139,11 @@ flowchart LR
 overview / design / development / investigation / verification の各 `ai/document.yaml` のドキュメント状態と、
 WBS のタスク一覧を表示しています。
 
+### overview / open_items
+
+- **タイトル:** 案件全体の検討事項・不明点
+- **ドキュメント状態:** ⬜ TODO
+
 ### overview / project_summary
 
 - **タイトル:** ユーザー管理システム刷新プロジェクト
@@ -157,10 +162,20 @@ WBS のタスク一覧を表示しています。
 | T-004 | 単体テスト | ⬜ TODO |
 | M-001 | 単体テスト完了・リリース判定 | ⬜ TODO |
 
+### design / open_items
+
+- **タイトル:** 設計の検討事項・不明点
+- **ドキュメント状態:** ⬜ TODO
+
 ### design / requirements
 
 - **タイトル:** ユーザー認証機能の要件整理
 - **ドキュメント状態:** 🔄 WIP
+
+### design / tasks
+
+- **タイトル:** 設計の詳細タスク
+- **ドキュメント状態:** ⬜ TODO
 
 ### development / implementation_detail
 
@@ -177,10 +192,20 @@ WBS のタスク一覧を表示しています。
 - **タイトル:** セッション管理改善の修正結果
 - **ドキュメント状態:** ✅ Done
 
+### development / open_items
+
+- **タイトル:** 開発の検討事項・不明点
+- **ドキュメント状態:** ⬜ TODO
+
 ### development / pull_request
 
 - **タイトル:** リフレッシュトークンローテーション PR
 - **ドキュメント状態:** 🔄 WIP
+
+### development / tasks
+
+- **タイトル:** 開発の詳細タスク
+- **ドキュメント状態:** ⬜ TODO
 
 ### investigation / code_understanding
 
@@ -192,10 +217,30 @@ WBS のタスク一覧を表示しています。
 - **タイトル:** 決済システムのドメイン知識調査
 - **ドキュメント状態:** ✅ Done
 
+### investigation / open_items
+
+- **タイトル:** 調査の検討事項・不明点
+- **ドキュメント状態:** ⬜ TODO
+
 ### investigation / related_code_research
 
 - **タイトル:** 通知システムの関連コード調査
 - **ドキュメント状態:** ✅ Done
+
+### investigation / tasks
+
+- **タイトル:** 調査の詳細タスク
+- **ドキュメント状態:** ⬜ TODO
+
+### verification / open_items
+
+- **タイトル:** 検証の検討事項・不明点
+- **ドキュメント状態:** ⬜ TODO
+
+### verification / tasks
+
+- **タイトル:** 検証の詳細タスク
+- **ドキュメント状態:** ⬜ TODO
 
 ### verification / verification_plan
 
@@ -211,6 +256,30 @@ WBS のタスク一覧を表示しています。
 
 - **タイトル:** リフレッシュトークン実装 動作確認結果
 - **ドキュメント状態:** ✅ Done
+
+## カテゴリ別詳細タスク
+
+各カテゴリの `tasks` doc_type から読み込んだ詳細タスク一覧（WBS の wbs_code で紐付け）。
+
+### design / tasks
+
+- **タイトル:** 設計の詳細タスク
+- **ドキュメント状態:** ⬜ TODO
+
+### development / tasks
+
+- **タイトル:** 開発の詳細タスク
+- **ドキュメント状態:** ⬜ TODO
+
+### investigation / tasks
+
+- **タイトル:** 調査の詳細タスク
+- **ドキュメント状態:** ⬜ TODO
+
+### verification / tasks
+
+- **タイトル:** 検証の詳細タスク
+- **ドキュメント状態:** ⬜ TODO
 
 ## 関連資料（エビデンス）
 

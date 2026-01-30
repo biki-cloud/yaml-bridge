@@ -10,8 +10,8 @@
 **テスト環境:** ステージング環境
 
 **関連ドキュメント:**
-- design/requirements/login_requirements.yaml
-- development/implementation_plan/login_impl.yaml
+- categories/design/requirements/ai/document.yaml
+- categories/development/implementation_plan/ai/document.yaml
 
 ## スコープ
 
