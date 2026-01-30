@@ -7,6 +7,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent.parent / 'common'))
 from md_base import (
+    compute_task_hours,
     format_ai_context_section,
     format_empty_section_hint,
     format_navigation_footer,
@@ -57,6 +58,10 @@ def generate_markdown(data: dict, output_path=None) -> str:
             pr = priority_icons.get(t.get('priority', ''), '') + ' ' + (t.get('priority') or '-')
             deps = ", ".join(t.get('dependencies') or []) or "-"
             lines.append(f"| {t.get('id', '-')} | {t.get('wbs_code') or '-'} | {t.get('title', '-')} | {pr} | {st} | {t.get('estimated_hours', '-')} | {deps} |")
+        total_hours, done_hours, remaining_hours = compute_task_hours(tasks)
+        if total_hours > 0:
+            lines.append("")
+            lines.append(f"**工数サマリ:** 合計 {total_hours:.0f}h / 完了 {done_hours:.0f}h / 残 {remaining_hours:.0f}h")
         lines.append("")
         for t in tasks:
             if t.get('description') or t.get('dependencies'):

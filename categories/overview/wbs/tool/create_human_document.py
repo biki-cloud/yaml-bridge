@@ -5,12 +5,14 @@ overview / design / development / investigation / verification の各 ai_documen
 
 import sys
 import re
+from collections import defaultdict
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent.parent / 'common'))
 from config import AI_DOCUMENT_YAML
 from paths import DOC_CATEGORIES, get_available_categories, get_category_label, get_doc_types, get_ai_document_path
 from md_base import (
+    compute_task_hours,
     format_ai_context_section,
     format_meta_dates,
     format_navigation_footer,
@@ -135,6 +137,10 @@ def format_category_tasks_section(entries: list[dict]) -> str:
             for t in sorted(e['tasks'], key=lambda x: _wbs_code_sort_key(x.get('wbs_code') or '')):
                 ts = format_status_display(t.get('status', ''))
                 lines.append(f"| {t.get('id', '-')} | {t.get('wbs_code') or '-'} | {t.get('title', '-')} | {ts} | {t.get('estimated_hours', '-')} |")
+            cat_total, cat_done, cat_remaining = compute_task_hours(e['tasks'])
+            if cat_total > 0:
+                lines.append('')
+                lines.append(f"**工数サマリ:** 合計 {cat_total:.0f}h / 完了 {cat_done:.0f}h / 残 {cat_remaining:.0f}h")
         lines.append('')
     return '\n'.join(lines)
 
@@ -220,6 +226,29 @@ def generate_markdown(data: dict, output_path=None) -> str:
     filled = int(bar_len * task_pct / 100) if task_pct <= 100 else bar_len
     lines.append(f"進捗: `{'█' * filled}{'░' * (bar_len - filled)}` {task_pct:.0f}%")
     lines.append("")
+
+    # --- カテゴリ別工数 ---
+    work_elements_for_hours = [e for e in elements if e.get('type') in ('task', 'milestone')]
+    if work_elements_for_hours and total_hours > 0:
+        by_cat = defaultdict(list)
+        for e in work_elements_for_hours:
+            by_cat[e.get('category') or 'development'].append(e)
+        lines.append("### カテゴリ別工数")
+        lines.append("")
+        lines.append("| カテゴリ | 合計(h) | 完了(h) | 残(h) |")
+        lines.append("|----------|---------|---------|-------|")
+        for cat in DOC_CATEGORIES:
+            if cat == 'overview':
+                continue
+            items = by_cat.get(cat, [])
+            if not items:
+                continue
+            cat_total, cat_done, cat_remaining = compute_task_hours(items)
+            if cat_total > 0:
+                label = get_category_label(cat) or cat
+                lines.append(f"| {label} | {cat_total:.0f} | {cat_done:.0f} | {cat_remaining:.0f} |")
+        lines.append("")
+        lines.append("")
 
     # --- マイルストーン一覧 ---
     milestones = [e for e in elements if e.get('type') == 'milestone']
@@ -328,6 +357,10 @@ def generate_markdown(data: dict, output_path=None) -> str:
             hours = e.get('estimated_hours', '-')
             typ = e.get('type', '-')
             lines.append(f"| {e.get('id', '-')} | {e.get('wbs_code', '-')} | {typ} | {e.get('title', '-')} | {cat} | {pr} | {st} | {hours} |")
+        if total_hours > 0:
+            remaining_hours = total_hours - done_hours
+            lines.append("")
+            lines.append(f"**工数サマリ:** 合計 {total_hours:.0f}h / 完了 {done_hours:.0f}h / 残 {remaining_hours:.0f}h")
         lines.append("")
         for e in work_elements:
             if e.get('description') or e.get('dependencies'):

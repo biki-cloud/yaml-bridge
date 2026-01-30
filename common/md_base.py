@@ -77,6 +77,27 @@ def format_empty_section_hint(yaml_key: str = "") -> str:
     return "*該当する項目を ai/document.yaml に追加するとここに表示されます。*"
 
 
+def compute_task_hours(tasks: list) -> tuple[float, float, float]:
+    """
+    タスクリストから工数を計算する。
+    tasks は estimated_hours（number）と status を持つ dict のリスト。
+    返却: (total_hours, done_hours, remaining_hours)。
+    欠損・非数は 0 扱い。
+    """
+    total_hours = 0.0
+    done_hours = 0.0
+    for t in tasks:
+        try:
+            h = float(t.get("estimated_hours") or 0)
+        except (TypeError, ValueError):
+            h = 0.0
+        total_hours += h
+        if t.get("status") == "done":
+            done_hours += h
+    remaining_hours = total_hours - done_hours
+    return total_hours, done_hours, remaining_hours
+
+
 def format_navigation_footer(
     output_path: Optional[Path] = None,
     *,
