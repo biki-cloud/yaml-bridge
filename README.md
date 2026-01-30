@@ -6,7 +6,7 @@
 - **人間** … ツールでYAMLからMarkdownやMermaid図を生成して閲覧する
 - **検証** … 生成AIが書いたYAMLはスクリプトでバリデートする
 
-詳細な考え方は [思想.md](思想.md) を参照してください。構成・データフローの図解は [project_structure_diagrams.md](project_structure_diagrams.md) を参照。
+詳細な考え方は [思想.md](doc/思想.md) を参照してください。構成・データフローの図解は [ABOUT.md](doc/ABOUT.md) を参照。
 
 ## 必要環境
 
@@ -98,7 +98,7 @@ categories/{category}/{doc_type}/
 
 ## Done の基準
 
-`meta.status` が `done` であるとは、その doc_type としての記載が一通り揃い、必要に応じてレビュー済みである状態を指します。Done とする前に、`make validate` によるリンクチェック（YAML 内のファイルパス・GitHub URL の 404 チェック）の通過を前提とします。`make build` 実行時には、全 human/document.md 生成後に MD 内の相対リンクのファイル存在チェックも行い、失敗時はビルドが失敗します。詳細は [思想.md](思想.md) や各 doc_type の scheme の `x-ai-guid` を参照してください。
+`meta.status` が `done` であるとは、その doc_type としての記載が一通り揃い、必要に応じてレビュー済みである状態を指します。Done とする前に、`make validate` によるリンクチェック（YAML 内のファイルパス・GitHub URL の 404 チェック）の通過を前提とします。`make build` 実行時には、全 human/document.md 生成後に MD 内の相対リンクのファイル存在チェックも行い、失敗時はビルドが失敗します。詳細は [思想.md](doc/思想.md) や各 doc_type の scheme の `x-ai-guid` を参照してください。
 
 ## 共通ツール
 

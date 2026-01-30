@@ -1,16 +1,28 @@
-# プロジェクト構造・考え方（図解）
+# このプロジェクトについて
 
-このドキュメントでは、本プロジェクトの「思想」「ディレクトリ構造」「データフロー」「カテゴリ・doc_type の関係」「ツールの役割」を Mermaid 図で整理しています。詳細な文章説明は [思想.md](思想.md) と [README.md](README.md) を参照してください。
+本プロジェクトは「Documentation as Code」の考え方に沿い、YAML を生成 AI と人間の共通言語として使い、開発案件のドキュメントを管理するツールです。詳細な思想は [思想.md](思想.md) を、使い方・カテゴリ一覧は [README.md](../README.md) を参照してください。
+
+---
+
+## Documentation as Code との対応
+
+- **ソースがコード（YAML）**: 要件・設計・実装メモなどは `ai/document.yaml` に構造化して記述し、`ai/scheme.json` で形式を規定する。
+- **ビルドで人間用ドキュメントを生成**: 各 doc_type の `tool/create_human_document.py` が YAML を読み、`human/document.md` や Mermaid 図を生成する。
+- **検証**: `validate.py` で YAML をスキーマ検証し、リンクチェックも行う。
+- **役割の分離**: AI は YAML の読み書き、人はツールが生成した Markdown/図の閲覧に専念する（[思想.md](思想.md) の通り）。
+
+| 概念 | このプロジェクトでの対応 |
+|------|---------------------------|
+| ドキュメントをテキスト/構造で管理 | YAML ＋ スキーマで管理 |
+| バージョン管理 | Git で管理可能 |
+| 自動検証 | `validate.py` |
+| ビルド/生成 | `build.py` → Markdown / Mermaid 生成 |
 
 ---
 
 ## 1. 思想・役割分担
 
-**AI と人間の共通言語としての YAML**
-
-- 生成 AI は YAML を読み・書く（共通言語として扱う）。
-- 人はツールで生成した Markdown / Mermaid だけを閲覧する。
-- 生成 AI が書いた YAML は検証スクリプトでバリデートする。
+生成 AI は YAML を読み・書く。人はツールで生成した Markdown / Mermaid だけを閲覧する。生成 AI が書いた YAML は検証スクリプトでバリデートする。
 
 ```mermaid
 flowchart LR
@@ -44,10 +56,7 @@ flowchart LR
 
 ## 2. ディレクトリ構造
 
-**`categories/{category}/{doc_type}/` と `common/` の関係**
-
-- 各 doc_type は **ai/**（document.yaml + scheme.json）、**human/**（document.md・ビルド成果物）、**tool/**（create_human_document.py）の 3 点セット。
-- common には config / paths / scheme の共通定義と、build / validate / build_open_items_aggregate を配置。
+各 doc_type は **ai/**（document.yaml + scheme.json）、**human/**（document.md・ビルド成果物）、**tool/**（create_human_document.py）の 3 点セット。common には config / paths / scheme の共通定義と、build / validate / build_open_items_aggregate を配置する。
 
 ```mermaid
 flowchart TB
@@ -78,7 +87,7 @@ flowchart TB
   common --> common_content
 ```
 
-### 1 つの doc_type のディレクトリ例（release_log）
+### 1 つの doc_type の例（release_log）
 
 ```
 categories/overview/release_log/
@@ -95,10 +104,7 @@ categories/overview/release_log/
 
 ## 3. ビルド・検証のデータフロー
 
-**YAML → バリデーション → Markdown 生成**
-
-- validate.py: meta.category / meta.doc_type からスキーマを特定し、`ai/scheme.json` で JSON Schema 検証。オプションでリンクチェック（GitHub URL、生成済み MD 内の相対パス）。
-- build.py: 全 YAML またはカテゴリ指定で、validate 実行後に各 doc_type の `tool/create_human_document.py` を呼び出し、`human/document.md` を生成。
+validate.py が meta.category / meta.doc_type からスキーマを特定し `ai/scheme.json` で JSON Schema 検証（オプションでリンクチェック）。build.py が validate 実行後に各 doc_type の create_human_document.py を呼び出し、`human/document.md` を生成する。
 
 ```mermaid
 sequenceDiagram
@@ -126,9 +132,7 @@ sequenceDiagram
 
 ## 4. カテゴリとフェーズの関係
 
-**overview → investigation → design → development → verification**
-
-ドキュメント参照の推奨順は、カテゴリの並びの通り。各カテゴリはフェーズに対応し、タスク・検討事項は各カテゴリの doc_type（tasks / open_items）で管理する。
+overview → investigation → design → development → verification の順でフェーズが進む。タスク・検討事項は各カテゴリの doc_type（tasks / open_items）で管理する。
 
 ```mermaid
 flowchart LR
@@ -150,10 +154,7 @@ flowchart LR
 
 ## 5. doc_type の「3 点セット」とスキーマ
 
-**1 つの doc_type = ai（YAML + スキーマ）+ human（生成 MD）+ tool（変換スクリプト）**
-
-- common/scheme.json の definitions（meta_base, overview_background_goal, ai_context 等）を各 doc_type の `ai/scheme.json` が `$ref` で参照。
-- 変換は doc_type ごとの `create_human_document.py` が YAML を読み、Markdown と Mermaid を組み立てる。AI が書く場所は ai/document.yaml に一本化され、スキーマで形式が強制される。
+1 つの doc_type = ai（YAML + スキーマ）+ human（生成 MD）+ tool（変換スクリプト）。common/scheme.json の definitions を各 doc_type の `ai/scheme.json` が `$ref` で参照する。AI が書く場所は ai/document.yaml に一本化され、スキーマで形式が強制される。
 
 ```mermaid
 flowchart TB
@@ -175,11 +176,11 @@ flowchart TB
 
 ## 6. タスク・検討事項の集約関係
 
-**WBS とカテゴリ tasks / open_items の関係**
-
-- **タスクの正**: overview/wbs がサマリ・マイルストーンを保持。細かいタスクは各カテゴリの doc_type: **tasks** に保持し、WBS のビルド時にカテゴリ別詳細タスクとして集約表示する。
+- **タスク**: overview/wbs がサマリ・マイルストーンを保持。細かいタスクは各カテゴリの **tasks** に保持し、WBS のビルド時にカテゴリ別詳細タスクとして集約表示する。
 - **検討事項・不明点**: 各カテゴリの **open_items** で管理。ブロッカーは project_summary または WBS の blockers で紐付ける。
-- **build_open_items_aggregate.py**: 全カテゴリの open_items を 1 つの Markdown に集約し、PM が検討事項・不明点を一覧で確認できるようにする。
+- **build_open_items_aggregate.py**: 全カテゴリの open_items を 1 つの Markdown に集約し、PM が一覧で確認できるようにする。
+
+doc_type ごとの「ai/document.yaml → tool → human/document.md」の依存関係（WBS・project_summary が他 YAML を参照する部分を含む）は [依存関係図.md](依存関係図.md) を参照。
 
 ```mermaid
 flowchart TB
@@ -203,10 +204,4 @@ flowchart TB
   Agg --> MD_agg
 ```
 
----
-
-## 関連ドキュメント
-
-- [思想.md](思想.md) … YAML を介した共通言語・改善できること
-- [README.md](README.md) … 使い方・カテゴリと doc_type・タスク管理方針
-- [doc_as_code.md](doc_as_code.md) … ドキュメントのコード化の対応関係
+タスク管理の詳細は [README.md](../README.md) の「タスク管理方針」を参照してください。
