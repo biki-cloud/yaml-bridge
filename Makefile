@@ -78,7 +78,6 @@ help:
 	@echo "ディレクトリ構成:"
 	@echo "  categories/{category}/{doc_type}/"
 	@echo "    ai/document.yaml    AIが扱うファイル（ビルド対象）"
-	@echo "    ai/guid.yaml        ガイド・テンプレート"
 	@echo "    ai/scheme.json      スキーマ定義"
 	@echo "    human/document.md   生成されたMarkdown"
 	@echo "    tool/create_human_document.py  Markdown生成"

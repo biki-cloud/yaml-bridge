@@ -12,7 +12,6 @@
 
 - Python 3
 - 依存パッケージ: `pip install -r requirements.txt`
-
   - PyYAML, jsonschema
 
 ## 使い方
@@ -45,12 +44,12 @@ python3 common/tools/build.py categories/overview/wbs/ai/document.yaml
 
 各カテゴリの `human/document.md` は、YAML からビルドされた人間向けドキュメントです。ロール別の推奨は以下のとおりです。
 
-| ロール | 主に読む doc_type（human/document.md） |
-|--------|----------------------------------------|
-| プロジェクト全体の把握 | overview / project_summary, overview / wbs |
-| 設計担当 | design / requirements |
-| 開発担当 | development / implementation_plan, implementation_detail, implementation_result, pull_request |
-| 調査・検証担当 | investigation（code_understanding, domain_knowledge, related_code_research）, verification（verification_plan, verification_procedure, verification_result） |
+| ロール                 | 主に読む doc_type（human/document.md）                                                                                                                       |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| プロジェクト全体の把握 | overview / project_summary, overview / wbs                                                                                                                   |
+| 設計担当               | design / requirements                                                                                                                                        |
+| 開発担当               | development / implementation_plan, implementation_detail, implementation_result, pull_request                                                                |
+| 調査・検証担当         | investigation（code_understanding, domain_knowledge, related_code_research）, verification（verification_plan, verification_procedure, verification_result） |
 
 全体の流れは overview → investigation → design → development → verification の順で参照するとよいです。
 
@@ -60,7 +59,6 @@ python3 common/tools/build.py categories/overview/wbs/ai/document.yaml
 categories/{category}/{doc_type}/
   ai/
     document.yaml   # AIが扱うファイル（ビルド対象）
-    guid.yaml       # ガイド・テンプレート
     scheme.json     # JSON Schema（バリデーション用）
   human/
     document.md     # 生成されたMarkdown
@@ -70,13 +68,13 @@ categories/{category}/{doc_type}/
 
 ## カテゴリと doc_type
 
-| カテゴリ | doc_type |
-|----------|----------|
-| overview | project_summary, wbs（WBS・マイルストーン・進捗管理、カテゴリ別タスク状態の集約表示あり） |
-| investigation | code_understanding, domain_knowledge, related_code_research |
-| design | requirements |
-| development | implementation_detail, implementation_plan, implementation_result, pull_request |
-| verification | verification_plan, verification_procedure, verification_result |
+| カテゴリ      | doc_type                                                                                  |
+| ------------- | ----------------------------------------------------------------------------------------- |
+| overview      | project_summary, wbs（WBS・マイルストーン・進捗管理、カテゴリ別タスク状態の集約表示あり） |
+| investigation | code_understanding, domain_knowledge, related_code_research                               |
+| design        | requirements                                                                              |
+| development   | implementation_detail, implementation_plan, implementation_result, pull_request           |
+| verification  | verification_plan, verification_procedure, verification_result                            |
 
 各YAMLには `meta.category` と `meta.doc_type` を指定し、対応するスキーマで検証されます。
 

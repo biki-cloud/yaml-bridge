@@ -29,7 +29,6 @@ _common_dir = Path(__file__).resolve().parent.parent
 if str(_common_dir) not in sys.path:
     sys.path.insert(0, str(_common_dir))
 from config import (
-    AI_DOCUMENT_GUIDE_YAML,
     AI_DOCUMENT_SCHEME_JSON,
     CREATE_HUMAN_DOCUMENT_SCRIPT,
     HUMAN_DOCUMENT_MD,
@@ -123,8 +122,7 @@ def process_doc_type(category: str, doc_type: str, validate_only: bool = False) 
         list(ai_dir.glob("*.yaml")) + list(ai_dir.glob("*.yml"))
         if ai_dir.exists() else []
     )
-    guide_name = Path(AI_DOCUMENT_GUIDE_YAML).name
-    yaml_files = [f for f in yaml_files if f.name != guide_name and not f.name.startswith("invalid_")]
+    yaml_files = [f for f in yaml_files if not f.name.startswith("invalid_")]
 
     if not yaml_files:
         return 0, 0

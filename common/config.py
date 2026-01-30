@@ -13,9 +13,6 @@ HUMAN_DOCUMENT_MD = "human/document.md"
 # YAML → Markdown 生成スクリプト
 CREATE_HUMAN_DOCUMENT_SCRIPT = "tool/create_human_document.py"
 
-# ガイド・テンプレート（ビルド対象外）
-AI_DOCUMENT_GUIDE_YAML = "ai/guid.yaml"
-
 # JSON Schema（バリデーション用）
 AI_DOCUMENT_SCHEME_JSON = "ai/scheme.json"
 
