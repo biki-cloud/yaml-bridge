@@ -13,6 +13,7 @@ env/
 .eggs/
 dist/
 build/
+*.pyc
 
 # IDE
 .idea/
