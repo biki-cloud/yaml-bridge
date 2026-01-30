@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "overview/change_log.schema.json",
+  "title": "変更履歴（overview）",
+  "description": "スコープ・スケジュール・要件などの変更の履歴。いつ・何を・なぜ・承認有無を記録する。",
+  "type": "object",
+  "required": ["meta", "changes", "references"],
+  "x-ai-guid": {
+    "intro": "変更履歴を管理する。changes 配列に date, summary, scope_change, schedule_change, approved_by 等。",
+    "required_sections": ["meta", "changes", "references"]
+  },
+  "properties": {
+    "meta": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "overview" },
+            "doc_type": { "const": "change_log" }
+          }
+        }
+      ]
+    },
+    "changes": {
+      "type": "array",
+      "description": "変更履歴一覧（新しい順推奨）",
+      "items": {
+        "type": "object",
+        "required": ["id", "date", "summary"],
+        "properties": {
+          "id": { "type": "string" },
+          "date": { "type": "string" },
+          "summary": { "type": "string" },
+          "detail": { "type": "string" },
+          "scope_change": { "type": "boolean", "description": "スコープ変更の有無" },
+          "schedule_change": { "type": "boolean", "description": "スケジュール変更の有無" },
+          "approved_by": { "type": "string" }
+        }
+      }
+    },
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context"
+    }
+  }
+}

@@ -139,6 +139,21 @@ flowchart LR
 overview / design / development / investigation / verification の各 `ai/document.yaml` のドキュメント状態と、
 WBS のタスク一覧を表示しています。
 
+### overview / acceptance_sign_off
+
+- **タイトル:** 受入・サインオフ一覧
+- **ドキュメント状態:** ⬜ TODO
+
+### overview / change_log
+
+- **タイトル:** プロジェクト変更履歴
+- **ドキュメント状態:** ⬜ TODO
+
+### overview / decisions
+
+- **タイトル:** プロジェクト決定ログ
+- **ドキュメント状態:** ⬜ TODO
+
 ### overview / open_items
 
 - **タイトル:** 案件全体の検討事項・不明点
@@ -148,6 +163,16 @@ WBS のタスク一覧を表示しています。
 
 - **タイトル:** ユーザー管理システム刷新プロジェクト
 - **ドキュメント状態:** 🔄 WIP
+
+### overview / release_log
+
+- **タイトル:** リリースログ
+- **ドキュメント状態:** ⬜ TODO
+
+### overview / risk_register
+
+- **タイトル:** プロジェクトリスク登録簿
+- **ドキュメント状態:** ⬜ TODO
 
 ### overview / wbs
 
@@ -161,6 +186,11 @@ WBS のタスク一覧を表示しています。
 | T-003 | エラーメッセージ改善 | 🔄 WIP |
 | T-004 | 単体テスト | ⬜ TODO |
 | M-001 | 単体テスト完了・リリース判定 | ⬜ TODO |
+
+### design / architecture
+
+- **タイトル:** システムアーキテクチャ
+- **ドキュメント状態:** ⬜ TODO
 
 ### design / open_items
 
@@ -202,9 +232,19 @@ WBS のタスク一覧を表示しています。
 - **タイトル:** リフレッシュトークンローテーション PR
 - **ドキュメント状態:** 🔄 WIP
 
+### development / runbook
+
+- **タイトル:** 運用ランブック
+- **ドキュメント状態:** ⬜ TODO
+
 ### development / tasks
 
 - **タイトル:** 開発の詳細タスク
+- **ドキュメント状態:** ⬜ TODO
+
+### development / technical_debt
+
+- **タイトル:** 技術的負債一覧
 - **ドキュメント状態:** ⬜ TODO
 
 ### investigation / code_understanding

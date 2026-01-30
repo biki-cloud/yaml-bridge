@@ -18,7 +18,7 @@
 PYTHON := python3
 BUILD_SCRIPT := common/tools/build.py
 
-.PHONY: build validate clean help list
+.PHONY: build validate clean help list open-items-all
 .PHONY: overview investigation design development verification
 
 .DEFAULT_GOAL := help
@@ -51,10 +51,15 @@ verification:
 list:
 	@$(PYTHON) $(BUILD_SCRIPT) --list
 
+# 全カテゴリの open_items を 1 つの MD に集約（PM 向け一覧）
+open-items-all:
+	@$(PYTHON) common/tools/build_open_items_aggregate.py -o docs/open_items_all.md
+
 # 出力ファイルを削除
 clean:
 	@echo "🗑️  出力ファイルを削除中..."
 	@rm -f categories/*/*/human/document.md
+	@rm -f docs/open_items_all.md
 	@echo "✅ 完了"
 
 # ヘルプ表示
@@ -66,6 +71,7 @@ help:
 	@echo "  make build              全doc_typesをビルド"
 	@echo "  make validate           全YAMLをバリデーションのみ"
 	@echo "  make list               利用可能なcategory/doc_typeを表示"
+	@echo "  make open-items-all     全カテゴリの open_items を 1 つの MD に集約"
 	@echo "  make clean              出力ファイルを削除"
 	@echo ""
 	@echo "カテゴリ別ビルド:"

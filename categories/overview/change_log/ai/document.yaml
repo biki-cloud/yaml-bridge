@@ -1,0 +1,12 @@
+meta:
+  title: "プロジェクト変更履歴"
+  category: overview
+  doc_type: change_log
+  status: todo
+  version: "1.0.0"
+
+changes: []
+
+references:
+  - title: プロジェクト概要
+    url: categories/overview/project_summary/ai/document.yaml

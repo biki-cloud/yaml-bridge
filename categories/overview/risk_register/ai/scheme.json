@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "overview/risk_register.schema.json",
+  "title": "リスク登録簿（overview）",
+  "description": "プロジェクト全体のリスクを一元的に管理する。影響度・対策・オーナー・ステータスを記録する。",
+  "type": "object",
+  "required": ["meta", "risks", "references"],
+  "x-ai-guid": {
+    "intro": "プロジェクト全体のリスク一覧を管理する。risks 配列に id, risk, impact, mitigation, owner, status 等。リスクの正（Single Source of Truth）はこの risk_register。他 doc の risks は risk_register の id 参照またはローカル要約とする。詳細は docs/risks_convention.md を参照。",
+    "required_sections": ["meta", "risks", "references"]
+  },
+  "properties": {
+    "meta": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "overview" },
+            "doc_type": { "const": "risk_register" }
+          }
+        }
+      ]
+    },
+    "risks": {
+      "type": "array",
+      "description": "リスク一覧",
+      "items": {
+        "type": "object",
+        "required": ["id", "risk", "impact"],
+        "properties": {
+          "id": { "type": "string" },
+          "risk": { "type": "string" },
+          "impact": { "type": "string", "enum": ["high", "medium", "low"] },
+          "mitigation": { "type": "string" },
+          "owner": { "type": "string" },
+          "status": { "type": "string", "enum": ["open", "mitigating", "mitigated", "closed"] },
+          "identified_at": { "type": "string" }
+        }
+      }
+    },
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context"
+    }
+  }
+}

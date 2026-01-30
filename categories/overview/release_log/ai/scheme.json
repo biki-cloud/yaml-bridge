@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "overview/release_log.schema.json",
+  "title": "リリースログ（overview）",
+  "description": "何をいつどの環境にリリースしたかの履歴。運用・ロールバック判断に利用する。",
+  "type": "object",
+  "required": ["meta", "releases", "references"],
+  "x-ai-guid": {
+    "intro": "リリース履歴を管理する。releases 配列に id, date, environment, version, summary 等。",
+    "required_sections": ["meta", "releases", "references"]
+  },
+  "properties": {
+    "meta": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "overview" },
+            "doc_type": { "const": "release_log" }
+          }
+        }
+      ]
+    },
+    "releases": {
+      "type": "array",
+      "description": "リリース一覧（新しい順推奨）",
+      "items": {
+        "type": "object",
+        "required": ["id", "date", "summary"],
+        "properties": {
+          "id": { "type": "string" },
+          "date": { "type": "string", "description": "リリース日" },
+          "environment": { "type": "string", "description": "環境（staging, production 等）" },
+          "version": { "type": "string", "description": "バージョンまたはタグ" },
+          "summary": { "type": "string", "description": "リリース内容の概要" },
+          "detail": { "type": "string", "description": "詳細" },
+          "released_by": { "type": "string" },
+          "rollback_notes": { "type": "string", "description": "ロールバック時の注意" },
+          "related_pr": { "type": "string", "description": "関連 PR URL" }
+        }
+      }
+    },
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context"
+    }
+  }
+}

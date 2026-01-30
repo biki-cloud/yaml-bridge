@@ -1,0 +1,19 @@
+meta:
+  title: "運用ランブック"
+  category: development
+  doc_type: runbook
+  status: todo
+  version: "1.0.0"
+
+overview:
+  background: ""
+  goal: "起動・デプロイ・ロールバック・障害時手順を一覧化する。"
+  related_docs:
+    - title: プロジェクト概要
+      url: categories/overview/project_summary/ai/document.yaml
+
+procedures: []
+
+references:
+  - title: プロジェクト概要
+    url: categories/overview/project_summary/ai/document.yaml

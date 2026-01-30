@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "development/technical_debt.schema.json",
+  "title": "技術的負債（development）",
+  "description": "負債一覧（内容・影響・解消予定・優先度）。tasks / wbs_code で紐付け可能。",
+  "type": "object",
+  "required": ["meta", "items", "references"],
+  "x-ai-guid": {
+    "intro": "技術的負債を管理する。items 配列に id, description, impact, priority, wbs_code, planned_resolution 等。",
+    "required_sections": ["meta", "items", "references"]
+  },
+  "properties": {
+    "meta": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "development" },
+            "doc_type": { "const": "technical_debt" }
+          }
+        }
+      ]
+    },
+    "overview": {
+      "$ref": "../../../../common/scheme.json#/definitions/overview_background_goal",
+      "description": "任意。背景・ゴール・related_docs。"
+    },
+    "items": {
+      "type": "array",
+      "description": "技術的負債一覧",
+      "items": {
+        "type": "object",
+        "required": ["id", "description"],
+        "properties": {
+          "id": { "type": "string" },
+          "description": { "type": "string" },
+          "impact": { "type": "string", "description": "影響の説明" },
+          "priority": { "type": "string", "enum": ["high", "medium", "low"] },
+          "wbs_code": { "type": "string", "description": "WBS のまとまりに対応" },
+          "task_id": { "type": "string", "description": "紐づくタスク ID" },
+          "planned_resolution": { "type": "string" },
+          "status": { "type": "string", "enum": ["open", "planned", "in_progress", "resolved"] }
+        }
+      }
+    },
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context"
+    }
+  }
+}

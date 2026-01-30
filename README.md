@@ -46,9 +46,9 @@ python3 common/tools/build.py categories/overview/wbs/ai/document.yaml
 
 | ロール                 | 主に読む doc_type（human/document.md）                                                                                                                       |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| プロジェクト全体の把握 | overview / project_summary, overview / wbs                                                                                                                   |
-| 設計担当               | design / requirements                                                                                                                                        |
-| 開発担当               | development / implementation_plan, implementation_detail, implementation_result, pull_request                                                                |
+| プロジェクト全体の把握 | overview / project_summary, overview / wbs, overview / decisions, overview / risk_register, overview / change_log                                                                 |
+| 設計担当               | design / requirements, design / architecture                                                                                                                                        |
+| 開発担当               | development / implementation_plan, implementation_detail, implementation_result, pull_request, development / technical_debt                                                                |
 | 調査・検証担当         | investigation（code_understanding, domain_knowledge, related_code_research）, verification（verification_plan, verification_procedure, verification_result） |
 
 全体の流れは overview → investigation → design → development → verification の順で参照するとよいです。
@@ -70,13 +70,18 @@ categories/{category}/{doc_type}/
 
 | カテゴリ      | doc_type                                                                                  |
 | ------------- | ----------------------------------------------------------------------------------------- |
-| overview      | project_summary, wbs, open_items（検討事項・不明点）                                      |
+| overview      | project_summary, wbs, open_items（検討事項・不明点）, decisions（決定ログ）, risk_register（リスク登録簿）, change_log（変更履歴） |
 | investigation | code_understanding, domain_knowledge, related_code_research, open_items, tasks（詳細タスク） |
-| design        | requirements, open_items, tasks                                                          |
-| development   | implementation_detail, implementation_plan, implementation_result, pull_request, open_items, tasks |
+| design        | requirements, architecture（アーキテクチャ）, open_items, tasks                                                          |
+| development   | implementation_detail, implementation_plan, implementation_result, pull_request, technical_debt（技術的負債）, open_items, tasks |
 | verification  | verification_plan, verification_procedure, verification_result, open_items, tasks         |
 
 - **open_items**: 各カテゴリの「検討事項」（決まらないと先に進めないこと）と「不明点」を 1 doc_type で管理。ブロッカー紐付けは project_summary / WBS で行う。
+- **decisions**: プロジェクト横断の重要決定（決まったこと）の記録。open_items の検討事項が決まったら結論をここに追記する。
+- **risk_register**: プロジェクト全体のリスクを一元的に管理（影響度・対策・オーナー・ステータス）。
+- **change_log**: スコープ・スケジュール・要件などの変更履歴。
+- **architecture**: システム・コンポーネント構成と境界。要件と実装計画の間の全体像を記述する。
+- **technical_debt**: 技術的負債一覧。wbs_code / task_id でタスクと紐付け可能。
 - **tasks**: design / development / investigation / verification の各カテゴリの**詳細タスク**。WBS の wbs_code で紐付け可能。WBS の human/document.md ビルド時にカテゴリ別詳細タスクを集約表示する。
 
 各YAMLには `meta.category` と `meta.doc_type` を指定し、対応するスキーマで検証されます。

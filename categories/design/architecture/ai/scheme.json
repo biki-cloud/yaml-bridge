@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "design/architecture.schema.json",
+  "title": "アーキテクチャ（design）",
+  "description": "システム・コンポーネント構成と境界。要件（requirements）と実装計画（implementation_plan）の間の全体像を記述する。",
+  "type": "object",
+  "required": ["meta", "overview", "components", "references"],
+  "x-ai-guid": {
+    "intro": "システム全体像を記述する。components 配列に id, name, description, responsibility 等。",
+    "required_sections": ["meta", "overview", "components", "references"]
+  },
+  "properties": {
+    "meta": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "design" },
+            "doc_type": { "const": "architecture" }
+          }
+        }
+      ]
+    },
+    "overview": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/overview_background_goal" },
+        {
+          "properties": {
+            "scope": {
+              "type": "object",
+              "properties": {
+                "in": { "type": "array", "items": { "type": "string" } },
+                "out": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          }
+        }
+      ],
+      "x-ai-guid": "背景・ゴール・related_docs。scope.in/out は任意。"
+    },
+    "components": {
+      "type": "array",
+      "description": "コンポーネント・境界一覧",
+      "items": {
+        "type": "object",
+        "required": ["id", "name"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "responsibility": { "type": "string" },
+          "depends_on": { "type": "array", "items": { "type": "string" }, "description": "依存するコンポーネント ID" }
+        }
+      }
+    },
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context"
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "development/runbook.schema.json",
+  "title": "ランブック・運用手順（development）",
+  "description": "起動・デプロイ・ロールバック・障害時手順などを YAML で構造化。本番運用・障害対応用。",
+  "type": "object",
+  "required": ["meta", "procedures", "references"],
+  "x-ai-guid": {
+    "intro": "運用手順（ランブック）を管理する。procedures 配列に id, title, procedure_type, steps 等。",
+    "required_sections": ["meta", "procedures", "references"]
+  },
+  "properties": {
+    "meta": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "development" },
+            "doc_type": { "const": "runbook" }
+          }
+        }
+      ]
+    },
+    "overview": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/overview_background_goal" },
+        {
+          "properties": {
+            "environment": { "type": "string", "description": "対象環境" },
+            "target_system": { "type": "string", "description": "対象システム・サービス" }
+          }
+        }
+      ],
+      "x-ai-guid": "任意。背景・ゴール・related_docs。environment, target_system はこの doc 固有。"
+    },
+    "procedures": {
+      "type": "array",
+      "description": "運用手順一覧",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "steps"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "procedure_type": {
+            "type": "string",
+            "enum": ["startup", "deploy", "rollback", "incident", "maintenance", "other"],
+            "description": "手順の種別（起動/デプロイ/ロールバック/障害対応/保守/その他）"
+          },
+          "precondition": { "type": "string" },
+          "steps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "action": { "type": "string" },
+                "expected": { "type": "string" },
+                "note": { "type": "string" }
+              }
+            }
+          },
+          "postcondition": { "type": "string" },
+          "estimated_minutes": { "type": "number", "description": "想定所要時間（分）" }
+        }
+      }
+    },
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context"
+    }
+  }
+}

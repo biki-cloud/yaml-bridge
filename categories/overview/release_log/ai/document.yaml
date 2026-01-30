@@ -1,0 +1,12 @@
+meta:
+  title: "リリースログ"
+  category: overview
+  doc_type: release_log
+  status: todo
+  version: "1.0.0"
+
+releases: []
+
+references:
+  - title: プロジェクト概要
+    url: categories/overview/project_summary/ai/document.yaml

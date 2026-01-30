@@ -1,0 +1,12 @@
+meta:
+  title: "プロジェクトリスク登録簿"
+  category: overview
+  doc_type: risk_register
+  status: todo
+  version: "1.0.0"
+
+risks: []
+
+references:
+  - title: プロジェクト概要
+    url: categories/overview/project_summary/ai/document.yaml

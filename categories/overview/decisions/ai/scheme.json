@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "overview/decisions.schema.json",
+  "title": "決定ログ（overview）",
+  "description": "プロジェクト横断の重要決定（決まったこと）の記録。open_items の検討事項が決まった後の結論をここに残す。",
+  "type": "object",
+  "required": ["meta", "decisions", "references"],
+  "x-ai-guid": {
+    "intro": "決まったことの記録を管理する。decisions 配列に id, summary, conclusion, context, decided_at 等。",
+    "required_sections": ["meta", "decisions", "references"]
+  },
+  "properties": {
+    "meta": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "overview" },
+            "doc_type": { "const": "decisions" }
+          }
+        }
+      ]
+    },
+    "decisions": {
+      "type": "array",
+      "description": "決定事項一覧（決まったことの記録・ADR）",
+      "items": { "$ref": "../../../../common/scheme.json#/definitions/decision_record" }
+    },
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context"
+    }
+  }
+}

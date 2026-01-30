@@ -1,0 +1,14 @@
+meta:
+  title: "プロジェクト決定ログ"
+  category: overview
+  doc_type: decisions
+  status: todo
+  version: "1.0.0"
+
+decisions: []
+
+references:
+  - title: プロジェクト概要
+    url: categories/overview/project_summary/ai/document.yaml
+  - title: 検討事項・不明点
+    url: categories/overview/open_items/ai/document.yaml

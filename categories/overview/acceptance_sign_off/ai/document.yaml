@@ -1,0 +1,14 @@
+meta:
+  title: "受入・サインオフ一覧"
+  category: overview
+  doc_type: acceptance_sign_off
+  status: todo
+  version: "1.0.0"
+
+sign_offs: []
+
+references:
+  - title: プロジェクト概要
+    url: categories/overview/project_summary/ai/document.yaml
+  - title: WBS
+    url: categories/overview/wbs/ai/document.yaml

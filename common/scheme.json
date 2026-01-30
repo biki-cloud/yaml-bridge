@@ -164,6 +164,20 @@
         "status": { "type": "string", "enum": ["pending", "created"] }
       }
     },
+    "decision_record": {
+      "type": "object",
+      "description": "決定事項（決まったことの記録・ADR）",
+      "required": ["id", "summary", "conclusion"],
+      "properties": {
+        "id": { "type": "string" },
+        "summary": { "type": "string", "description": "決定の概要" },
+        "conclusion": { "type": "string", "description": "結論・決定内容" },
+        "context": { "type": "string", "description": "背景・理由" },
+        "decided_at": { "type": "string" },
+        "decided_by": { "type": "string" },
+        "related_open_decision_id": { "type": "string", "description": "紐づく open_items の検討事項 ID" }
+      }
+    },
     "category_task": {
       "type": "object",
       "description": "カテゴリごとの詳細タスク",

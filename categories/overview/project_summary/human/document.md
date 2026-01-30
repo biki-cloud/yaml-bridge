@@ -82,11 +82,17 @@ pie showData
 
 ### overview
 
+- [受入・サインオフ一覧](../acceptance_sign_off/human/document.md)
+- [プロジェクト変更履歴](../change_log/human/document.md)
+- [プロジェクト決定ログ](../decisions/human/document.md)
 - [案件全体の検討事項・不明点](../open_items/human/document.md)
+- [リリースログ](../release_log/human/document.md)
+- [プロジェクトリスク登録簿](../risk_register/human/document.md)
 - [認証機能改修 WBS](../wbs/human/document.md)
 
 ### design
 
+- [システムアーキテクチャ](../../../design/architecture/human/document.md)
 - [設計の検討事項・不明点](../../../design/open_items/human/document.md)
 - [ユーザー認証機能の要件整理](../../../design/requirements/human/document.md)
 - [設計の詳細タスク](../../../design/tasks/human/document.md)
@@ -98,7 +104,9 @@ pie showData
 - [セッション管理改善の修正結果](../../../development/implementation_result/human/document.md)
 - [開発の検討事項・不明点](../../../development/open_items/human/document.md)
 - [リフレッシュトークンローテーション PR](../../../development/pull_request/human/document.md)
+- [運用ランブック](../../../development/runbook/human/document.md)
 - [開発の詳細タスク](../../../development/tasks/human/document.md)
+- [技術的負債一覧](../../../development/technical_debt/human/document.md)
 
 ### investigation
 

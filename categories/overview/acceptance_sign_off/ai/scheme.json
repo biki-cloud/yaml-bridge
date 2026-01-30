@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "overview/acceptance_sign_off.schema.json",
+  "title": "受入・サインオフ（overview）",
+  "description": "マイルストーン・リリース単位の受入基準と、誰がいつサインオフしたかを記録する。監査・トレースに利用する。",
+  "type": "object",
+  "required": ["meta", "sign_offs", "references"],
+  "x-ai-guid": {
+    "intro": "受入・サインオフを管理する。sign_offs 配列に id, scope, title, acceptance_criteria, approved_by, approved_at 等。",
+    "required_sections": ["meta", "sign_offs", "references"]
+  },
+  "properties": {
+    "meta": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "overview" },
+            "doc_type": { "const": "acceptance_sign_off" }
+          }
+        }
+      ]
+    },
+    "sign_offs": {
+      "type": "array",
+      "description": "受入・サインオフ一覧（マイルストーン・リリース・フェーズ単位）",
+      "items": {
+        "type": "object",
+        "required": ["id", "scope", "title"],
+        "properties": {
+          "id": { "type": "string" },
+          "scope": { "type": "string", "enum": ["milestone", "release", "phase", "other"], "description": "受入対象の種別" },
+          "title": { "type": "string", "description": "受入対象の名称" },
+          "wbs_code": { "type": "string", "description": "WBS 要素との紐付け（任意）" },
+          "acceptance_criteria": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "受入基準"
+          },
+          "approved_by": { "type": "string", "description": "承認者" },
+          "approved_at": { "type": "string", "description": "承認日" },
+          "conditions_met": { "type": "boolean", "description": "条件充足有無" },
+          "notes": { "type": "string", "description": "備考" },
+          "related_docs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["title", "url"],
+              "properties": { "title": { "type": "string" }, "url": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context"
+    }
+  }
+}

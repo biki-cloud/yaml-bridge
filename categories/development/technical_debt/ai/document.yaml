@@ -1,0 +1,14 @@
+meta:
+  title: "技術的負債一覧"
+  category: development
+  doc_type: technical_debt
+  status: todo
+  version: "1.0.0"
+
+items: []
+
+references:
+  - title: 実装計画
+    url: categories/development/implementation_plan/ai/document.yaml
+  - title: WBS
+    url: categories/overview/wbs/ai/document.yaml
