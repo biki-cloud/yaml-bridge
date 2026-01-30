@@ -159,6 +159,11 @@ WBS のタスク一覧を表示しています。
 - **タイトル:** 外部依存
 - **ドキュメント状態:** ⬜ TODO
 
+### overview / document
+
+- **タイトル:** 概要カテゴリの汎用ドキュメント
+- **ドキュメント状態:** ⬜ TODO
+
 ### overview / glossary
 
 - **タイトル:** 用語集
@@ -227,6 +232,11 @@ WBS のタスク一覧を表示しています。
 - **タイトル:** データモデル
 - **ドキュメント状態:** ⬜ TODO
 
+### design / document
+
+- **タイトル:** 設計カテゴリの汎用ドキュメント
+- **ドキュメント状態:** ⬜ TODO
+
 ### design / open_items
 
 - **タイトル:** 設計の検討事項・不明点
@@ -250,6 +260,11 @@ WBS のタスク一覧を表示しています。
 ### development / dependencies
 
 - **タイトル:** 依存一覧
+- **ドキュメント状態:** ⬜ TODO
+
+### development / document
+
+- **タイトル:** 開発カテゴリの汎用ドキュメント
 - **ドキュメント状態:** ⬜ TODO
 
 ### development / environment
@@ -307,10 +322,20 @@ WBS のタスク一覧を表示しています。
 - **タイトル:** 認証モジュールのコード理解
 - **ドキュメント状態:** ✅ Done
 
+### investigation / document
+
+- **タイトル:** 調査カテゴリの汎用ドキュメント
+- **ドキュメント状態:** ⬜ TODO
+
 ### investigation / domain_knowledge
 
 - **タイトル:** 決済システムのドメイン知識調査
 - **ドキュメント状態:** ✅ Done
+
+### investigation / investigation_summary
+
+- **タイトル:** 調査サマリ
+- **ドキュメント状態:** ⬜ TODO
 
 ### investigation / open_items
 
@@ -325,6 +350,11 @@ WBS のタスク一覧を表示しています。
 ### investigation / tasks
 
 - **タイトル:** 調査の詳細タスク
+- **ドキュメント状態:** ⬜ TODO
+
+### verification / document
+
+- **タイトル:** 検証カテゴリの汎用ドキュメント
 - **ドキュメント状態:** ⬜ TODO
 
 ### verification / open_items

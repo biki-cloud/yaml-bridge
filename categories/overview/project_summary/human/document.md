@@ -86,6 +86,7 @@ pie showData
 - [プロジェクト変更履歴](../change_log/human/document.md)
 - [プロジェクト決定ログ](../decisions/human/document.md)
 - [外部依存](../dependency_external/human/document.md)
+- [概要カテゴリの汎用ドキュメント](../document/human/document.md)
 - [用語集](../glossary/human/document.md)
 - [振り返り・教訓](../lessons_learned/human/document.md)
 - [案件全体の検討事項・不明点](../open_items/human/document.md)
@@ -100,6 +101,7 @@ pie showData
 - [API仕様](../../../design/api_spec/human/document.md)
 - [システムアーキテクチャ](../../../design/architecture/human/document.md)
 - [データモデル](../../../design/data_model/human/document.md)
+- [設計カテゴリの汎用ドキュメント](../../../design/document/human/document.md)
 - [設計の検討事項・不明点](../../../design/open_items/human/document.md)
 - [ユーザー認証機能の要件整理](../../../design/requirements/human/document.md)
 - [セキュリティ設計・脅威モデル](../../../design/security_design/human/document.md)
@@ -108,6 +110,7 @@ pie showData
 ### development
 
 - [依存一覧](../../../development/dependencies/human/document.md)
+- [開発カテゴリの汎用ドキュメント](../../../development/document/human/document.md)
 - [環境・インフラ](../../../development/environment/human/document.md)
 - [セッション管理の実装詳細](../../../development/implementation_detail/human/document.md)
 - [リフレッシュトークンローテーション実装計画](../../../development/implementation_plan/human/document.md)
@@ -122,13 +125,16 @@ pie showData
 ### investigation
 
 - [認証モジュールのコード理解](../../../investigation/code_understanding/human/document.md)
+- [調査カテゴリの汎用ドキュメント](../../../investigation/document/human/document.md)
 - [決済システムのドメイン知識調査](../../../investigation/domain_knowledge/human/document.md)
+- [調査サマリ](../../../investigation/investigation_summary/human/document.md)
 - [調査の検討事項・不明点](../../../investigation/open_items/human/document.md)
 - [通知システムの関連コード調査](../../../investigation/related_code_research/human/document.md)
 - [調査の詳細タスク](../../../investigation/tasks/human/document.md)
 
 ### verification
 
+- [検証カテゴリの汎用ドキュメント](../../../verification/document/human/document.md)
 - [検証の検討事項・不明点](../../../verification/open_items/human/document.md)
 - [検証の詳細タスク](../../../verification/tasks/human/document.md)
 - [ログイン機能の動作確認計画](../../../verification/verification_plan/human/document.md)

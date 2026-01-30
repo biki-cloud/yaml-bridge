@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "investigation/investigation_summary.schema.json",
+  "title": "調査サマリ",
+  "description": "調査フェーズの結論・推奨・設計へのインプットを一箇所にまとめる。code_understanding / domain_knowledge / related_code_research を総括する。",
+  "type": "object",
+  "required": ["meta", "summary"],
+  "x-ai-guid": {
+    "intro": "調査フェーズの総括。summary に調査の概要、conclusions に結論、recommendations に推奨事項、inputs_to_design に設計フェーズへ渡すインプットを記述する。",
+    "required_sections": ["meta", "summary"]
+  },
+  "properties": {
+    "meta": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "investigation" },
+            "doc_type": { "const": "investigation_summary" }
+          }
+        }
+      ]
+    },
+    "overview": {
+      "$ref": "../../../../common/scheme.json#/definitions/overview_background_goal",
+      "x-ai-guid": "任意。背景・目的・関連資料。"
+    },
+    "summary": {
+      "type": "string",
+      "description": "調査フェーズの概要・総括"
+    },
+    "conclusions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "調査で得た結論（やる／やらない含む）"
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "item": { "type": "string" },
+          "priority": { "type": "string", "enum": ["high", "medium", "low"] }
+        }
+      },
+      "description": "推奨事項"
+    },
+    "inputs_to_design": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "設計フェーズへ渡すインプット・知見の要約"
+    },
+    "related_investigation_docs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title", "path_or_url"],
+        "properties": {
+          "title": { "type": "string" },
+          "path_or_url": { "type": "string" },
+          "doc_type": { "type": "string", "description": "code_understanding / domain_knowledge / related_code_research 等" }
+        }
+      },
+      "description": "総括の元になった調査 doc_type への参照"
+    },
+    "references": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "object",
+        "required": ["title", "url"],
+        "properties": {
+          "title": { "type": "string" },
+          "url": { "type": "string" }
+        }
+      }
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context"
+    }
+  }
+}

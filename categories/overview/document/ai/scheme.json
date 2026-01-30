@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "overview/document.schema.json",
+  "title": "汎用ドキュメント（overview）",
+  "description": "このカテゴリで新たにまとめたいドキュメント用の汎用フォーマット",
+  "type": "object",
+  "required": ["meta", "summary"],
+  "x-ai-guid": {
+    "intro": "このカテゴリの汎用ドキュメント。summary に概要・まとめを記述し、必要に応じて references を追加する。",
+    "required_sections": ["meta", "summary"]
+  },
+  "properties": {
+    "meta": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "overview" },
+            "doc_type": { "const": "document" }
+          }
+        }
+      ]
+    },
+    "summary": {
+      "type": "string",
+      "description": "ドキュメントの概要・まとめ"
+    },
+    "references": {
+      "type": "array",
+      "minItems": 0,
+      "description": "関連資料（任意）",
+      "items": {
+        "type": "object",
+        "required": ["title", "url"],
+        "properties": {
+          "title": { "type": "string" },
+          "url": { "type": "string" }
+        }
+      }
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context"
+    }
+  }
+}

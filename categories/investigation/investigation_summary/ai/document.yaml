@@ -1,0 +1,17 @@
+meta:
+  title: 調査サマリ
+  category: investigation
+  doc_type: investigation_summary
+  status: todo
+  version: "1.0.0"
+
+summary: |
+  調査フェーズの結論・推奨・設計へのインプットをここにまとめる。
+  code_understanding / domain_knowledge / related_code_research の成果を総括し、
+  WBS の「調査」ノードの成果物として参照する。
+
+conclusions: []
+recommendations: []
+inputs_to_design: []
+related_investigation_docs: []
+references: []

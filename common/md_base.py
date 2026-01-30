@@ -310,6 +310,35 @@ def generate_open_items_markdown(data: dict, output_path: Optional[Path] = None)
     return '\n'.join(lines)
 
 
+def generate_document_markdown(data: dict, output_path: Optional[Path] = None) -> str:
+    """
+    汎用 document YAML（meta, summary, references, ai_context）から Markdown を生成する。
+    各カテゴリの document/tool/create_human_document.py で利用。
+    """
+    lines = []
+    meta = data.get('meta', {})
+    title = meta.get('title', '汎用ドキュメント')
+    lines.append(f"# {title}")
+    lines.append("")
+    lines.append(f"**タイプ:** 📄 汎用ドキュメント | **ステータス:** {format_status(meta.get('status', 'todo'))} | **バージョン:** {meta.get('version', '-')}")
+    if meta.get('author'):
+        lines.append(f"**作成者:** {meta['author']}")
+    lines.append("")
+    ai_section = format_ai_context_section(data)
+    if ai_section:
+        lines.append(ai_section)
+        lines.append("")
+    summary = data.get('summary', '')
+    lines.append("## 概要・まとめ")
+    lines.append("")
+    lines.append(summary if summary else "（内容を追記してください）")
+    lines.append("")
+    ref_section = format_references_section(data, output_path=output_path)
+    if ref_section:
+        lines.append(ref_section.rstrip())
+    return '\n'.join(lines)
+
+
 def run_create_human_document(generate_markdown_fn: Callable[[dict], str]) -> None:
     """
     create_human_document の共通エントリポイント。
