@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "development/dependencies.schema.json",
+  "title": "依存一覧（development）",
+  "description": "外部ライブラリ・サービス・バージョン・ライセンス一覧。セキュリティ・ライセンス監査に利用する。",
+  "type": "object",
+  "required": ["meta", "dependencies", "references"],
+  "x-ai-guid": {
+    "intro": "依存を管理する。dependencies 配列に id, name, type, version, license, purpose 等。",
+    "required_sections": ["meta", "dependencies", "references"]
+  },
+  "properties": {
+    "meta": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "development" },
+            "doc_type": { "const": "dependencies" }
+          }
+        }
+      ]
+    },
+    "dependencies": {
+      "type": "array",
+      "description": "依存一覧（ライブラリ・サービス）",
+      "items": {
+        "type": "object",
+        "required": ["id", "name"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string", "description": "パッケージ名・サービス名" },
+          "type": { "type": "string", "enum": ["library", "service", "tool", "other"], "description": "種別" },
+          "version": { "type": "string", "description": "バージョン" },
+          "license": { "type": "string", "description": "ライセンス" },
+          "purpose": { "type": "string", "description": "利用目的" },
+          "url": { "type": "string", "description": "参照URL" },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+meta:
+  title: "依存一覧"
+  category: development
+  doc_type: dependencies
+  status: todo
+  version: "1.0.0"
+
+dependencies: []
+
+references:
+  - title: プロジェクト概要
+    url: categories/overview/project_summary/ai/document.yaml
+  - title: 実装計画
+    url: categories/development/implementation_plan/ai/document.yaml

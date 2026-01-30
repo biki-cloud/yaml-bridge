@@ -53,7 +53,7 @@ def generate_markdown(data: dict, output_path=None) -> str:
     lines.append("```")
     lines.append("")
     
-    overview_section = format_overview_section(data.get('overview', {}))
+    overview_section = format_overview_section(data.get('overview', {}), output_path=output_path)
     if overview_section:
         lines.append(overview_section.rstrip())
         lines.append("")

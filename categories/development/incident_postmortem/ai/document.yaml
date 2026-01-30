@@ -1,0 +1,14 @@
+meta:
+  title: "障害・振り返り"
+  category: development
+  doc_type: incident_postmortem
+  status: todo
+  version: "1.0.0"
+
+incidents: []
+
+references:
+  - title: プロジェクト概要
+    url: categories/overview/project_summary/ai/document.yaml
+  - title: ランブック
+    url: categories/development/runbook/ai/document.yaml

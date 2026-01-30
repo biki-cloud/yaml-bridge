@@ -1,0 +1,14 @@
+meta:
+  title: "品質・受入基準"
+  category: overview
+  doc_type: quality_criteria
+  status: todo
+  version: "1.0.0"
+
+criteria: []
+
+references:
+  - title: プロジェクト概要
+    url: categories/overview/project_summary/ai/document.yaml
+  - title: 受入・サインオフ
+    url: categories/overview/acceptance_sign_off/ai/document.yaml

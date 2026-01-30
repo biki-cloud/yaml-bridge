@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "development/incident_postmortem.schema.json",
+  "title": "障害・振り返り（development）",
+  "description": "障害・インシデントの記録と振り返り（事象・原因・対応・再発防止）。runbookは手順、本doc_typeは何が起きたかの履歴。",
+  "type": "object",
+  "required": ["meta", "incidents", "references"],
+  "x-ai-guid": {
+    "intro": "障害・インシデントを管理する。incidents 配列に id, title, occurred_at, summary, root_cause, action_taken, prevention 等。",
+    "required_sections": ["meta", "incidents", "references"]
+  },
+  "properties": {
+    "meta": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "development" },
+            "doc_type": { "const": "incident_postmortem" }
+          }
+        }
+      ]
+    },
+    "incidents": {
+      "type": "array",
+      "description": "障害・インシデント一覧",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "summary"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string", "description": "事象のタイトル" },
+          "occurred_at": { "type": "string", "description": "発生日時" },
+          "resolved_at": { "type": "string", "description": "解消日時" },
+          "summary": { "type": "string", "description": "事象概要" },
+          "root_cause": { "type": "string", "description": "原因" },
+          "action_taken": { "type": "string", "description": "対応内容" },
+          "prevention": { "type": "string", "description": "再発防止策" },
+          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low"], "description": "深刻度" },
+          "runbook_ref": { "type": "string", "description": "参照したランブック" },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context"
+    }
+  }
+}

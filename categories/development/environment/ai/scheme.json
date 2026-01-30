@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "development/environment.schema.json",
+  "title": "環境・インフラ（development）",
+  "description": "環境一覧・CI/CDパイプライン・デプロイ先・シークレット方針など。運用・障害対応・オンボardingに利用する。",
+  "type": "object",
+  "required": ["meta", "environments", "references"],
+  "x-ai-guid": {
+    "intro": "環境情報を管理する。environments 配列に id, name, type, url, cicd, secrets_policy 等。",
+    "required_sections": ["meta", "environments", "references"]
+  },
+  "properties": {
+    "meta": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "development" },
+            "doc_type": { "const": "environment" }
+          }
+        }
+      ]
+    },
+    "environments": {
+      "type": "array",
+      "description": "環境一覧",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "type"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string", "description": "環境名" },
+          "type": { "type": "string", "enum": ["local", "dev", "staging", "production", "other"], "description": "種別" },
+          "url": { "type": "string", "description": "URL・エンドポイント" },
+          "cicd": { "type": "string", "description": "CI/CDパイプライン概要" },
+          "deploy_target": { "type": "string", "description": "デプロイ先" },
+          "secrets_policy": { "type": "string", "description": "シークレット管理方針" },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context"
+    }
+  }
+}

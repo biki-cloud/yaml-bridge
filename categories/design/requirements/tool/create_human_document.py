@@ -22,7 +22,7 @@ def generate_markdown(data: dict, output_path=None) -> str:
     if ai_section:
         lines.append(ai_section)
         lines.append("")
-    overview_section = format_overview_section(data.get('overview', {}), include_related_docs=False)
+    overview_section = format_overview_section(data.get('overview', {}), include_related_docs=False, output_path=output_path)
     if overview_section:
         lines.append(overview_section.rstrip())
         lines.append("")

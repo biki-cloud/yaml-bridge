@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "overview/quality_criteria.schema.json",
+  "title": "品質・受入基準（overview）",
+  "description": "プロジェクト全体の「何をもって完了とするか」を定義する。受入・サインオフ（acceptance_sign_off）の前提となる基準一覧。",
+  "type": "object",
+  "required": ["meta", "criteria", "references"],
+  "x-ai-guid": {
+    "intro": "品質・受入基準を管理する。criteria 配列に id, title, description, priority, scope 等。",
+    "required_sections": ["meta", "criteria", "references"]
+  },
+  "properties": {
+    "meta": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "overview" },
+            "doc_type": { "const": "quality_criteria" }
+          }
+        }
+      ]
+    },
+    "criteria": {
+      "type": "array",
+      "description": "品質・受入基準一覧",
+      "items": {
+        "type": "object",
+        "required": ["id", "title"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string", "description": "基準の名称" },
+          "description": { "type": "string", "description": "基準の説明・判定方法" },
+          "priority": { "type": "string", "enum": ["must", "should", "optional"], "description": "必須度" },
+          "scope": { "type": "string", "description": "適用範囲（例: リリース全体 / 機能単位）" },
+          "related_docs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["title", "url"],
+              "properties": { "title": { "type": "string" }, "url": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context"
+    }
+  }
+}

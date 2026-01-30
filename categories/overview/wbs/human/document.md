@@ -154,6 +154,21 @@ WBS のタスク一覧を表示しています。
 - **タイトル:** プロジェクト決定ログ
 - **ドキュメント状態:** ⬜ TODO
 
+### overview / dependency_external
+
+- **タイトル:** 外部依存
+- **ドキュメント状態:** ⬜ TODO
+
+### overview / glossary
+
+- **タイトル:** 用語集
+- **ドキュメント状態:** ⬜ TODO
+
+### overview / lessons_learned
+
+- **タイトル:** 振り返り・教訓
+- **ドキュメント状態:** ⬜ TODO
+
 ### overview / open_items
 
 - **タイトル:** 案件全体の検討事項・不明点
@@ -164,6 +179,11 @@ WBS のタスク一覧を表示しています。
 - **タイトル:** ユーザー管理システム刷新プロジェクト
 - **ドキュメント状態:** 🔄 WIP
 
+### overview / quality_criteria
+
+- **タイトル:** 品質・受入基準
+- **ドキュメント状態:** ⬜ TODO
+
 ### overview / release_log
 
 - **タイトル:** リリースログ
@@ -172,6 +192,11 @@ WBS のタスク一覧を表示しています。
 ### overview / risk_register
 
 - **タイトル:** プロジェクトリスク登録簿
+- **ドキュメント状態:** ⬜ TODO
+
+### overview / stakeholder_raci
+
+- **タイトル:** ステークホルダー・RACI
 - **ドキュメント状態:** ⬜ TODO
 
 ### overview / wbs
@@ -187,9 +212,19 @@ WBS のタスク一覧を表示しています。
 | T-004 | 単体テスト | ⬜ TODO |
 | M-001 | 単体テスト完了・リリース判定 | ⬜ TODO |
 
+### design / api_spec
+
+- **タイトル:** API仕様
+- **ドキュメント状態:** ⬜ TODO
+
 ### design / architecture
 
 - **タイトル:** システムアーキテクチャ
+- **ドキュメント状態:** ⬜ TODO
+
+### design / data_model
+
+- **タイトル:** データモデル
 - **ドキュメント状態:** ⬜ TODO
 
 ### design / open_items
@@ -202,9 +237,24 @@ WBS のタスク一覧を表示しています。
 - **タイトル:** ユーザー認証機能の要件整理
 - **ドキュメント状態:** 🔄 WIP
 
+### design / security_design
+
+- **タイトル:** セキュリティ設計・脅威モデル
+- **ドキュメント状態:** ⬜ TODO
+
 ### design / tasks
 
 - **タイトル:** 設計の詳細タスク
+- **ドキュメント状態:** ⬜ TODO
+
+### development / dependencies
+
+- **タイトル:** 依存一覧
+- **ドキュメント状態:** ⬜ TODO
+
+### development / environment
+
+- **タイトル:** 環境・インフラ
 - **ドキュメント状態:** ⬜ TODO
 
 ### development / implementation_detail
@@ -221,6 +271,11 @@ WBS のタスク一覧を表示しています。
 
 - **タイトル:** セッション管理改善の修正結果
 - **ドキュメント状態:** ✅ Done
+
+### development / incident_postmortem
+
+- **タイトル:** 障害・振り返り
+- **ドキュメント状態:** ⬜ TODO
 
 ### development / open_items
 

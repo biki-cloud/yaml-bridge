@@ -15,7 +15,7 @@
 
 ### 関連ドキュメント
 
-- [セッション管理実装計画](categories/development/implementation_plan/ai/document.yaml)
+- [セッション管理実装計画](../../implementation_plan/human/document.md)
 
 **関連計画:** categories/development/implementation_plan/ai/document.yaml
 **関連PR:** https://github.com/example/project/pull/123

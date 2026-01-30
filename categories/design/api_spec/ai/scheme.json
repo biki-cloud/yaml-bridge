@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "design/api_spec.schema.json",
+  "title": "API仕様（design）",
+  "description": "APIの入出力・契約（OpenAPI的メタデータやエンドポイント一覧）をYAMLで管理する。実装・検証との対応を明確にする。",
+  "type": "object",
+  "required": ["meta", "overview", "endpoints", "references"],
+  "x-ai-guid": {
+    "intro": "API契約を記述する。endpoints 配列に path, method, description, request, response 等。",
+    "required_sections": ["meta", "overview", "endpoints", "references"]
+  },
+  "properties": {
+    "meta": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "design" },
+            "doc_type": { "const": "api_spec" }
+          }
+        }
+      ]
+    },
+    "overview": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/overview_background_goal" },
+        {
+          "properties": {
+            "base_url": { "type": "string", "description": "ベースURL（例: /api/v1）" },
+            "scope": {
+              "type": "object",
+              "properties": {
+                "in": { "type": "array", "items": { "type": "string" } },
+                "out": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "endpoints": {
+      "type": "array",
+      "description": "エンドポイント一覧",
+      "items": {
+        "type": "object",
+        "required": ["path", "method", "description"],
+        "properties": {
+          "path": { "type": "string", "description": "パス（例: /auth/login）" },
+          "method": { "type": "string", "enum": ["GET", "POST", "PUT", "PATCH", "DELETE"], "description": "HTTPメソッド" },
+          "description": { "type": "string" },
+          "request_body": { "type": "string", "description": "リクエスト概要・スキーマ参照" },
+          "response": { "type": "string", "description": "レスポンス概要・ステータス" },
+          "requirements_ref": { "type": "array", "items": { "type": "string" }, "description": "要件ID参照（REQ-001等）" }
+        }
+      }
+    },
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context"
+    }
+  }
+}

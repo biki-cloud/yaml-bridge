@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "overview/lessons_learned.schema.json",
+  "title": "振り返り・教訓（overview）",
+  "description": "マイルストーン・リリース後の振り返り・教訓。何を学んだか・次に活かすことを記録する。",
+  "type": "object",
+  "required": ["meta", "lessons", "references"],
+  "x-ai-guid": {
+    "intro": "振り返りを管理する。lessons 配列に phase, what_worked, what_didnt, action_items 等。",
+    "required_sections": ["meta", "lessons", "references"]
+  },
+  "properties": {
+    "meta": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "overview" },
+            "doc_type": { "const": "lessons_learned" }
+          }
+        }
+      ]
+    },
+    "lessons": {
+      "type": "array",
+      "description": "振り返り一覧（フェーズ・マイルストーン単位）",
+      "items": {
+        "type": "object",
+        "required": ["phase"],
+        "properties": {
+          "phase": { "type": "string", "description": "フェーズ・マイルストーン名" },
+          "held_at": { "type": "string", "description": "実施日" },
+          "what_worked": { "type": "array", "items": { "type": "string" }, "description": "うまくいったこと" },
+          "what_didnt": { "type": "array", "items": { "type": "string" }, "description": "うまくいかなかったこと" },
+          "action_items": { "type": "array", "items": { "type": "string" }, "description": "次に活かすアクション" },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context"
+    }
+  }
+}

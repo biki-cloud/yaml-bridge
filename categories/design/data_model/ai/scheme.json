@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "design/data_model.schema.json",
+  "title": "データモデル（design）",
+  "description": "ER図・テーブル定義・スキーマ変更。DB変更のトレースと実装計画との紐付けに利用する。",
+  "type": "object",
+  "required": ["meta", "overview", "entities", "references"],
+  "x-ai-guid": {
+    "intro": "データモデルを記述する。entities 配列に id, name, description, attributes, relations 等。",
+    "required_sections": ["meta", "overview", "entities", "references"]
+  },
+  "properties": {
+    "meta": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "design" },
+            "doc_type": { "const": "data_model" }
+          }
+        }
+      ]
+    },
+    "overview": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/overview_background_goal" },
+        {
+          "properties": {
+            "scope": {
+              "type": "object",
+              "properties": {
+                "in": { "type": "array", "items": { "type": "string" } },
+                "out": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "entities": {
+      "type": "array",
+      "description": "エンティティ・テーブル一覧",
+      "items": {
+        "type": "object",
+        "required": ["id", "name"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string", "description": "テーブル・エンティティ名" },
+          "description": { "type": "string" },
+          "attributes": {
+            "type": "array",
+            "description": "属性・カラム一覧",
+            "items": {
+              "type": "object",
+              "required": ["name", "type"],
+              "properties": {
+                "name": { "type": "string" },
+                "type": { "type": "string", "description": "型（string, int, uuid, timestamp等）" },
+                "nullable": { "type": "boolean" },
+                "primary_key": { "type": "boolean" },
+                "description": { "type": "string" }
+              }
+            }
+          },
+          "relations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "target_entity_id": { "type": "string" },
+                "relation_type": { "type": "string", "enum": ["one_to_one", "one_to_many", "many_to_many"] },
+                "description": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context"
+    }
+  }
+}

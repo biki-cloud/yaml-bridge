@@ -1,0 +1,21 @@
+meta:
+  title: "API仕様"
+  category: design
+  doc_type: api_spec
+  status: todo
+  version: "1.0.0"
+
+overview:
+  background: ""
+  goal: ""
+  related_docs:
+    - title: 要件整理
+      url: categories/design/requirements/ai/document.yaml
+    - title: アーキテクチャ
+      url: categories/design/architecture/ai/document.yaml
+
+endpoints: []
+
+references:
+  - title: 要件整理
+    url: categories/design/requirements/ai/document.yaml

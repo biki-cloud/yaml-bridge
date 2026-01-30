@@ -12,7 +12,7 @@
 
 ### 関連ドキュメント
 
-- [要件整理](categories/design/requirements/ai/document.yaml)
+- [要件整理](../../requirements/human/document.md)
 
 ## コンポーネント一覧
 

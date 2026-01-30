@@ -85,23 +85,34 @@ pie showData
 - [受入・サインオフ一覧](../acceptance_sign_off/human/document.md)
 - [プロジェクト変更履歴](../change_log/human/document.md)
 - [プロジェクト決定ログ](../decisions/human/document.md)
+- [外部依存](../dependency_external/human/document.md)
+- [用語集](../glossary/human/document.md)
+- [振り返り・教訓](../lessons_learned/human/document.md)
 - [案件全体の検討事項・不明点](../open_items/human/document.md)
+- [品質・受入基準](../quality_criteria/human/document.md)
 - [リリースログ](../release_log/human/document.md)
 - [プロジェクトリスク登録簿](../risk_register/human/document.md)
+- [ステークホルダー・RACI](../stakeholder_raci/human/document.md)
 - [認証機能改修 WBS](../wbs/human/document.md)
 
 ### design
 
+- [API仕様](../../../design/api_spec/human/document.md)
 - [システムアーキテクチャ](../../../design/architecture/human/document.md)
+- [データモデル](../../../design/data_model/human/document.md)
 - [設計の検討事項・不明点](../../../design/open_items/human/document.md)
 - [ユーザー認証機能の要件整理](../../../design/requirements/human/document.md)
+- [セキュリティ設計・脅威モデル](../../../design/security_design/human/document.md)
 - [設計の詳細タスク](../../../design/tasks/human/document.md)
 
 ### development
 
+- [依存一覧](../../../development/dependencies/human/document.md)
+- [環境・インフラ](../../../development/environment/human/document.md)
 - [セッション管理の実装詳細](../../../development/implementation_detail/human/document.md)
 - [リフレッシュトークンローテーション実装計画](../../../development/implementation_plan/human/document.md)
 - [セッション管理改善の修正結果](../../../development/implementation_result/human/document.md)
+- [障害・振り返り](../../../development/incident_postmortem/human/document.md)
 - [開発の検討事項・不明点](../../../development/open_items/human/document.md)
 - [リフレッシュトークンローテーション PR](../../../development/pull_request/human/document.md)
 - [運用ランブック](../../../development/runbook/human/document.md)

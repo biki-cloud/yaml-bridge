@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "design/security_design.schema.json",
+  "title": "セキュリティ設計・脅威モデル（design）",
+  "description": "認証・認可・機密データを扱う案件向け。脅威と対策を明示し、architecture とは別にセキュリティ観点を記述する。",
+  "type": "object",
+  "required": ["meta", "overview", "threats", "references"],
+  "x-ai-guid": {
+    "intro": "セキュリティ設計・脅威モデルを管理する。threats 配列に id, threat, impact, countermeasure, status 等。",
+    "required_sections": ["meta", "overview", "threats", "references"]
+  },
+  "properties": {
+    "meta": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "design" },
+            "doc_type": { "const": "security_design" }
+          }
+        }
+      ]
+    },
+    "overview": {
+      "$ref": "../../../../common/scheme.json#/definitions/overview_background_goal",
+      "x-ai-guid": "背景・ゴール・related_docs。要件・アーキテクチャを参照する。"
+    },
+    "threats": {
+      "type": "array",
+      "description": "脅威と対策一覧",
+      "items": {
+        "type": "object",
+        "required": ["id", "threat", "impact"],
+        "properties": {
+          "id": { "type": "string" },
+          "threat": { "type": "string", "description": "脅威の説明" },
+          "impact": { "type": "string", "enum": ["high", "medium", "low"], "description": "影響度" },
+          "countermeasure": { "type": "string", "description": "対策" },
+          "status": { "type": "string", "enum": ["open", "mitigating", "mitigated", "accepted"], "description": "対策状況" },
+          "related_docs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["title", "url"],
+              "properties": { "title": { "type": "string" }, "url": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context"
+    }
+  }
+}

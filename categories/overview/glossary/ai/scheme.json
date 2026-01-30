@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "overview/glossary.schema.json",
+  "title": "用語集（overview）",
+  "description": "プロジェクト共通の用語・略語の定義。AI・人間の解釈を揃え、用語の揺れを防ぐ。investigation の domain_knowledge は調査成果、本 doc_type は定義の参照として overview に置く。",
+  "type": "object",
+  "required": ["meta", "terms", "references"],
+  "x-ai-guid": {
+    "intro": "用語集を管理する。terms 配列に id, term, definition, alias, related_terms 等。",
+    "required_sections": ["meta", "terms", "references"]
+  },
+  "properties": {
+    "meta": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "overview" },
+            "doc_type": { "const": "glossary" }
+          }
+        }
+      ]
+    },
+    "terms": {
+      "type": "array",
+      "description": "用語・略語一覧",
+      "items": {
+        "type": "object",
+        "required": ["id", "term", "definition"],
+        "properties": {
+          "id": { "type": "string" },
+          "term": { "type": "string", "description": "用語・略語" },
+          "definition": { "type": "string", "description": "定義" },
+          "alias": { "type": "array", "items": { "type": "string" }, "description": "別表記・略称" },
+          "related_terms": { "type": "array", "items": { "type": "string" }, "description": "関連用語 ID" },
+          "source": { "type": "string", "description": "出典・参照元" }
+        }
+      }
+    },
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context"
+    }
+  }
+}

@@ -71,7 +71,7 @@ def generate_markdown(data: dict, output_path=None) -> str:
             lines.append("")
     
     overview_section = format_overview_section(
-        data.get('overview', {}), include_goal=False, include_related_docs=False
+        data.get('overview', {}), include_goal=False, include_related_docs=False, output_path=output_path
     )
     if overview_section:
         lines.append(overview_section.rstrip())

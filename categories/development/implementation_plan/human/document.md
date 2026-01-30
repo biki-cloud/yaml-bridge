@@ -38,8 +38,8 @@ flowchart TD
 
 ### 関連ドキュメント
 
-- [認証機能コード理解](categories/investigation/code_understanding/ai/document.yaml)
-- [認証WBS](categories/overview/wbs/ai/document.yaml)
+- [認証機能コード理解](../../../investigation/code_understanding/human/document.md)
+- [認証WBS](../../../overview/wbs/human/document.md)
 
 ## 対象
 

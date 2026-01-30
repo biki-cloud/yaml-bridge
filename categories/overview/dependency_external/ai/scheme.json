@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "overview/dependency_external.schema.json",
+  "title": "外部依存（overview）",
+  "description": "外部ベンダー・他プロジェクト・他チームとの依存・契約・SLAを管理する。",
+  "type": "object",
+  "required": ["meta", "dependencies", "references"],
+  "x-ai-guid": {
+    "intro": "外部依存を管理する。dependencies 配列に id, name, type, owner, sla, risk_register_id 等。",
+    "required_sections": ["meta", "dependencies", "references"]
+  },
+  "properties": {
+    "meta": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "overview" },
+            "doc_type": { "const": "dependency_external" }
+          }
+        }
+      ]
+    },
+    "dependencies": {
+      "type": "array",
+      "description": "外部依存一覧",
+      "items": {
+        "type": "object",
+        "required": ["id", "name"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string", "description": "依存先名（ベンダー・プロジェクト・チーム）" },
+          "type": { "type": "string", "enum": ["vendor", "project", "team", "other"], "description": "種別" },
+          "owner": { "type": "string", "description": "窓口・担当" },
+          "sla": { "type": "string", "description": "SLA・契約概要" },
+          "risk_register_id": { "type": "string", "description": "risk_register の id 参照" },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+meta:
+  title: "外部依存"
+  category: overview
+  doc_type: dependency_external
+  status: todo
+  version: "1.0.0"
+
+dependencies: []
+
+references:
+  - title: プロジェクト概要
+    url: categories/overview/project_summary/ai/document.yaml

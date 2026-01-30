@@ -1,0 +1,14 @@
+meta:
+  title: "環境・インフラ"
+  category: development
+  doc_type: environment
+  status: todo
+  version: "1.0.0"
+
+environments: []
+
+references:
+  - title: プロジェクト概要
+    url: categories/overview/project_summary/ai/document.yaml
+  - title: ランブック
+    url: categories/development/runbook/ai/document.yaml

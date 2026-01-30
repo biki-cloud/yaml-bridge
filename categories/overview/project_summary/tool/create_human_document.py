@@ -89,7 +89,7 @@ def generate_markdown(data: dict, output_path=None) -> str:
         lines.append(ai_section)
         lines.append("")
     overview_section = format_overview_section(
-        data.get('summary', {}), goal_heading='ゴール', include_related_docs=False
+        data.get('summary', {}), goal_heading='ゴール', include_related_docs=False, output_path=output_path
     )
     if overview_section:
         lines.append(overview_section.rstrip())

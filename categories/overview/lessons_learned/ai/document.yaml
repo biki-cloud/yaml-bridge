@@ -1,0 +1,12 @@
+meta:
+  title: "振り返り・教訓"
+  category: overview
+  doc_type: lessons_learned
+  status: todo
+  version: "1.0.0"
+
+lessons: []
+
+references:
+  - title: プロジェクト概要
+    url: categories/overview/project_summary/ai/document.yaml

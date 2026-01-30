@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "overview/stakeholder_raci.schema.json",
+  "title": "ステークホルダー・RACI（overview）",
+  "description": "誰が何に責任・相談・報告するかを一覧化。RACIや役割マトリクスをYAMLで管理する。",
+  "type": "object",
+  "required": ["meta", "raci_items", "references"],
+  "x-ai-guid": {
+    "intro": "ステークホルダーとRACIを管理する。raci_items 配列に scope, responsible, accountable, consulted, informed, notes 等。",
+    "required_sections": ["meta", "raci_items", "references"]
+  },
+  "properties": {
+    "meta": {
+      "allOf": [
+        { "$ref": "../../../../common/scheme.json#/definitions/meta_base" },
+        {
+          "properties": {
+            "category": { "const": "overview" },
+            "doc_type": { "const": "stakeholder_raci" }
+          }
+        }
+      ]
+    },
+    "raci_items": {
+      "type": "array",
+      "description": "RACI一覧（範囲・活動ごとに R/A/C/I を記録）",
+      "items": {
+        "type": "object",
+        "required": ["scope"],
+        "properties": {
+          "scope": { "type": "string", "description": "対象範囲・活動" },
+          "responsible": { "type": "string", "description": "実行責任者" },
+          "accountable": { "type": "string", "description": "説明責任者" },
+          "consulted": { "type": "array", "items": { "type": "string" }, "description": "相談先" },
+          "informed": { "type": "array", "items": { "type": "string" }, "description": "報告先" },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "references": {
+      "$ref": "../../../../common/scheme.json#/definitions/references"
+    },
+    "ai_context": {
+      "$ref": "../../../../common/scheme.json#/definitions/ai_context"
+    }
+  }
+}

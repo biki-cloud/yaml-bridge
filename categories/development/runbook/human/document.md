@@ -8,7 +8,7 @@
 
 ### 関連ドキュメント
 
-- [プロジェクト概要](categories/overview/project_summary/ai/document.yaml)
+- [プロジェクト概要](../../../overview/project_summary/human/document.md)
 
 ## 手順一覧
 

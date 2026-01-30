@@ -179,10 +179,12 @@ def format_overview_section(
     include_goal: bool = True,
     goal_heading: str = "目的",
     include_related_docs: bool = True,
+    output_path: Optional[Path] = None,
 ) -> str:
     """
     overview 辞書から「背景」「目的/ゴール」「関連ドキュメント」の Markdown を生成する。
     各 create_human_document.py で共通利用。
+    output_path を渡すと、関連ドキュメントのファイルパスを出力ファイルからの相対パスに変換する。
     """
     if not overview:
         return ''
@@ -203,7 +205,8 @@ def format_overview_section(
         for doc in overview['related_docs']:
             if isinstance(doc, dict):
                 title, url = doc.get('title', '-'), doc.get('url', '')
-                lines.append(f'- [{title}]({url})' if url else f'- {title}')
+                link = _ref_url_for_markdown(url, output_path) if url else url
+                lines.append(f'- [{title}]({link})' if link else f'- {title}')
             else:
                 lines.append(f'- {doc}')
         lines.append('')
@@ -226,6 +229,15 @@ def generate_open_items_markdown(data: dict, output_path: Optional[Path] = None)
     if meta.get('author'):
         lines.append(f"**作成者:** {meta['author']}")
     lines.append("")
+
+    if meta.get('category') == 'overview':
+        lines.append("**この doc_type の役割:** プロジェクト全体の検討事項・不明点の**目次**として使う。各カテゴリの未決事項は以下に分散している。ここでは「全体で何が未決か」を一覧し、必要に応じて各カテゴリの open_items へリンクする。")
+        lines.append("")
+        lines.append("- [設計の検討事項・不明点](../../../design/open_items/human/document.md)")
+        lines.append("- [開発の検討事項・不明点](../../../development/open_items/human/document.md)")
+        lines.append("- [調査の検討事項・不明点](../../../investigation/open_items/human/document.md)")
+        lines.append("- [検証の検討事項・不明点](../../../verification/open_items/human/document.md)")
+        lines.append("")
 
     ai_section = format_ai_context_section(data)
     if ai_section:
