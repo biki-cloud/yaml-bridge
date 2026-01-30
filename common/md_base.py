@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Callable, Optional
 
 from config import HUMAN_DOCUMENT_MD
+from paths import DOC_CATEGORIES, get_category_label
 
 
 def load_yaml(file_path: str) -> dict:
@@ -254,12 +255,10 @@ def generate_open_items_markdown(data: dict, output_path: Optional[Path] = None)
     if meta.get('category') == 'overview':
         lines.append("**この doc_type の役割:** プロジェクト全体の検討事項・不明点の**目次**として使う。各カテゴリの未決事項は以下に分散している。ここでは「全体で何が未決か」を一覧し、必要に応じて各カテゴリの open_items へリンクする。")
         lines.append("")
-        for cat, label in [
-            ('design', '設計の検討事項・不明点'),
-            ('development', '開発の検討事項・不明点'),
-            ('investigation', '調査の検討事項・不明点'),
-            ('verification', '検証の検討事項・不明点'),
-        ]:
+        for cat in DOC_CATEGORIES:
+            if cat == 'overview':
+                continue
+            label = f"{get_category_label(cat)}の検討事項・不明点"
             href = rel_path_to_human_doc(output_path, cat, 'open_items')
             lines.append(f"- [{label}]({href})")
         lines.append("")

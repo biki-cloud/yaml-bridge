@@ -9,39 +9,26 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent.parent / 'common'))
 from config import AI_DOCUMENT_YAML
+from paths import DOC_CATEGORIES, get_all_category_doc_type_pairs, get_ai_document_path
 from md_base import load_yaml, format_status, format_references_section, format_ai_context_section, format_overview_section, rel_path_to_human_doc, run_create_human_document
-
-CATEGORIES = ['overview', 'design', 'development', 'investigation', 'verification']
-
-
-def get_categories_dir() -> Path:
-    """categories ディレクトリを返す（tool/ から doc_type を抜けて 2 段上）"""
-    return Path(__file__).resolve().parent.parent.parent.parent
 
 
 def get_all_doc_links() -> list[tuple[str, str, str]]:
     """全カテゴリの (category, doc_type, title) 一覧を返す（project_summary 自身を除く）"""
-    categories_dir = get_categories_dir()
     entries = []
-    for category in CATEGORIES:
-        cat_dir = categories_dir / category
-        if not cat_dir.is_dir():
+    for category, doc_type in get_all_category_doc_type_pairs():
+        if category == 'overview' and doc_type == 'project_summary':
             continue
-        for doc_dir in sorted(cat_dir.iterdir()):
-            if not doc_dir.is_dir():
-                continue
-            if category == 'overview' and doc_dir.name == 'project_summary':
-                continue
-            yaml_path = doc_dir / AI_DOCUMENT_YAML
-            if not yaml_path.exists():
-                continue
-            try:
-                data = load_yaml(str(yaml_path))
-            except Exception:
-                continue
-            meta = data.get('meta', {})
-            title = meta.get('title') or meta.get('doc_type', doc_dir.name)
-            entries.append((category, doc_dir.name, title))
+        yaml_path = get_ai_document_path(category, doc_type)
+        if not yaml_path.exists():
+            continue
+        try:
+            data = load_yaml(str(yaml_path))
+        except Exception:
+            continue
+        meta = data.get('meta', {})
+        title = meta.get('title') or meta.get('doc_type', doc_type)
+        entries.append((category, doc_type, title))
     return entries
 
 
@@ -56,7 +43,7 @@ def format_doc_links_section(entries: list[tuple[str, str, str]], output_path=No
     lines = []
     lines.append('## カテゴリ別ドキュメント一覧')
     lines.append('')
-    for category in CATEGORIES:
+    for category in DOC_CATEGORIES:
         if category not in by_category:
             continue
         lines.append(f'### {category}')

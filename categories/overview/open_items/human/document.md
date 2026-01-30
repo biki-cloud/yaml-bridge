@@ -7,7 +7,7 @@
 - [設計の検討事項・不明点](../../../design/open_items/human/document.md)
 - [開発の検討事項・不明点](../../../development/open_items/human/document.md)
 - [調査の検討事項・不明点](../../../investigation/open_items/human/document.md)
-- [検証の検討事項・不明点](../../../verification/open_items/human/document.md)
+- [動作確認の検討事項・不明点](../../../verification/open_items/human/document.md)
 
 ## 検討事項
 

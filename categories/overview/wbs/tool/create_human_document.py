@@ -9,14 +9,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent.parent / 'common'))
 from config import AI_DOCUMENT_YAML
+from paths import DOC_CATEGORIES, get_available_categories, get_category_label, get_doc_types, get_ai_document_path
 from md_base import load_yaml, format_status, format_references_section, format_ai_context_section, format_overview_section, run_create_human_document
-
-TASK_STATE_CATEGORIES = ['overview', 'design', 'development', 'investigation', 'verification']
-
-
-def get_categories_dir() -> Path:
-    """categories ディレクトリを返す（tool/ から doc_type を抜けて 2 段上）"""
-    return Path(__file__).resolve().parent.parent.parent.parent
 
 
 def _wbs_code_sort_key(wbs_code: str) -> tuple:
@@ -44,16 +38,12 @@ def _progress_from_elements(elements: list[dict]) -> tuple[float, float, int, in
 
 def collect_task_states() -> list[dict]:
     """各カテゴリの ai_document.yaml からタスク状態を収集（tasks または wbs_elements）"""
-    categories_dir = get_categories_dir()
     entries = []
-    for category in TASK_STATE_CATEGORIES:
-        cat_dir = categories_dir / category
-        if not cat_dir.is_dir():
+    for category in DOC_CATEGORIES:
+        if category not in get_available_categories():
             continue
-        for doc_dir in sorted(cat_dir.iterdir()):
-            if not doc_dir.is_dir():
-                continue
-            yaml_path = doc_dir / AI_DOCUMENT_YAML
+        for doc_type in get_doc_types(category):
+            yaml_path = get_ai_document_path(category, doc_type)
             if not yaml_path.exists():
                 continue
             try:
@@ -63,7 +53,7 @@ def collect_task_states() -> list[dict]:
             meta = data.get('meta', {})
             entry = {
                 'category': category,
-                'doc_type': meta.get('doc_type', doc_dir.name),
+                'doc_type': meta.get('doc_type', doc_type),
                 'title': meta.get('title', yaml_path.stem),
                 'status': meta.get('status', ''),
             }
@@ -85,13 +75,13 @@ def collect_task_states() -> list[dict]:
 
 def collect_category_tasks() -> list[dict]:
     """各カテゴリの doc_type: tasks から詳細タスクを収集（WBS で集約表示用）"""
-    categories_dir = get_categories_dir()
     entries = []
-    for category in TASK_STATE_CATEGORIES:
+    for category in DOC_CATEGORIES:
         if category == 'overview':
             continue
-        tasks_dir = categories_dir / category / 'tasks'
-        yaml_path = tasks_dir / 'ai' / 'document.yaml'
+        if 'tasks' not in get_doc_types(category):
+            continue
+        yaml_path = get_ai_document_path(category, 'tasks')
         if not yaml_path.exists():
             continue
         try:
@@ -146,7 +136,7 @@ def format_task_states_section(entries: list[dict]) -> str:
     lines = []
     lines.append('## カテゴリ別タスク状態')
     lines.append('')
-    lines.append('overview / design / development / investigation / verification の各 `{}` のドキュメント状態と、'.format(AI_DOCUMENT_YAML))
+    lines.append('{} の各 `{}` のドキュメント状態と、'.format(' / '.join(DOC_CATEGORIES), AI_DOCUMENT_YAML))
     lines.append('WBS のタスク一覧を表示しています。')
     lines.append('')
     for e in entries:
@@ -268,7 +258,7 @@ def generate_markdown(data: dict, output_path=None) -> str:
         lines.append("## タスク一覧")
         lines.append("")
         status_counts = {'todo': 0, 'wip': 0, 'done': 0}
-        category_counts = {'investigation': 0, 'design': 0, 'development': 0, 'verification': 0}
+        category_counts = {c: 0 for c in DOC_CATEGORIES if c != 'overview'}
         for e in work_elements:
             s = e.get('status', 'todo')
             if s in status_counts:
@@ -290,10 +280,9 @@ def generate_markdown(data: dict, output_path=None) -> str:
             lines.append("```mermaid")
             lines.append("pie showData")
             lines.append("    title タスクカテゴリ分布")
-            labels = {'investigation': '調査', 'design': '設計', 'development': '開発', 'verification': '動作確認'}
             for c, count in category_counts.items():
                 if count > 0:
-                    lines.append(f'    "{labels[c]}" : {count}')
+                    lines.append(f'    "{get_category_label(c)}" : {count}')
             lines.append("```")
             lines.append("")
         # 依存関係図
@@ -314,15 +303,12 @@ def generate_markdown(data: dict, output_path=None) -> str:
             lines.append("")
         status_icons = {'todo': '⬜', 'wip': '🔄', 'done': '✅'}
         priority_icons = {'high': '🔴', 'medium': '🟡', 'low': '🟢'}
-        category_labels = {
-            'investigation': '調査', 'design': '設計', 'development': '開発', 'verification': '動作確認'
-        }
         lines.append("| ID | WBS | タイプ | タスク | カテゴリ | 優先度 | ステータス | 見積(h) |")
         lines.append("|----|-----|--------|--------|----------|--------|----------|---------|")
         for e in sorted(work_elements, key=lambda x: _wbs_code_sort_key(x.get('wbs_code', ''))):
             st = status_icons.get(e.get('status', ''), '') + ' ' + e.get('status', '-')
             pr = priority_icons.get(e.get('priority', ''), '') + ' ' + (e.get('priority') or '-')
-            cat = category_labels.get(e.get('category', ''), e.get('category') or '-')
+            cat = get_category_label(e.get('category', '') or '') or e.get('category') or '-'
             hours = e.get('estimated_hours', '-')
             typ = e.get('type', '-')
             lines.append(f"| {e.get('id', '-')} | {e.get('wbs_code', '-')} | {typ} | {e.get('title', '-')} | {cat} | {pr} | {st} | {hours} |")
