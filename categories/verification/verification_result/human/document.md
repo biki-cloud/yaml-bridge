@@ -2,6 +2,7 @@
 
 **タイプ:** ✅ 動作確認結果 | **ステータス:** ✅ Done | **バージョン:** 1.0.0
 **作成者:** 佐藤花子
+**この doc_type の役割:** 動作確認・検証の結果を記録する。
 
 **対象機能:** リフレッシュトークンローテーション
 **関連PR:** https://github.com/example/auth-service/pull/456
@@ -44,3 +45,7 @@ pie showData
 ## 関連資料（エビデンス）
 
 - [動作確認結果・関連PR](https://github.com)
+
+---
+
+[プロジェクト概要に戻る](../../../overview/project_summary/human/document.md)

@@ -2,6 +2,7 @@
 
 **タイプ:** 📋 実装計画 | **ステータス:** 🔄 WIP | **対象:** 🌐 API | **バージョン:** 1.0.0
 **作成者:** 山田太郎
+**この doc_type の役割:** 実装の計画・手順を記述する。
 
 ## 開発フロー
 
@@ -109,3 +110,7 @@ pie showData
 ## 関連資料（エビデンス）
 
 - [RFC 6749 - OAuth 2.0](https://tools.ietf.org/html/rfc6749)
+
+---
+
+[プロジェクト概要に戻る](../../../overview/project_summary/human/document.md)

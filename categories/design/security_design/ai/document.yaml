@@ -6,8 +6,8 @@ meta:
   version: "1.0.0"
 
 overview:
-  background: "（認証・認可・機密データを扱う場合の脅威と対策を記述する）"
-  goal: "脅威と対策を明文化し、セキュリティリスクを低減する"
+  background: "認証・認可・機密データを扱う場合の脅威と対策をここに記述する。"
+  goal: "脅威と対策を明文化し、セキュリティリスクを低減する。"
   related_docs:
     - title: 要件整理
       url: categories/design/requirements/ai/document.yaml

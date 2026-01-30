@@ -13,6 +13,93 @@ from typing import Callable, Optional
 from config import HUMAN_DOCUMENT_MD
 from paths import DOC_CATEGORIES, get_category_label
 
+# (category, doc_type) → この doc_type の役割（1行説明）
+DOC_TYPE_ROLE_DESCRIPTIONS: dict[tuple[str, str], str] = {
+    ("overview", "acceptance_sign_off"): "受入条件のサインオフ結果を記録する。",
+    ("overview", "change_log"): "スコープ・計画・体制の変更履歴を記録する。いつ・何を・なぜ変更したか、承認有無を残す。本番リリースの日時・バージョン・変更内容はリリースログを参照する。",
+    ("overview", "decisions"): "プロジェクトで行った重要な決定と理由を記録する。",
+    ("overview", "dependency_external"): "外部システム・サービス・組織への依存を一覧し、リスクを把握する。",
+    ("overview", "document"): "そのカテゴリで他 doc_type に当てはまらない情報用の汎用ドキュメント。",
+    ("overview", "glossary"): "プロジェクトで使う用語の定義を一覧にし、認識のズレを防ぐ。",
+    ("overview", "lessons_learned"): "振り返りで得た教訓を記録し、次に活かす。",
+    ("overview", "open_items"): "プロジェクト全体の検討事項・不明点の目次として使う。各カテゴリの未決事項へリンクする。",
+    ("overview", "project_summary"): "プロジェクトの概要・ゴール・スコープ・ステークホルダー・タイムライン・リスクを一覧にする。",
+    ("overview", "quality_criteria"): "品質・受入基準を明文化する。",
+    ("overview", "release_log"): "本番リリースの日時・バージョン・変更内容を記録する。",
+    ("overview", "risk_register"): "プロジェクトリスクを登録し、影響度と対策を管理する。",
+    ("overview", "stakeholder_raci"): "ステークホルダーと RACI を明示する。",
+    ("overview", "wbs"): "作業分解構成とタスク・マイルストーンを管理する。",
+    ("design", "api_spec"): "API の仕様（エンドポイント・リクエスト/レスポンス）を定義する。",
+    ("design", "architecture"): "システム全体像・コンポーネント境界を明文化する。",
+    ("design", "data_model"): "エンティティとその関係を定義し、要件・アーキテクチャと整合させる。",
+    ("design", "document"): "設計カテゴリで他 doc_type に当てはまらない情報用の汎用ドキュメント。",
+    ("design", "open_items"): "設計フェーズの検討事項・不明点を記録する。",
+    ("design", "requirements"): "要件を整理し、優先度・受け入れ条件を明示する。",
+    ("design", "security_design"): "脅威と対策を明文化し、セキュリティリスクを低減する。",
+    ("design", "tasks"): "設計フェーズの詳細タスクを一覧にする。",
+    ("development", "dependencies"): "ライブラリ・ツール等の依存関係を一覧にする。",
+    ("development", "document"): "開発カテゴリで他 doc_type に当てはまらない情報用の汎用ドキュメント。",
+    ("development", "environment"): "環境・インフラの構成と手順を記述する。",
+    ("development", "implementation_detail"): "実装の詳細（アルゴリズム・処理フロー等）を記述する。",
+    ("development", "implementation_plan"): "実装の計画・手順を記述する。",
+    ("development", "implementation_result"): "実装の結果・変更内容を記録する。",
+    ("development", "incident_postmortem"): "障害の振り返りと再発防止策を記録する。",
+    ("development", "open_items"): "開発フェーズの検討事項・不明点を記録する。",
+    ("development", "pull_request"): "PR の概要・変更内容・レビュー観点を記録する。",
+    ("development", "runbook"): "運用時の手順・トラブルシュートを記述する。",
+    ("development", "tasks"): "開発フェーズの詳細タスクを一覧にする。",
+    ("development", "technical_debt"): "技術的負債を一覧にし、対応方針を管理する。",
+    ("investigation", "code_understanding"): "コードの理解・解析結果を記録する。",
+    ("investigation", "document"): "調査カテゴリで他 doc_type に当てはまらない情報用の汎用ドキュメント。",
+    ("investigation", "domain_knowledge"): "ドメイン知識・業務理解の調査結果を記録する。",
+    ("investigation", "investigation_summary"): "調査のサマリと結論を記録する。",
+    ("investigation", "open_items"): "調査フェーズの検討事項・不明点を記録する。",
+    ("investigation", "related_code_research"): "関連コードの調査結果を記録する。",
+    ("investigation", "tasks"): "調査フェーズの詳細タスクを一覧にする。",
+    ("verification", "document"): "検証カテゴリで他 doc_type に当てはまらない情報用の汎用ドキュメント。",
+    ("verification", "open_items"): "検証フェーズの検討事項・不明点を記録する。",
+    ("verification", "tasks"): "検証フェーズの詳細タスクを一覧にする。",
+    ("verification", "verification_plan"): "動作確認・検証の計画を記述する。",
+    ("verification", "verification_procedure"): "動作確認・検証の手順を記述する。",
+    ("verification", "verification_result"): "動作確認・検証の結果を記録する。",
+}
+
+
+def get_doc_type_role_description(category: str, doc_type: str) -> str:
+    """(category, doc_type) に対応する「この doc_type の役割」の 1 行を返す。"""
+    return DOC_TYPE_ROLE_DESCRIPTIONS.get((category, doc_type), "")
+
+
+def format_empty_section_hint(yaml_key: str = "") -> str:
+    """一覧が空のとき「（なし）」の前に出す案内文。"""
+    if yaml_key:
+        return f"*該当する項目を ai/document.yaml の `{yaml_key}` に追加するとここに表示されます。*"
+    return "*該当する項目を ai/document.yaml に追加するとここに表示されます。*"
+
+
+def format_navigation_footer(
+    output_path: Optional[Path] = None,
+    *,
+    skip_for_project_summary: bool = False,
+) -> str:
+    """「プロジェクト概要に戻る」リンクを返す。project_summary のときは空または省略可。"""
+    if skip_for_project_summary:
+        return ""
+    href = rel_path_to_human_doc(output_path, "overview", "project_summary")
+    return "\n---\n\n[プロジェクト概要に戻る]({})\n".format(href)
+
+
+def format_meta_dates(meta: dict) -> str:
+    """meta から created_at / updated_at があれば「**作成日:**」「**更新日:**」の行を返す。"""
+    lines = []
+    if meta.get("created_at"):
+        lines.append(f"**作成日:** {meta['created_at']}")
+    if meta.get("updated_at"):
+        lines.append(f"**更新日:** {meta['updated_at']}")
+    if not lines:
+        return ""
+    return "\n".join(lines) + "\n"
+
 
 def load_yaml(file_path: str) -> dict:
     """YAMLファイルを読み込む"""
@@ -253,7 +340,9 @@ def generate_open_items_markdown(data: dict, output_path: Optional[Path] = None)
     lines.append("")
 
     if meta.get('category') == 'overview':
-        lines.append("**この doc_type の役割:** プロジェクト全体の検討事項・不明点の**目次**として使う。各カテゴリの未決事項は以下に分散している。ここでは「全体で何が未決か」を一覧し、必要に応じて各カテゴリの open_items へリンクする。")
+        role = get_doc_type_role_description(meta.get('category', ''), meta.get('doc_type', ''))
+        if role:
+            lines.append(f"**この doc_type の役割:** {role}")
         lines.append("")
         for cat in DOC_CATEGORIES:
             if cat == 'overview':
@@ -293,6 +382,8 @@ def generate_open_items_markdown(data: dict, output_path: Optional[Path] = None)
     else:
         lines.append("## 検討事項")
         lines.append("")
+        lines.append(format_empty_section_hint("open_decisions"))
+        lines.append("")
         lines.append("（なし）")
         lines.append("")
 
@@ -325,12 +416,17 @@ def generate_open_items_markdown(data: dict, output_path: Optional[Path] = None)
     else:
         lines.append("## 不明点")
         lines.append("")
+        lines.append(format_empty_section_hint("unclear_points"))
+        lines.append("")
         lines.append("（なし）")
         lines.append("")
 
     ref_section = format_references_section(data, output_path=output_path)
     if ref_section:
         lines.append(ref_section.rstrip())
+    nav = format_navigation_footer(output_path)
+    if nav:
+        lines.append(nav.rstrip())
     return '\n'.join(lines)
 
 
@@ -347,6 +443,12 @@ def generate_document_markdown(data: dict, output_path: Optional[Path] = None) -
     lines.append(f"**タイプ:** 📄 汎用ドキュメント | **ステータス:** {format_status(meta.get('status', 'todo'))} | **バージョン:** {meta.get('version', '-')}")
     if meta.get('author'):
         lines.append(f"**作成者:** {meta['author']}")
+    dates = format_meta_dates(meta)
+    if dates:
+        lines.append(dates.rstrip())
+    role = get_doc_type_role_description(meta.get('category', ''), meta.get('doc_type', ''))
+    if role:
+        lines.append(f"**この doc_type の役割:** {role}")
     lines.append("")
     ai_section = format_ai_context_section(data)
     if ai_section:
@@ -360,6 +462,9 @@ def generate_document_markdown(data: dict, output_path: Optional[Path] = None) -
     ref_section = format_references_section(data, output_path=output_path)
     if ref_section:
         lines.append(ref_section.rstrip())
+    nav = format_navigation_footer(output_path)
+    if nav:
+        lines.append(nav.rstrip())
     return '\n'.join(lines)
 
 

@@ -6,8 +6,8 @@ meta:
   version: "1.0.0"
 
 overview:
-  background: "（本ドキュメントでシステム全体像を記述する）"
-  goal: "要件と実装の間の全体像・コンポーネント境界を明文化する"
+  background: "システム全体像・コンポーネント境界をここに記述する。"
+  goal: "要件と実装の間の全体像・コンポーネント境界を明文化する。"
   related_docs:
     - title: 要件整理
       url: categories/design/requirements/ai/document.yaml

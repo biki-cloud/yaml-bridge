@@ -106,3 +106,7 @@ SessionManagerの初期化をDI対応に変更
 ## 関連資料（エビデンス）
 
 - [実装計画・関連Issue](https://github.com)
+
+---
+
+[プロジェクト概要に戻る](../../../overview/project_summary/human/document.md)

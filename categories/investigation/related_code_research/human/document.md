@@ -2,6 +2,7 @@
 
 **タイプ:** 🔍 関連コード調査 | **ステータス:** ✅ Done | **バージョン:** 1.0.0
 **作成者:** 山田太郎
+**この doc_type の役割:** 関連コードの調査結果を記録する。
 
 ## 調査対象
 
@@ -90,3 +91,7 @@ WebSocketサーバーの雛形は存在するが、
 
 - [notification-serviceリポジトリ](https://github.com/example/notification-service)
 - [AWS SQS ドキュメント](https://docs.aws.amazon.com/sqs/)
+
+---
+
+[プロジェクト概要に戻る](../../../overview/project_summary/human/document.md)

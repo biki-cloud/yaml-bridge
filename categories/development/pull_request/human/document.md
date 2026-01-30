@@ -2,6 +2,7 @@
 
 **タイプ:** 🔀 PR情報 | **ステータス:** 🔄 WIP | **バージョン:** 1.0.0
 **作成者:** 山田太郎
+**この doc_type の役割:** PR の概要・変更内容・レビュー観点を記録する。
 
 ## Pull Request
 
@@ -72,3 +73,7 @@ pie showData
 ## 関連資料（エビデンス）
 
 - [PR・関連Issue](https://github.com)
+
+---
+
+[プロジェクト概要に戻る](../../../overview/project_summary/human/document.md)

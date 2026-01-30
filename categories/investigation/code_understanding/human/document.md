@@ -2,6 +2,7 @@
 
 **タイプ:** 📖 コード理解 | **ステータス:** ✅ Done | **バージョン:** 1.0.0
 **作成者:** 山田太郎
+**この doc_type の役割:** コードの理解・解析結果を記録する。
 
 ## 調査対象
 
@@ -98,3 +99,7 @@ const accessToken = jwt.sign({ userId }, SECRET, { expiresIn: '1h' });
 ## 関連資料（エビデンス）
 
 - [JWT Best Practices](https://auth0.com/blog/jwt-best-practices/)
+
+---
+
+[プロジェクト概要に戻る](../../../overview/project_summary/human/document.md)
