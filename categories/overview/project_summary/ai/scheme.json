@@ -24,7 +24,9 @@
     },
     "summary": {
       "allOf": [
-        { "$ref": "../../../../common/scheme.json#/definitions/overview_background_goal" },
+        {
+          "$ref": "../../../../common/scheme.json#/definitions/overview_background_goal"
+        },
         {
           "properties": {
             "scope": {
@@ -34,7 +36,10 @@
                 "out": { "type": "array", "items": { "type": "string" } }
               }
             },
-            "success_criteria": { "type": "array", "items": { "type": "string" } }
+            "success_criteria": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
           }
         }
       ],
@@ -76,7 +81,10 @@
       "items": {
         "type": "object",
         "properties": {
-          "type": { "type": "string", "enum": ["technical", "business", "resource", "time"] },
+          "type": {
+            "type": "string",
+            "enum": ["technical", "business", "resource", "time"]
+          },
           "description": { "type": "string" }
         }
       },
