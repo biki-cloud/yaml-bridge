@@ -32,6 +32,8 @@
 | 自動検証                          | ✅ `validate.py`                      |
 | ビルド/生成                       | ✅ `build.py` → Markdown/Mermaid 生成 |
 
+構成・データフローの図解は [project_structure_diagrams.md](project_structure_diagrams.md) を参照。
+
 なので、「ドキュメントをコード化している」という言い方で問題なく、`思想.md` の「YAML を介した共通言語」「ツールでマークダウンや Mermaid を作成」という設計が、そのまま「Documentation as Code」の形で実現されていると言えます。
 
 ## タスク管理方針

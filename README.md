@@ -6,7 +6,7 @@
 - **人間** … ツールでYAMLからMarkdownやMermaid図を生成して閲覧する
 - **検証** … 生成AIが書いたYAMLはスクリプトでバリデートする
 
-詳細な考え方は [思想.md](思想.md) を参照してください。
+詳細な考え方は [思想.md](思想.md) を参照してください。構成・データフローの図解は [project_structure_diagrams.md](project_structure_diagrams.md) を参照。
 
 ## 必要環境
 
