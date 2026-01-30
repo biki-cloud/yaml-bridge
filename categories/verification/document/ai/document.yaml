@@ -2,9 +2,23 @@ meta:
   title: "検証カテゴリの汎用ドキュメント"
   category: verification
   doc_type: document
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-15"
 
 summary: |
+  本ドキュメントは、検証カテゴリにおいて、動作確認計画・動作確認手順・動作確認結果・
+  タスク・検討事項のいずれにも当てはまらない補足情報をまとめるための汎用ドキュメントである。
 
-references: []
+  認証・ユーザー管理の検証の中心は「動作確認計画」「動作確認手順」「動作確認結果」と
+  「品質・受入基準」「受入・サインオフ」にあり、WBS の T-004（単体テスト）・M-001（リリース判定）と
+  連動する。本 document は、検証方針のメモ・テスト環境の注意点・外部ツールへのリンクなどに利用する。
+
+references:
+  - title: 動作確認計画
+    url: categories/verification/verification_plan/ai/document.yaml
+  - title: 品質・受入基準
+    url: categories/overview/quality_criteria/ai/document.yaml
+  - title: WBS
+    url: categories/overview/wbs/ai/document.yaml

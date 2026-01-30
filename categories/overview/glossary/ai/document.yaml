@@ -2,11 +2,65 @@ meta:
   title: "用語集"
   category: overview
   doc_type: glossary
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-20"
 
-terms: []
+terms:
+  - id: T-001
+    term: "OAuth 2.0"
+    definition: |
+      認可のための業界標準プロトコル。クライアントがユーザーの同意に基づき、
+      リソースへの限定的なアクセス権（アクセストークン）を取得する仕組み。
+    alias: ["OAuth2", "OAuth"]
+    related_terms: ["T-002", "T-003"]
+    source: "RFC 6749"
+  - id: T-002
+    term: "アクセストークン"
+    definition: |
+      リソースサーバーにアクセスする際に提示する短期のトークン。
+      有効期限が短く（例: 15分〜1時間）、漏洩時の影響を抑える。
+    alias: []
+    related_terms: ["T-003", "T-001"]
+  - id: T-003
+    term: "リフレッシュトークン"
+    definition: |
+      新しいアクセストークンを取得するために使う長期トークン。
+      本プロジェクトではローテーション方式を採用し、使用のたびに新トークンに更新する。
+    alias: []
+    related_terms: ["T-002", "T-001"]
+  - id: T-004
+    term: "二要素認証"
+    definition: |
+      パスワード（知識）に加え、別の要素（所持物や生体）で本人確認を行う方式。
+      本プロジェクトでは TOTP（時間ベースワンタイムパスワード）を採用。
+    alias: ["2FA", "MFA", "多要素認証"]
+    related_terms: ["T-005"]
+  - id: T-005
+    term: "TOTP"
+    definition: |
+      Time-based One-Time Password。スマートフォンアプリ等で表示される6桁のワンタイムパスワード。
+      RFC 6238 に基づく。Google Authenticator 等で利用可能。
+    alias: ["時間ベースワンタイムパスワード"]
+    related_terms: ["T-004"]
+  - id: T-006
+    term: "ユーザープロファイルAPI"
+    definition: |
+      ユーザーの属性（名前・メール・権限等）を取得・更新するための API。
+      本プロジェクトでは管理画面および他システム連携のデータソースとして利用する。
+    alias: ["プロファイルAPI"]
+    related_terms: []
+  - id: T-007
+    term: "RACI"
+    definition: |
+      Responsible（実行）, Accountable（説明責任）, Consulted（相談）, Informed（報告先）の頭文字。
+      タスクや成果物ごとに役割を明確にするマトリクス。
+    alias: ["RACIマトリクス"]
+    related_terms: []
 
 references:
   - title: プロジェクト概要
     url: categories/overview/project_summary/ai/document.yaml
+  - title: 要件整理
+    url: categories/design/requirements/ai/document.yaml

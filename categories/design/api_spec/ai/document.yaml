@@ -2,20 +2,60 @@ meta:
   title: "API仕様"
   category: design
   doc_type: api_spec
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-20"
 
 overview:
-  background: ""
-  goal: ""
+  background: |
+    認証・ユーザー管理のAPI契約をOAuth 2.0準拠で定義する。
+    実装・検証・クライアント連携の単一の参照元とする。
+  goal: |
+    エンドポイント・メソッド・入出力概要を明文化し、要件IDと紐付ける。
   related_docs:
     - title: 要件整理
       url: categories/design/requirements/ai/document.yaml
     - title: アーキテクチャ
       url: categories/design/architecture/ai/document.yaml
+  base_url: "/api/v1"
 
-endpoints: []
+endpoints:
+  - path: "/auth/login"
+    method: POST
+    description: "メール・パスワードでログインし、アクセストークン・リフレッシュトークンを取得する"
+    request_body: "email (string), password (string)。REQ-001 準拠。"
+    response: "200: access_token, refresh_token, expires_in。401: 認証失敗。429: ロック中（REQ-003）。"
+    requirements_ref: ["REQ-001", "REQ-003"]
+  - path: "/auth/refresh"
+    method: POST
+    description: "リフレッシュトークンで新しいアクセストークンを取得する（ローテーション）"
+    request_body: "refresh_token (string)"
+    response: "200: access_token, refresh_token（新）, expires_in。401: トークン無効・期限切れ。"
+    requirements_ref: []
+  - path: "/auth/logout"
+    method: POST
+    description: "ログアウト。リフレッシュトークンの無効化を行う"
+    request_body: "refresh_token (string) 任意。Bearer でアクセストークンも受け取り無効化可能。"
+    response: "204: 成功。401: 未認証。"
+    requirements_ref: []
+  - path: "/users"
+    method: GET
+    description: "ユーザー一覧を取得する（ページネーション・フィルタ対応）"
+    request_body: "なし。Query: page, limit, role 等"
+    response: "200: users[], total。401: 未認証。403: 権限不足。"
+    requirements_ref: []
+  - path: "/users/{id}"
+    method: GET
+    description: "ユーザー詳細を取得する"
+    request_body: "なし。Path: id (uuid)"
+    response: "200: user オブジェクト。404: 未存在。401/403。"
+    requirements_ref: []
 
 references:
   - title: 要件整理
     url: categories/design/requirements/ai/document.yaml
+  - title: アーキテクチャ
+    url: categories/design/architecture/ai/document.yaml
+  - title: データモデル
+    url: categories/design/data_model/ai/document.yaml

@@ -2,13 +2,33 @@ meta:
   title: "検証の検討事項・不明点"
   category: verification
   doc_type: open_items
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-22"
 
-open_decisions: []
+open_decisions:
+  - id: VF-O-001
+    decision_needed: "ステージングの動作確認を CI に組み込むか（毎 PR で E2E を回すか）"
+    detail: "毎 PR で E2E を回すとフィードバックは早いが、ステージングの安定性に依存する。手動確認のみか、クリティカルパスのみ CI 化するか。"
+    blocks_tasks: []
+    status: open
+    owner: "山田太郎"
+    due: "2024-02-01"
 
-unclear_points: []
+unclear_points:
+  - id: VF-U-001
+    point: "受入テストの実施環境（ステージングでよいか、本番リハーサルが必要か）"
+    detail: "PO の受入はステージングで実施予定。本番と同等データでリハーサルする必要があるか。"
+    related_docs:
+      - title: 受入・サインオフ
+        url: categories/overview/acceptance_sign_off/ai/document.yaml
+    status: open
 
 references:
   - title: 動作確認計画
     url: categories/verification/verification_plan/ai/document.yaml
+  - title: 品質・受入基準
+    url: categories/overview/quality_criteria/ai/document.yaml
+  - title: 案件全体の検討事項
+    url: categories/overview/open_items/ai/document.yaml

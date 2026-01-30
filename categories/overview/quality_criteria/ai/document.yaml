@@ -2,10 +2,54 @@ meta:
   title: "品質・受入基準"
   category: overview
   doc_type: quality_criteria
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-18"
 
-criteria: []
+criteria:
+  - id: QC-001
+    title: "API 応答時間"
+    description: |
+      認証・ユーザープロファイル API の平均応答時間が 100ms 以下であること。
+      負荷テストで 95 パーセンタイル 200ms 以下を確認する。
+    priority: must
+    scope: "リリース全体（本番環境）"
+    related_docs:
+      - title: プロジェクト概要
+        url: categories/overview/project_summary/ai/document.yaml
+  - id: QC-002
+    title: "OAuth 2.0 準拠"
+    description: |
+      認証フローが RFC 6749 に準拠していること。
+      トークン発行・リフレッシュ・エラーレスポンスの形式を仕様書と照合する。
+    priority: must
+    scope: "認証機能"
+    related_docs:
+      - title: 要件整理
+        url: categories/design/requirements/ai/document.yaml
+  - id: QC-003
+    title: "セキュリティスキャン合格"
+    description: |
+      依存ライブラリの脆弱性スキャン（例: npm audit / Dependabot）で high/critical が 0 であること。
+      本番デプロイ前に実施し、不合格時はリリースを保留する。
+    priority: must
+    scope: "リリース全体"
+  - id: QC-004
+    title: "単体テストカバレッジ"
+    description: |
+      認証・ユーザー管理のコアロジックについて、行カバレッジ 80% 以上を維持する。
+    priority: should
+    scope: "開発成果物"
+  - id: QC-005
+    title: "受入テスト完了"
+    description: |
+      PO が定義した受入条件を満たし、受入サインオフが取得されていること。
+    priority: must
+    scope: "リリース全体"
+    related_docs:
+      - title: 受入・サインオフ
+        url: categories/overview/acceptance_sign_off/ai/document.yaml
 
 references:
   - title: プロジェクト概要

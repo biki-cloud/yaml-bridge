@@ -2,11 +2,41 @@ meta:
   title: "プロジェクト変更履歴"
   category: overview
   doc_type: change_log
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-25"
 
-changes: []
+changes:
+  - id: CHG-003
+    date: "2024-01-25"
+    summary: 二要素認証のスコープを「オプションで有効化」に限定
+    detail: |
+      当初は全ユーザーへの段階的強制を検討していたが、まずはオプション機能としてリリースし、
+      利用状況を見てから強制化の可否を判断する方針に変更。
+    scope_change: true
+    schedule_change: false
+    approved_by: "鈴木一郎（PO）"
+  - id: CHG-002
+    date: "2024-01-18"
+    summary: 設計完了マイルストーンを2週間延長
+    detail: |
+      認証基盤との互換性検証に想定以上に工数がかかったため、設計完了を 2024-02-15 から 2024-03-01 に変更。
+    scope_change: false
+    schedule_change: true
+    approved_by: "鈴木一郎（PO）"
+  - id: CHG-001
+    date: "2024-01-12"
+    summary: 課金システム連携をスコープ外に明確化
+    detail: |
+      プロジェクト概要のスコープで「課金システムとの連携は別プロジェクト」と明文化。
+      要件・WBS から該当タスクを削除。
+    scope_change: true
+    schedule_change: false
+    approved_by: "鈴木一郎（PO）"
 
 references:
   - title: プロジェクト概要
     url: categories/overview/project_summary/ai/document.yaml
+  - title: WBS
+    url: categories/overview/wbs/ai/document.yaml

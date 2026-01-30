@@ -2,13 +2,33 @@ meta:
   title: "調査の検討事項・不明点"
   category: investigation
   doc_type: open_items
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-18"
 
-open_decisions: []
+open_decisions:
+  - id: IV-O-001
+    decision_needed: "調査成果の反映先（設計のみか、実装計画にも直接反映するか）"
+    detail: "調査サマリの推奨は設計・実装計画の両方に反映する方針で進めている。大きな変更は設計経由とする。"
+    blocks_tasks: []
+    status: resolved
+    owner: "山田太郎"
+    due: "2024-01-18"
 
-unclear_points: []
+unclear_points:
+  - id: IV-U-001
+    point: "現行のトークン有効期限（1時間）をそのままにするか短縮するか"
+    detail: "セキュリティ上は短い方がよいが、クライアントのリフレッシュ頻度が上がる。設計で決定する。"
+    related_docs:
+      - title: コード理解
+        url: categories/investigation/code_understanding/ai/document.yaml
+    status: open
 
 references:
   - title: コード理解
     url: categories/investigation/code_understanding/ai/document.yaml
+  - title: 調査サマリ
+    url: categories/investigation/investigation_summary/ai/document.yaml
+  - title: 案件全体の検討事項
+    url: categories/overview/open_items/ai/document.yaml

@@ -128,10 +128,10 @@ pie showData
 
 - [認証モジュールのコード理解](../../../investigation/code_understanding/human/document.md)
 - [調査カテゴリの汎用ドキュメント](../../../investigation/document/human/document.md)
-- [決済システムのドメイン知識調査](../../../investigation/domain_knowledge/human/document.md)
+- [認証・ユーザー管理のドメイン知識](../../../investigation/domain_knowledge/human/document.md)
 - [調査サマリ](../../../investigation/investigation_summary/human/document.md)
 - [調査の検討事項・不明点](../../../investigation/open_items/human/document.md)
-- [通知システムの関連コード調査](../../../investigation/related_code_research/human/document.md)
+- [認証周辺の関連コード調査](../../../investigation/related_code_research/human/document.md)
 - [調査の詳細タスク](../../../investigation/tasks/human/document.md)
 
 ### verification

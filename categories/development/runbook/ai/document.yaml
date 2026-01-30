@@ -2,18 +2,77 @@ meta:
   title: "運用ランブック"
   category: development
   doc_type: runbook
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-25"
 
 overview:
-  background: ""
-  goal: "起動・デプロイ・ロールバック・障害時手順を一覧化する。"
+  background: |
+    認証・ユーザー管理システムの本番運用・障害対応手順を一覧化する。
+  goal: "起動・デプロイ・ロールバック・障害時手順を一覧化し、運用・監査で参照できるようにする。"
   related_docs:
     - title: プロジェクト概要
       url: categories/overview/project_summary/ai/document.yaml
+    - title: 環境・インフラ
+      url: categories/development/environment/ai/document.yaml
+  environment: "本番・ステージング"
+  target_system: "認証サービス・ユーザープロファイルAPI"
 
-procedures: []
+procedures:
+  - id: RB-001
+    title: "ステージングデプロイ"
+    procedure_type: deploy
+    precondition: "main にマージ済み。CI がグリーン。"
+    steps:
+      - action: "GitHub Actions の「Deploy Staging」ワークフローを手動実行"
+        expected: "ワークフローが成功し、ステージングに最新イメージがデプロイされる"
+        note: "失敗時は Actions ログで原因確認"
+      - action: "ヘルスチェックエンドポイントに GET でアクセス"
+        expected: "200 OK。レスポンスに version が含まれる"
+        note: "https://staging.user-mgmt.example.com/health"
+      - action: "ログインAPIを 1 回叩いて動作確認"
+        expected: "401（未認証）または 200（テストアカウントでログイン成功）"
+        note: ""
+    postcondition: "ステージングで新バージョンが動作している"
+    estimated_minutes: 10
+  - id: RB-002
+    title: "本番ロールバック（フィーチャーフラグOFF）"
+    procedure_type: rollback
+    precondition: "問題がフィーチャーフラグで制御されている新機能に限定されていること"
+    steps:
+      - action: "運用ダッシュボードで該当フィーチャーフラグを OFF に変更"
+        expected: "新機能が無効化され、旧挙動に切り替わる"
+        note: "DB マイグレーションは前進のみのため、スキーマは戻さない"
+      - action: "ヘルスチェック・主要APIの応答を確認"
+        expected: "200 OK。エラー率が平常に戻る"
+        note: ""
+      - action: "リリースログにロールバック事由・実施者・時刻を追記"
+        expected: "document.yaml の releases に rollback_notes を更新"
+        note: ""
+    postcondition: "本番が旧挙動で安定している"
+    estimated_minutes: 15
+  - id: RB-003
+    title: "Redis 接続障害時の初動"
+    procedure_type: incident
+    precondition: "アラート「Redis connection timeout」が発報されている"
+    steps:
+      - action: "AWS コンソールで ElastiCache（Redis）のステータスを確認"
+        expected: "クラスターが available か、ノード障害の有無を確認"
+        note: ""
+      - action: "アプリログで Redis エラー件数・スタックトレースを確認"
+        expected: "接続タイムアウト・ECONNREFUSED 等の有無"
+        note: "CloudWatch Logs でフィルタ"
+      - action: "Redis 再起動が必要な場合はインフラ担当にエスカレーション"
+        expected: "再起動後、アプリの再接続が成功する"
+        note: "トークンストアが Redis のため、再起動中は新規ログイン・リフレッシュが失敗する。事前に周知すること。"
+    postcondition: "Redis が復旧し、アプリが正常に動作している"
+    estimated_minutes: 30
 
 references:
   - title: プロジェクト概要
     url: categories/overview/project_summary/ai/document.yaml
+  - title: 環境・インフラ
+    url: categories/development/environment/ai/document.yaml
+  - title: リリースログ
+    url: categories/overview/release_log/ai/document.yaml

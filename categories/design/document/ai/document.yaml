@@ -2,9 +2,24 @@ meta:
   title: "設計カテゴリの汎用ドキュメント"
   category: design
   doc_type: document
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-15"
 
 summary: |
+  本ドキュメントは、設計カテゴリにおいて、アーキテクチャ・API仕様・データモデル・
+  セキュリティ設計・要件整理・タスク・検討事項のいずれにも当てはまらない補足情報を
+  まとめるための汎用ドキュメントである。
 
-references: []
+  認証・ユーザー管理の設計の中心は「要件整理」「アーキテクチャ」「API仕様」「データモデル」
+  「セキュリティ設計」にあり、詳細タスクは「設計の詳細タスク」で管理する。
+  本 document は、設計方針のメモ・レビュー議事メモ・外部資料へのリンクなどに利用する。
+
+references:
+  - title: 要件整理
+    url: categories/design/requirements/ai/document.yaml
+  - title: アーキテクチャ
+    url: categories/design/architecture/ai/document.yaml
+  - title: プロジェクト概要
+    url: categories/overview/project_summary/ai/document.yaml

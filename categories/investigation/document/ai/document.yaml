@@ -2,9 +2,24 @@ meta:
   title: "調査カテゴリの汎用ドキュメント"
   category: investigation
   doc_type: document
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-15"
 
 summary: |
+  本ドキュメントは、調査カテゴリにおいて、コード理解・ドメイン知識・関連コード調査・
+  調査サマリ・タスク・検討事項のいずれにも当てはまらない補足情報をまとめるための
+  汎用ドキュメントである。
 
-references: []
+  認証・ユーザー管理の調査の中心は「コード理解」「ドメイン知識」「関連コード調査」と
+  「調査サマリ」にあり、設計・実装計画へのインプットとして参照される。
+  本 document は、調査方針のメモ・ヒアリング議事メモ・外部資料へのリンクなどに利用する。
+
+references:
+  - title: 調査サマリ
+    url: categories/investigation/investigation_summary/ai/document.yaml
+  - title: WBS
+    url: categories/overview/wbs/ai/document.yaml
+  - title: 要件整理
+    url: categories/design/requirements/ai/document.yaml

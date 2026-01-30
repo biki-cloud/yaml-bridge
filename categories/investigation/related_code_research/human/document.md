@@ -1,28 +1,29 @@
-# 通知システムの関連コード調査
+# 認証周辺の関連コード調査
 
-**タイプ:** 🔍 関連コード調査 | **ステータス:** ✅ Done | **バージョン:** 1.0.0
+**タイプ:** 🔍 関連コード調査 | **ステータス:** 🔄 WIP | **バージョン:** 1.0.0
 **作成者:** 山田太郎
 **この doc_type の役割:** 関連コードの調査結果を記録する。
 
 ## 調査対象
 
-通知機能の改修にあたり、既存の通知関連コードを調査する。
+認証・ユーザー管理の改修にあたり、認証モジュールの呼び出し元および
+ユーザーAPI周辺のコードを調査する。
 
 
-**プロジェクトコンテキスト:** ユーザー通知システムのリアルタイム化プロジェクト
+**プロジェクトコンテキスト:** ユーザー管理システム刷新プロジェクト（認証機能改修）
 
 **調査範囲:**
-- notification-service/
-- shared/events/
-- api-gateway/routes/notifications/
+- src/auth/
+- src/middleware/
+- src/routes/users.ts
+- src/routes/auth.ts
 
 ## 調査項目
 
 | ID | 質問 | 優先度 |
 |----|------|--------|
-| Q1 | 現在の通知送信の仕組みは？ | 🔴 high |
-| Q2 | 通知の永続化はどこで行われている？ | 🔴 high |
-| Q3 | WebSocket対応の準備状況は？ | 🟡 medium |
+| Q1 | 認証ミドルウェアはどこで適用されているか？ | 🔴 high |
+| Q2 | ユーザーAPIでトークン検証はどう行われているか？ | 🔴 high |
 
 ## 調査結果
 
@@ -31,66 +32,50 @@ pie showData
     title 関連度分布
     "高" : 2
     "中" : 1
-    "低" : 1
 ```
 
-### 1. [Q1] 通知はSQSキューを経由して非同期で送信されている。
-NotificationWorkerがキューを...
+### 1. [Q1] 各ルートで個別に tokenVerify() を呼んでいる。共通の requireAuth ミドルウ...
 
 **関連度:** 🔴 高
-**場所:** `notification-service/src/workers/notification-worker.ts`
+**場所:** `src/routes/auth.ts, src/routes/users.ts`
 
-通知はSQSキューを経由して非同期で送信されている。
-NotificationWorkerがキューをポーリングしてメール/プッシュ通知を送信。
+各ルートで個別に tokenVerify() を呼んでいる。共通の requireAuth ミドルウェアは存在しない。
+ルート追加時に検証の付け忘れが発生しうる。
 
 
-### 2. [Q1] 通知テンプレートはDynamoDBに保存されている。
-テンプレートエンジンはHandlebarsを使...
+### 2. [Q2] ユーザー一覧・詳細取得では、リクエストヘッダーから Bearer トークンを取り出し、
+tokenV...
+
+**関連度:** 🔴 高
+**場所:** `src/routes/users.ts`
+
+ユーザー一覧・詳細取得では、リクエストヘッダーから Bearer トークンを取り出し、
+tokenVerify() で検証している。検証失敗時は 401 を返す。ロールによる認可は未実装。
+
+
+### 3. [Q1] tokenVerify は JWT の署名・有効期限のみ検証。Redis でのトークン無効化（ログア...
 
 **関連度:** 🟡 中
-**場所:** `notification-service/src/templates/template-engine.ts`
+**場所:** `src/auth/token.ts`
 
-通知テンプレートはDynamoDBに保存されている。
-テンプレートエンジンはHandlebarsを使用。
-
-
-### 3. [Q2] 通知履歴はPostgreSQLのnotificationsテーブルに保存。
-既読/未読ステータスも同...
-
-**関連度:** 🔴 高
-**場所:** `notification-service/src/repositories/notification-repository.ts`
-
-通知履歴はPostgreSQLのnotificationsテーブルに保存。
-既読/未読ステータスも同テーブルで管理。
-
-
-### 4. [Q3] WebSocketサーバーの雛形は存在するが、
-現在は使用されていない（コメントアウト状態）。
-...
-
-**関連度:** 🟢 低
-**場所:** `api-gateway/src/websocket/index.ts`
-
-WebSocketサーバーの雛形は存在するが、
-現在は使用されていない（コメントアウト状態）。
+tokenVerify は JWT の署名・有効期限のみ検証。Redis でのトークン無効化（ログアウト済み）は未チェック。
 
 
 ## 結論
 
-- 通知送信は非同期処理で実装済み、リアルタイム化にはWebSocket層の追加が必要
-- 通知の永続化層は再利用可能
-- WebSocketの雛形があるため、これを拡張する形で実装可能
+- 認証ミドルウェアの共通化（requireAuth）を実装し、ルートではミドルウェアを適用するだけにする推奨（TD-002）。
+- ログアウト済みトークンの無効化チェックは、Redis トークンストア実装時に追加する。
 
 ## 次のアクション
 
-- 🔴 Must WebSocketサーバーの有効化と動作確認
-- 🔴 Must 通知イベントのWebSocketブロードキャスト実装
-- 🟠 Should 既存の非同期処理との統合設計
+- 🔴 Must requireAuth ミドルウェアの設計・実装を実装計画に反映する
+- 🟠 Should トークン無効化チェックをトークンストア実装と同時に追加する
 
 ## 関連資料（エビデンス）
 
-- [notification-serviceリポジトリ](https://github.com/example/notification-service)
-- [AWS SQS ドキュメント](https://docs.aws.amazon.com/sqs/)
+- [認証モジュールのコード理解](../../code_understanding/human/document.md)
+- [実装計画](../../../development/implementation_plan/human/document.md)
+- [設計タスク](../../../design/tasks/human/document.md)
 
 ---
 

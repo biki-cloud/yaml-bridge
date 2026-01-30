@@ -2,11 +2,55 @@ meta:
   title: "設計の詳細タスク"
   category: design
   doc_type: tasks
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-20"
 
-tasks: []
+tasks:
+  - id: DT-001
+    title: "リフレッシュトークン設計"
+    description: "ローテーション方式・有効期限・ストア設計を文書化する"
+    wbs_code: "1"
+    status: done
+    priority: high
+    dependencies: []
+    estimated_hours: 4
+    owner: "山田太郎"
+    due: "2024-01-18"
+  - id: DT-002
+    title: "API 契約書（OpenAPI）の初版"
+    description: "認証・ユーザーAPI のエンドポイント・スキーマを OpenAPI で定義"
+    wbs_code: "1"
+    status: done
+    priority: high
+    dependencies: ["DT-001"]
+    estimated_hours: 4
+    owner: "山田太郎"
+  - id: DT-003
+    title: "データモデル・ER 図の確定"
+    description: "users / refresh_tokens / user_profiles のスキーマとマイグレーション方針"
+    wbs_code: "1"
+    status: done
+    priority: high
+    dependencies: ["DT-001"]
+    estimated_hours: 2
+    owner: "山田太郎"
+  - id: DT-004
+    title: "セキュリティ設計レビュー"
+    description: "脅威モデルをセキュリティ担当とレビューし、合意を得る"
+    wbs_code: "1"
+    status: wip
+    priority: high
+    dependencies: ["DT-002", "DT-003"]
+    estimated_hours: 2
+    owner: "山田太郎"
+    due: "2024-01-25"
 
 references:
   - title: 要件整理
     url: categories/design/requirements/ai/document.yaml
+  - title: WBS
+    url: categories/overview/wbs/ai/document.yaml
+  - title: アーキテクチャ
+    url: categories/design/architecture/ai/document.yaml

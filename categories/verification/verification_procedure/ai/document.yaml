@@ -66,5 +66,7 @@ procedures:
     postcondition: セッションが無効化されている
 
 references:
+  - title: 動作確認計画
+    url: categories/verification/verification_plan/ai/document.yaml
   - title: 動作確認手順・関連計画
     url: https://github.com

@@ -1,77 +1,76 @@
 meta:
-  title: 決済システムのドメイン知識調査
+  title: "認証・ユーザー管理のドメイン知識"
   category: investigation
   doc_type: domain_knowledge
-  status: done
-  version: 1.0.0
-  author: 山田太郎
-  created_at: "2024-01-25"
+  status: wip
+  version: "1.0.0"
+  author: "山田太郎"
+  created_at: "2024-01-18"
+  updated_at: "2024-01-20"
 
 target:
   description: |
-    決済システムの改修にあたり、現行の決済フローと
-    関連する業務ルールを理解する。
-  domain: 決済・課金
+    ユーザー管理システム刷新にあたり、現行の認証・ユーザー管理の業務ルールと
+    ドメイン用語を整理する。
+  domain: "認証・認可・ユーザー管理"
   related_docs:
-    - https://example.com/docs/決済仕様書v2.1.pdf
-    - https://example.com/docs/経理部門業務フロー.xlsx
+    - categories/design/requirements/ai/document.yaml
+    - categories/overview/glossary/ai/document.yaml
 
 questions:
   - id: Q1
-    question: 決済のキャンセル可能期間は？
+    question: "ログイン失敗時のロック条件と解除方法は？"
     priority: high
   - id: Q2
-    question: 部分返金は可能か？
+    question: "管理者・オペレーター・一般ユーザーの権限境界は？"
     priority: high
   - id: Q3
-    question: 決済手数料の計算ルールは？
+    question: "パスワードリセットの有効期限は？"
     priority: medium
-
-glossary:
-  - term: オーソリ
-    definition: クレジットカードの与信枠確保。実際の請求前に利用可能かを確認する処理。
-  - term: キャプチャ
-    definition: オーソリ済みの取引を確定し、実際に請求を行う処理。
-  - term: チャージバック
-    definition: カード会社が売上を取り消し、加盟店に返金を求める処理。
-  - term: 3Dセキュア
-    definition: オンライン決済での本人認証サービス。不正利用防止のため導入が推奨される。
 
 findings:
   - question_id: Q1
     description: |
-      決済のキャンセルは、キャプチャ前であれば即座に可能。
-      キャプチャ後は返金処理となり、最大30日以内に申請が必要。
-    source: 決済仕様書v2.1 3.4節
+      ログイン失敗が5回連続でアカウントが一時ロック。30分で自動解除（REQ-003）。
+      手動解除は管理者のみ。管理画面の「ユーザーロック解除」から実施。
+    source: "要件整理 REQ-003、現行運用ヒアリング"
     impact: high
   - question_id: Q2
     description: |
-      部分返金は対応している。ただし、同一取引に対する
-      部分返金は最大3回まで。
-    source: 経理部門ヒアリング
-    impact: medium
+      admin は全操作・設定変更。operator はユーザー一覧・詳細の閲覧と一部編集（パスワードリセット依頼等）。
+      user は自分のプロファイルのみ。管理画面の認可粒度（画面/操作）は U-002 で未確定。
+    source: "要件整理、設計 open_items"
+    impact: high
   - question_id: Q3
     description: |
-      決済手数料は決済金額の3.6%。
-      月間決済額が1000万円を超える場合は3.2%に割引。
-    source: 決済代行会社契約書
+      パスワードリセットリンクの有効期限は 1 時間。リンク使用後は即無効化。
+    source: "現行仕様書"
     impact: medium
 
+glossary:
+  - term: "アクセストークン"
+    definition: "API アクセス時に Bearer で提示する短期トークン。本プロジェクトでは JWT、有効期限 15 分〜1 時間を想定。"
+  - term: "リフレッシュトークン"
+    definition: "新しいアクセストークンを取得するための長期トークン。ローテーション方式で使用のたびに新トークンに更新。"
+  - term: "ローテーション"
+    definition: "リフレッシュトークン使用時に新しいトークンペアを発行し、使用済みトークンを無効化する方式。"
+  - term: "セッション"
+    definition: "現行システムでは Redis に保存されるログイン状態。新方式ではトークンベースに移行し、移行期間中は併存。"
+
 conclusions:
-  - 決済キャンセルはタイミングによって処理が異なるため、UIでの案内が重要
-  - 部分返金の回数制限はシステムでも制御が必要
-  - 手数料計算は月次バッチで再計算される仕組みが必要
+  - "認証・ロック・パスワードリセットの業務ルールは要件に反映済み。設計では認可粒度（U-002）を確定する必要あり。"
+  - "用語は概要カテゴリの用語集（glossary）と整合させる。"
 
 next_actions:
-  - action: 決済キャンセルフローの詳細設計
+  - action: "設計で認可粒度（画面/操作）を決定し、U-002 をクローズする"
     priority: must
-  - action: 部分返金回数のバリデーション実装
+  - action: "用語集に本調査の用語を反映する"
     priority: should
-  - action: 手数料計算ロジックのレビュー
-    priority: could
 
 references:
-  - title: 決済仕様書v2.1
-    url: https://docs.internal/payment-spec-v2.1.pdf
-  - title: PCI DSS準拠ガイドライン
-    url: https://www.pcisecuritystandards.org/
+  - title: 要件整理
+    url: categories/design/requirements/ai/document.yaml
+  - title: 用語集
+    url: categories/overview/glossary/ai/document.yaml
+  - title: 調査サマリ
+    url: categories/investigation/investigation_summary/ai/document.yaml

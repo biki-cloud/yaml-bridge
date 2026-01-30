@@ -2,9 +2,24 @@ meta:
   title: "開発カテゴリの汎用ドキュメント"
   category: development
   doc_type: document
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-15"
 
 summary: |
+  本ドキュメントは、開発カテゴリにおいて、実装計画・実装詳細・実装結果・依存・環境・
+  ランブック・技術的負債・障害振り返り・PR・タスク・検討事項のいずれにも当てはまらない
+  補足情報をまとめるための汎用ドキュメントである。
 
-references: []
+  認証・ユーザー管理の開発の中心は「実装計画」「実装詳細」「実装結果」と「WBS」の
+  開発タスクにあり、運用は「ランブック」「環境・インフラ」で管理する。
+  本 document は、開発方針のメモ・レビュー議事メモ・外部ツールへのリンクなどに利用する。
+
+references:
+  - title: プロジェクト概要
+    url: categories/overview/project_summary/ai/document.yaml
+  - title: 実装計画
+    url: categories/development/implementation_plan/ai/document.yaml
+  - title: WBS
+    url: categories/overview/wbs/ai/document.yaml

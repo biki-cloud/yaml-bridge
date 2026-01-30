@@ -2,11 +2,45 @@ meta:
   title: "リリースログ"
   category: overview
   doc_type: release_log
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-28"
 
-releases: []
+releases:
+  - id: REL-003
+    date: "2024-01-28"
+    environment: staging
+    version: "0.3.0-beta"
+    summary: 認証API・リフレッシュトークン実装のステージング反映
+    detail: |
+      ログイン/ログアウトAPI、リフレッシュトークンローテーションをステージングにデプロイ。
+      既存クライアントとの互換性確認のため、フィーチャーフラグで段階的公開を実施。
+    released_by: "山田太郎"
+    rollback_notes: "フィーチャーフラグをOFFにすれば旧挙動に戻る。DBマイグレーションは前進のみ想定。"
+    related_pr: "https://github.com/example/user-mgmt/pull/42"
+  - id: REL-002
+    date: "2024-01-20"
+    environment: staging
+    version: "0.2.0"
+    summary: ユーザープロファイルAPI・管理画面基盤のステージング投入
+    detail: |
+      ユーザー一覧・詳細取得API、管理画面の認証基盤をステージングにリリース。
+    released_by: "鈴木一郎"
+    rollback_notes: "APIはバージョニング済み。管理画面は静的資産の差し替えでロールバック可能。"
+    related_pr: "https://github.com/example/user-mgmt/pull/38"
+  - id: REL-001
+    date: "2024-01-15"
+    environment: development
+    version: "0.1.0"
+    summary: プロジェクト初回ビルド・CI/CDパイプライン構築
+    detail: |
+      リポジトリ初期化、開発環境用Docker構成、CI（テスト・Lint）の初回リリース。
+    released_by: "山田太郎"
+    rollback_notes: "開発環境のみのためロールバック手順は未整備。"
 
 references:
   - title: プロジェクト概要
     url: categories/overview/project_summary/ai/document.yaml
+  - title: WBS
+    url: categories/overview/wbs/ai/document.yaml

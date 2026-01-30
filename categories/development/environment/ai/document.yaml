@@ -2,13 +2,41 @@ meta:
   title: "環境・インフラ"
   category: development
   doc_type: environment
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-25"
 
-environments: []
+environments:
+  - id: ENV-001
+    name: "ローカル開発"
+    type: local
+    url: "http://localhost:3000"
+    cicd: "なし。手動で npm run dev。"
+    deploy_target: "開発者PC"
+    secrets_policy: ".env で管理。.env は .gitignore。サンプルは .env.example を参照。"
+    notes: "Docker Compose で DB・Redis を起動可能（docker-compose.dev.yml）"
+  - id: ENV-002
+    name: "ステージング"
+    type: staging
+    url: "https://staging.user-mgmt.example.com"
+    cicd: "main へのマージで自動ビルド・デプロイ。GitHub Actions。"
+    deploy_target: "AWS ECS（Fargate）。ALB 経由。"
+    secrets_policy: "AWS Secrets Manager で管理。CI からは OIDC で取得。"
+    notes: "本番に近い構成。データはマスキング済みのコピーを週次で投入予定（U-003 で方針確定）"
+  - id: ENV-003
+    name: "本番"
+    type: production
+    url: "https://api.user-mgmt.example.com"
+    cicd: "リリースタグで手動トリガー。承認後にデプロイ。"
+    deploy_target: "AWS ECS（Fargate）。マルチAZ。"
+    secrets_policy: "AWS Secrets Manager。ローテーションは 90 日。"
+    notes: "段階的リリース（フィーチャーフラグ）を想定。ロールバック手順は runbook 参照。"
 
 references:
   - title: プロジェクト概要
     url: categories/overview/project_summary/ai/document.yaml
   - title: ランブック
     url: categories/development/runbook/ai/document.yaml
+  - title: リリースログ
+    url: categories/overview/release_log/ai/document.yaml

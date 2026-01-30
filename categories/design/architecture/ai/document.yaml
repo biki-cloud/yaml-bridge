@@ -2,18 +2,63 @@ meta:
   title: "システムアーキテクチャ"
   category: design
   doc_type: architecture
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-20"
 
 overview:
-  background: "システム全体像・コンポーネント境界をここに記述する。"
-  goal: "要件と実装の間の全体像・コンポーネント境界を明文化する。"
+  background: |
+    現行のユーザー管理システムは認証・認可が独自実装で、OAuth 2.0 非対応のため
+    他システム連携やモバイル対応に不利。新認証基盤とユーザープロファイルAPIを
+    コンポーネント境界を明確にした形で再設計する。
+  goal: |
+    要件と実装の間の全体像・コンポーネント境界を明文化し、
+    認証・ユーザー管理・管理画面の責務分離を図る。
   related_docs:
     - title: 要件整理
       url: categories/design/requirements/ai/document.yaml
+    - title: WBS
+      url: categories/overview/wbs/ai/document.yaml
+  scope:
+    in:
+      - 認証サービス（トークン発行・リフレッシュ・検証）
+      - ユーザープロファイルAPI・管理画面
+    out:
+      - 課金システム連携（別プロジェクト）
+      - モバイルアプリ（フェーズ2）
 
-components: []
+components:
+  - id: C-001
+    name: "認証サービス"
+    description: "OAuth 2.0 / OIDC 準拠のトークン発行・検証・リフレッシュを担当"
+    responsibility: "ログイン/ログアウト、アクセストークン・リフレッシュトークンの発行・ローテーション、セッション無効化"
+    depends_on: []
+  - id: C-002
+    name: "ユーザーストア"
+    description: "ユーザー情報・認証情報を永続化するデータ層"
+    responsibility: "ユーザー・認証情報のCRUD、パスワードハッシュ・トークンストアの管理"
+    depends_on: []
+  - id: C-003
+    name: "ユーザープロファイルAPI"
+    description: "ユーザー属性の取得・更新を提供するAPI層"
+    responsibility: "ユーザー一覧・詳細取得・更新API、認証サービスからのトークン検証結果に基づく認可"
+    depends_on: ["C-001", "C-002"]
+  - id: C-004
+    name: "管理画面（フロント）"
+    description: "管理者・オペレーター向けWebUI"
+    responsibility: "ログイン画面、ユーザー一覧・編集画面、認証サービス・ユーザープロファイルAPIを呼び出し"
+    depends_on: ["C-001", "C-003"]
+  - id: C-005
+    name: "既存認証基盤（移行期間中）"
+    description: "現行のセッション方式を提供。移行完了まで併存"
+    responsibility: "既存クライアント向けセッション維持。新認証への移行後は廃止予定"
+    depends_on: ["C-002"]
 
 references:
   - title: 要件整理
     url: categories/design/requirements/ai/document.yaml
+  - title: データモデル
+    url: categories/design/data_model/ai/document.yaml
+  - title: API仕様
+    url: categories/design/api_spec/ai/document.yaml

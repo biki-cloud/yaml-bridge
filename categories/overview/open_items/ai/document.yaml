@@ -2,13 +2,65 @@ meta:
   title: "案件全体の検討事項・不明点"
   category: overview
   doc_type: open_items
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-22"
 
-open_decisions: []
+open_decisions:
+  - id: O-001
+    decision_needed: "認証プロトコルを OAuth 2.0 準拠とするか、現行セッション方式を延長するか"
+    detail: |
+      業界標準への移行コストと、既存クライアントへの影響のトレードオフを評価し、
+      方針を決定する必要がある。ADR-001 で OAuth 2.0 準拠に決定済み。
+    blocks_tasks: ["T-001", "T-002"]
+    status: resolved
+    owner: "山田太郎"
+    due: "2024-01-15"
+  - id: O-002
+    decision_needed: "二要素認証の強制範囲（全ユーザー / 管理者のみ / オプションのみ）"
+    detail: |
+      セキュリティ要件と運用負荷のバランス。まずオプションのみでリリースする方針に変更（CHG-003 参照）。
+    blocks_tasks: []
+    status: resolved
+    owner: "鈴木一郎"
+    due: "2024-01-25"
+  - id: O-003
+    decision_needed: "ロールバック時のデータロールバック方針（DB マイグレーション前進のみか）"
+    detail: |
+      本番リリース後のロールバックで、DB スキーマを戻すか、前進のみでアプリ側で互換を保つか。
+    blocks_tasks: ["T-004"]
+    status: open
+    owner: "山田太郎"
+    due: "2024-02-01"
 
-unclear_points: []
+unclear_points:
+  - id: U-001
+    point: "既存セッションの有効期限切れ時の UX（リダイレクト先・メッセージ）"
+    detail: |
+      トークン期限切れ時にどこに飛ばすか、エラーメッセージの文言が未確定。
+    related_docs:
+      - title: 要件整理
+        url: categories/design/requirements/ai/document.yaml
+    status: open
+  - id: U-002
+    point: "管理画面の認可粒度（画面単位 / 操作単位）"
+    detail: |
+      管理者・オペレーターの権限を画面単位で切るか、操作（作成・更新・削除）単位で切るか。
+    related_docs:
+      - title: プロジェクト概要
+        url: categories/overview/project_summary/ai/document.yaml
+    status: open
+  - id: U-003
+    point: "ステージング環境のデータリフレッシュ頻度と個人情報マスキング"
+    detail: |
+      本番データのコピーをどの程度使うか、マスキングルールが未整備。
+    status: resolved
 
 references:
   - title: プロジェクト概要
     url: categories/overview/project_summary/ai/document.yaml
+  - title: 決定ログ
+    url: categories/overview/decisions/ai/document.yaml
+  - title: WBS
+    url: categories/overview/wbs/ai/document.yaml

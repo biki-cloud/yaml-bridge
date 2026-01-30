@@ -2,11 +2,39 @@ meta:
   title: "振り返り・教訓"
   category: overview
   doc_type: lessons_learned
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-22"
 
-lessons: []
+lessons:
+  - phase: "キックオフ〜設計着手"
+    held_at: "2024-01-18"
+    what_worked:
+      - "プロジェクト概要・WBS を早期に共有したことで、スコープの認識が揃った"
+      - "OAuth 2.0 採用を ADR で早めに決めたことで、設計のぶれが減った"
+    what_didnt:
+      - "認証基盤との互換性検証に想定以上に工数がかかり、設計完了が 2 週間ずれ込んだ"
+      - "二要素認証の強制範囲が当初曖昧で、後からスコープ変更（CHG-003）が発生した"
+    action_items:
+      - "外部依存（認証基盤）の検証は WBS にバッファを多めに見る"
+      - "セキュリティ関連の「必須 / オプション」は要件フェーズで PO と合意する"
+    notes: "次のマイルストーン（単体テスト完了）前に再度振り返りを実施予定"
+  - phase: "ステージング初回リリース（REL-002）"
+    held_at: "2024-01-21"
+    what_worked:
+      - "CI/CD パイプラインを先に整備したことで、ステージングデプロイがスムーズだった"
+      - "フィーチャーフラグで段階的公開したことで、ロールバックリスクを抑えられた"
+    what_didnt:
+      - "ステージング環境のデータが古く、本番に近い検証ができていない"
+    action_items:
+      - "ステージングのデータリフレッシュとマスキングルールを U-003 で確定する"
+      - "ロールバック手順を runbook に追記し、一度ドライランする"
 
 references:
   - title: プロジェクト概要
     url: categories/overview/project_summary/ai/document.yaml
+  - title: 変更履歴
+    url: categories/overview/change_log/ai/document.yaml
+  - title: リリースログ
+    url: categories/overview/release_log/ai/document.yaml

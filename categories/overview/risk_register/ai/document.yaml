@@ -2,11 +2,50 @@ meta:
   title: "プロジェクトリスク登録簿"
   category: overview
   doc_type: risk_register
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-20"
 
-risks: []
+risks:
+  - id: R-001
+    risk: "既存クライアント・他システムが新認証方式に未対応で移行が遅れる"
+    impact: high
+    mitigation: "移行期間を設け、旧セッション方式を並存。段階的カットオーバーとロールバック手順を事前に整備する。"
+    owner: "山田太郎"
+    status: mitigating
+    identified_at: "2024-01-10"
+  - id: R-002
+    risk: "既存データ移行時に不整合が発生する"
+    impact: high
+    mitigation: "移行ツールの事前検証、ステージングでのリハーサル、段階的移行で影響範囲を限定する。"
+    owner: "山田太郎"
+    status: open
+    identified_at: "2024-01-10"
+  - id: R-003
+    risk: "開発遅延によりリリース日程がずれる"
+    impact: medium
+    mitigation: "週次進捗確認、WBS のバッファ確保、スコープの優先度付けで必須機能に集中する。"
+    owner: "鈴木一郎"
+    status: open
+    identified_at: "2024-01-12"
+  - id: R-004
+    risk: "外部認証プロバイダ（将来のソーシャルログイン等）の障害でログイン不可になる"
+    impact: medium
+    mitigation: "第一フェーズでは自前認証のみ。外部連携時はフォールバック（メール/パスワード）を必ず残す方針とする。"
+    owner: "山田太郎"
+    status: mitigated
+    identified_at: "2024-01-15"
+  - id: R-005
+    risk: "セキュリティ要件の解釈差により後から設計変更が発生する"
+    impact: low
+    mitigation: "要件・セキュリティ設計を早期にレビューし、PO・セキュリティ担当の合意を文書化する。"
+    owner: "山田太郎"
+    status: open
+    identified_at: "2024-01-18"
 
 references:
   - title: プロジェクト概要
     url: categories/overview/project_summary/ai/document.yaml
+  - title: WBS
+    url: categories/overview/wbs/ai/document.yaml

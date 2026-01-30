@@ -113,6 +113,7 @@ flowchart TD
 
 ## 関連資料（エビデンス）
 
+- [動作確認計画](../../verification_plan/human/document.md)
 - [動作確認手順・関連計画](https://github.com)
 
 ---

@@ -2,22 +2,58 @@ meta:
   title: "セキュリティ設計・脅威モデル"
   category: design
   doc_type: security_design
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-20"
 
 overview:
-  background: "認証・認可・機密データを扱う場合の脅威と対策をここに記述する。"
-  goal: "脅威と対策を明文化し、セキュリティリスクを低減する。"
+  background: |
+    認証・認可・機密データ（パスワード・トークン）を扱うため、
+    脅威と対策を明示し、architecture とは別にセキュリティ観点を記述する。
+  goal: |
+    脅威と対策を明文化し、セキュリティリスクを低減する。
   related_docs:
     - title: 要件整理
       url: categories/design/requirements/ai/document.yaml
     - title: アーキテクチャ
       url: categories/design/architecture/ai/document.yaml
 
-threats: []
+threats:
+  - id: TH-001
+    threat: "リフレッシュトークンの漏洩・横流し"
+    impact: high
+    countermeasure: "ローテーション方式の採用。使用済みトークンは即無効化。有効期限を設定し、異常な使用頻度は検知・無効化する。"
+    status: mitigated
+    related_docs:
+      - title: 決定ログ ADR-002
+        url: categories/overview/decisions/ai/document.yaml
+  - id: TH-002
+    threat: "パスワードの推測・ブルートフォース"
+    impact: high
+    countermeasure: "REQ-002 のパスワード強度、REQ-003 のロックアウト。レート制限とログ監視。"
+    status: mitigated
+    related_docs:
+      - title: 要件整理
+        url: categories/design/requirements/ai/document.yaml
+  - id: TH-003
+    threat: "アクセストークンの盗聴・中間者攻撃"
+    impact: high
+    countermeasure: "HTTPS 必須。トークンは short-lived。Bearer のみで Cookie には載せない方針。"
+    status: mitigated
+  - id: TH-004
+    threat: "管理画面の権限昇格・横流し"
+    impact: medium
+    countermeasure: "ロール（admin/operator/user）に応じた認可。操作単位の権限は U-002 で確定後、実装で反映。"
+    status: open
+    related_docs:
+      - title: 検討事項・不明点 U-002
+        url: categories/overview/open_items/ai/document.yaml
 
 references:
   - title: 要件整理
     url: categories/design/requirements/ai/document.yaml
   - title: アーキテクチャ
     url: categories/design/architecture/ai/document.yaml
+  - title: リスク登録簿
+    url: categories/overview/risk_register/ai/document.yaml

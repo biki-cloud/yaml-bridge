@@ -2,10 +2,38 @@ meta:
   title: "受入・サインオフ一覧"
   category: overview
   doc_type: acceptance_sign_off
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-25"
 
-sign_offs: []
+sign_offs:
+  - id: SO-001
+    scope: milestone
+    title: "設計完了（認証・ユーザーAPI）"
+    wbs_code: "設計フェーズ"
+    acceptance_criteria:
+      - "要件整理・アーキテクチャ・API 仕様・データモデル・セキュリティ設計がレビュー済みであること"
+      - "PO が設計方針に合意していること"
+    approved_by: ""
+    approved_at: ""
+    conditions_met: false
+    notes: "設計完了マイルストーン（2024-03-01 目標）達成時にサインオフ予定"
+    related_docs:
+      - title: 要件整理
+        url: categories/design/requirements/ai/document.yaml
+      - title: 品質・受入基準
+        url: categories/overview/quality_criteria/ai/document.yaml
+  - id: SO-002
+    scope: release
+    title: "ステージング初回リリース（REL-002）の受入"
+    acceptance_criteria:
+      - "認証基盤・管理画面がステージングで起動すること"
+      - "主要 API（ログイン・ユーザー一覧）が仕様通り動作すること"
+    approved_by: "鈴木一郎"
+    approved_at: "2024-01-21"
+    conditions_met: true
+    notes: "PO 確認済み。本番受入は別途 SO-003 で実施予定"
 
 references:
   - title: プロジェクト概要

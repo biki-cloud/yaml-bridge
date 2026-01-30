@@ -2,11 +2,56 @@ meta:
   title: "開発の詳細タスク"
   category: development
   doc_type: tasks
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-25"
 
-tasks: []
+tasks:
+  - id: DV-001
+    title: "リフレッシュトークン実装"
+    description: "ローテーション・トークンストア・無効化の実装"
+    wbs_code: "2"
+    status: done
+    priority: high
+    dependencies: ["T-001"]
+    estimated_hours: 8
+    owner: "山田太郎"
+    due: "2024-01-22"
+  - id: DV-002
+    title: "エラーメッセージ改善"
+    description: "認証エラーのメッセージを汎化・メッセージID化（T-003 対応）"
+    wbs_code: "3"
+    status: wip
+    priority: high
+    dependencies: []
+    estimated_hours: 2
+    owner: "山田太郎"
+    due: "2024-01-28"
+  - id: DV-003
+    title: "認証ミドルウェア共通化"
+    description: "トークン検証をミドルウェアにまとめ、各ルートで適用（TD-002 解消）"
+    wbs_code: "2"
+    status: todo
+    priority: high
+    dependencies: ["DV-001"]
+    estimated_hours: 4
+    owner: "山田太郎"
+  - id: DV-004
+    title: "単体テスト追加（ドメイン層）"
+    description: "トークン・パスワード検証のユニットテストを追加（T-004 / TD-003）"
+    wbs_code: "4"
+    status: todo
+    priority: high
+    dependencies: ["DV-002"]
+    estimated_hours: 4
+    owner: "山田太郎"
+    due: "2024-02-03"
 
 references:
   - title: 実装計画
     url: categories/development/implementation_plan/ai/document.yaml
+  - title: WBS
+    url: categories/overview/wbs/ai/document.yaml
+  - title: 設計タスク
+    url: categories/design/tasks/ai/document.yaml

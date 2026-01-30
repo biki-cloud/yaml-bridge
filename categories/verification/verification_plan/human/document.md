@@ -118,6 +118,7 @@ pie showData
 
 ## 関連資料（エビデンス）
 
+- [要件整理](../../../design/requirements/human/document.md)
 - [動作確認計画・関連PR](https://github.com)
 
 ---

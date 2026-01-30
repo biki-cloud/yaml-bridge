@@ -2,13 +2,33 @@ meta:
   title: "開発の検討事項・不明点"
   category: development
   doc_type: open_items
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-25"
 
-open_decisions: []
+open_decisions:
+  - id: DV-O-001
+    decision_needed: "Redis 障害時のフォールバック方針（トークン検証を一時的にスキップするか）"
+    detail: "Redis ダウン時、新規ログイン・リフレッシュができない。メモリキャッシュで短時間フォールバックするか、即エラーとするか。"
+    blocks_tasks: []
+    status: open
+    owner: "山田太郎"
+    due: "2024-02-01"
 
-unclear_points: []
+unclear_points:
+  - id: DV-U-001
+    point: "ステージングの DB マイグレーション実行タイミング（CI のいつ実行するか）"
+    detail: "PR マージ時・デプロイ前・デプロイ後のいずれでマイグレーションを流すか。ロールバック手順にも影響する。"
+    related_docs:
+      - title: 環境・インフラ
+        url: categories/development/environment/ai/document.yaml
+    status: open
 
 references:
   - title: 実装計画
     url: categories/development/implementation_plan/ai/document.yaml
+  - title: ランブック
+    url: categories/development/runbook/ai/document.yaml
+  - title: 案件全体の検討事項
+    url: categories/overview/open_items/ai/document.yaml

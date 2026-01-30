@@ -93,5 +93,7 @@ test_cases:
     expected_result: ログインに失敗し、エラーメッセージが表示される
 
 references:
+  - title: 要件整理
+    url: categories/design/requirements/ai/document.yaml
   - title: 動作確認計画・関連PR
     url: https://github.com

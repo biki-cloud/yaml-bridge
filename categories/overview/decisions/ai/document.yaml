@@ -2,13 +2,46 @@ meta:
   title: "プロジェクト決定ログ"
   category: overview
   doc_type: decisions
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-22"
 
-decisions: []
+decisions:
+  - id: ADR-001
+    summary: 認証プロトコルは OAuth 2.0 / OIDC 準拠とする
+    conclusion: |
+      RFC 6749 / OpenID Connect Core に準拠した認証基盤を採用する。
+      既存のセッション方式は移行期間中のみ併存し、新規実装はすべてトークンベースとする。
+    context: |
+      現行システムは独自のセッション管理で、他システム連携やモバイル対応に不利。
+      業界標準に合わせることでライブラリ・ツールの利用と監査対応を容易にする。
+    decided_at: "2024-01-15"
+    decided_by: "山田太郎"
+    related_open_decision_id: "O-001"
+  - id: ADR-002
+    summary: リフレッシュトークンはローテーション方式とする
+    conclusion: |
+      リフレッシュトークン使用のたびに新しいトークンを発行し、使用済みトークンは無効化する（ローテーション）。
+      漏洩時の影響範囲を最小化するため。
+    context: |
+      OWASP の推奨に沿い、固定のリフレッシュトークン長期利用を避ける。
+    decided_at: "2024-01-20"
+    decided_by: "山田太郎"
+  - id: ADR-003
+    summary: 二要素認証は TOTP（アプリ型）を第一候補とする
+    conclusion: |
+      二要素認証は TOTP（Google Authenticator 等のアプリ）を標準でサポートする。
+      SMS はコスト・セキュリティの観点から当面は対象外とする。
+    context: |
+      ユーザー利便性と実装コストのバランス。TOTP はライブラリが豊富で導入が容易。
+    decided_at: "2024-01-22"
+    decided_by: "山田太郎"
 
 references:
   - title: プロジェクト概要
     url: categories/overview/project_summary/ai/document.yaml
   - title: 検討事項・不明点
     url: categories/overview/open_items/ai/document.yaml
+  - title: 要件整理
+    url: categories/design/requirements/ai/document.yaml

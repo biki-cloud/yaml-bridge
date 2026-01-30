@@ -44,6 +44,7 @@ pie showData
 
 ## 関連資料（エビデンス）
 
+- [動作確認計画](../../verification_plan/human/document.md)
 - [動作確認結果・関連PR](https://github.com)
 
 ---

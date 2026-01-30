@@ -2,13 +2,38 @@ meta:
   title: "障害・振り返り"
   category: development
   doc_type: incident_postmortem
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-20"
 
-incidents: []
+incidents:
+  - id: INC-001
+    title: "ステージングで Redis 接続タイムアウトが多発"
+    occurred_at: "2024-01-19T14:00:00+09:00"
+    resolved_at: "2024-01-19T14:45:00+09:00"
+    summary: |
+      ステージングデプロイ後、認証APIの応答が遅延・タイムアウトする事象が発生。
+      ログイン・リフレッシュが失敗し、ステージングでの検証ができない状態になった。
+    root_cause: |
+      Redis の接続タイムアウトが 5 秒に設定されており、ステージングの Redis が
+      コールドスタートやネットワーク遅延で 5 秒を超えることがあった。
+      また、接続失敗時のリトライ回数が 1 回のみで、一時的な障害に弱かった。
+    action_taken: |
+      1. タイムアウトを 30 秒に変更し、リトライを 3 回に増やした。
+      2. ステージングの Redis を再起動し、接続を確認した。
+      3. 実装結果ドキュメントに「Redis接続タイムアウトが短すぎた」として記録済み。
+    prevention: |
+      1. 環境ごとの推奨タイムアウト・リトライを環境・インフラ doc に明記する。
+      2. ステージングデプロイ後にヘルスチェック＋認証 1 回を CI に組み込み、早期検知する。
+    severity: medium
+    runbook_ref: "RB-003（Redis 接続障害時の初動）"
+    notes: "本番では ElastiCache のため同様のコールドスタートは起きにくいが、閾値は本番に合わせて再検討する。"
 
 references:
   - title: プロジェクト概要
     url: categories/overview/project_summary/ai/document.yaml
   - title: ランブック
     url: categories/development/runbook/ai/document.yaml
+  - title: 実装結果（セッション管理）
+    url: categories/development/implementation_result/ai/document.yaml

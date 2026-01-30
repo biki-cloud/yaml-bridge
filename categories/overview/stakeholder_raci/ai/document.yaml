@@ -2,11 +2,48 @@ meta:
   title: "ステークホルダー・RACI"
   category: overview
   doc_type: stakeholder_raci
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-15"
 
-raci_items: []
+raci_items:
+  - scope: "プロジェクト全体・スコープ・優先度"
+    responsible: "山田太郎（テックリード）"
+    accountable: "鈴木一郎（PO）"
+    consulted: ["山田太郎"]
+    informed: ["開発チーム"]
+    notes: "スコープ変更は PO 承認必須"
+  - scope: "認証・セキュリティ設計"
+    responsible: "山田太郎"
+    accountable: "山田太郎"
+    consulted: ["鈴木一郎", "セキュリティ担当"]
+    informed: ["開発チーム"]
+    notes: "セキュリティ設計はレビュー必須"
+  - scope: "API 設計・データモデル"
+    responsible: "山田太郎"
+    accountable: "山田太郎"
+    consulted: ["鈴木一郎"]
+    informed: ["開発チーム"]
+  - scope: "実装・単体テスト"
+    responsible: "開発チーム"
+    accountable: "山田太郎"
+    consulted: ["山田太郎"]
+    informed: ["鈴木一郎"]
+  - scope: "動作確認・受入テスト"
+    responsible: "山田太郎"
+    accountable: "鈴木一郎"
+    consulted: ["開発チーム"]
+    informed: ["鈴木一郎"]
+    notes: "受入サインオフは PO が実施"
+  - scope: "リリース判断・本番デプロイ"
+    responsible: "山田太郎"
+    accountable: "鈴木一郎"
+    consulted: ["山田太郎"]
+    informed: ["開発チーム", "運用担当"]
 
 references:
   - title: プロジェクト概要
     url: categories/overview/project_summary/ai/document.yaml
+  - title: WBS
+    url: categories/overview/wbs/ai/document.yaml

@@ -2,13 +2,59 @@ meta:
   title: "依存一覧"
   category: development
   doc_type: dependencies
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-25"
 
-dependencies: []
+dependencies:
+  - id: DEP-001
+    name: "express"
+    type: library
+    version: "4.18.x"
+    license: "MIT"
+    purpose: "API サーバー基盤。認証・ユーザーAPI のルーティング・ミドルウェア"
+    url: "https://www.npmjs.com/package/express"
+  - id: DEP-002
+    name: "jsonwebtoken"
+    type: library
+    version: "9.0.x"
+    license: "MIT"
+    purpose: "JWT の生成・検証。アクセストークン・リフレッシュトークンの発行・検証"
+    url: "https://www.npmjs.com/package/jsonwebtoken"
+  - id: DEP-003
+    name: "ioredis"
+    type: library
+    version: "5.3.x"
+    license: "MIT"
+    purpose: "Redis クライアント。トークンストア・セッションストア"
+    url: "https://www.npmjs.com/package/ioredis"
+  - id: DEP-004
+    name: "bcrypt"
+    type: library
+    version: "5.1.x"
+    license: "MIT"
+    purpose: "パスワードハッシュ（REQ-002 準拠）"
+    url: "https://www.npmjs.com/package/bcrypt"
+  - id: DEP-005
+    name: "joi"
+    type: library
+    version: "17.11.x"
+    license: "BSD-3-Clause"
+    purpose: "リクエストバリデーション。ログイン・ユーザー登録の入力検証"
+    url: "https://www.npmjs.com/package/joi"
+  - id: DEP-006
+    name: "jest"
+    type: tool
+    version: "29.7.x"
+    license: "MIT"
+    purpose: "単体テスト・結合テスト"
+    url: "https://jestjs.io/"
 
 references:
   - title: プロジェクト概要
     url: categories/overview/project_summary/ai/document.yaml
   - title: 実装計画
     url: categories/development/implementation_plan/ai/document.yaml
+  - title: 環境・インフラ
+    url: categories/development/environment/ai/document.yaml

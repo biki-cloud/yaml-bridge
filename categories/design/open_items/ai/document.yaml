@@ -2,13 +2,33 @@ meta:
   title: "設計の検討事項・不明点"
   category: design
   doc_type: open_items
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-20"
 
-open_decisions: []
+open_decisions:
+  - id: D-O-001
+    decision_needed: "管理画面の認可粒度を画面単位とするか操作単位とするか"
+    detail: "overview/open_items の U-002 と連動。設計で方針を決め、実装に反映する。"
+    blocks_tasks: ["DT-004"]
+    status: open
+    owner: "山田太郎"
+    due: "2024-01-28"
 
-unclear_points: []
+unclear_points:
+  - id: D-U-001
+    point: "既存認証基盤とのトークン互換（移行期間中の相互認証）の仕様"
+    detail: "移行期間中、旧セッションと新トークンの両方を許容する場合の検証順序・フォールバックが未確定。"
+    related_docs:
+      - title: アーキテクチャ
+        url: categories/design/architecture/ai/document.yaml
+    status: open
 
 references:
   - title: 要件整理
     url: categories/design/requirements/ai/document.yaml
+  - title: 案件全体の検討事項・不明点
+    url: categories/overview/open_items/ai/document.yaml
+  - title: アーキテクチャ
+    url: categories/design/architecture/ai/document.yaml

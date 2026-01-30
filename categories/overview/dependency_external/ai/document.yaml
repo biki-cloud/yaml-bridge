@@ -2,11 +2,37 @@ meta:
   title: "外部依存"
   category: overview
   doc_type: dependency_external
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-15"
 
-dependencies: []
+dependencies:
+  - id: EXT-001
+    name: "認証基盤（既存システム）"
+    type: project
+    owner: "インフラチーム 田中"
+    sla: |
+      認証基盤の API は SLA 99.9%。障害時は 2 時間以内に初動。
+      本プロジェクトは移行期間中のみ依存し、完了後は新認証に完全移行。
+    risk_register_id: "R-001"
+    notes: "既存クライアントとの互換性維持のため、移行期間は並存"
+  - id: EXT-002
+    name: "課金システム連携（将来）"
+    type: project
+    owner: "未定"
+    sla: "本フェーズではスコープ外。フェーズ2で契約・SLA を定義予定。"
+    notes: "プロジェクト概要でスコープ外と明文化済み"
+  - id: EXT-003
+    name: "監査ログ・SIEM 連携"
+    type: team
+    owner: "セキュリティチーム"
+    sla: "ログ形式は社内標準に準拠。連携先は 2024-Q2 に確定予定。"
+    risk_register_id: "R-005"
+    notes: "セキュリティ要件の解釈を早期に合わせる必要あり"
 
 references:
   - title: プロジェクト概要
     url: categories/overview/project_summary/ai/document.yaml
+  - title: リスク登録簿
+    url: categories/overview/risk_register/ai/document.yaml

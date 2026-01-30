@@ -2,20 +2,124 @@ meta:
   title: "データモデル"
   category: design
   doc_type: data_model
-  status: todo
+  status: wip
   version: "1.0.0"
+  author: "山田太郎"
+  updated_at: "2024-01-20"
 
 overview:
-  background: ""
-  goal: ""
+  background: |
+    認証・ユーザー管理に必要なエンティティを定義し、
+    要件・アーキテクチャと整合させる。DB変更のトレースに利用する。
+  goal: |
+    エンティティ・属性・リレーションを明文化し、実装・マイグレーションの根拠とする。
   related_docs:
     - title: 要件整理
       url: categories/design/requirements/ai/document.yaml
     - title: アーキテクチャ
       url: categories/design/architecture/ai/document.yaml
 
-entities: []
+entities:
+  - id: E-001
+    name: "users"
+    description: "ユーザー master。認証情報・プロファイルの親"
+    attributes:
+      - name: id
+        type: uuid
+        nullable: false
+        primary_key: true
+        description: "PK"
+      - name: email
+        type: string
+        nullable: false
+        primary_key: false
+        description: "ログインID。一意"
+      - name: password_hash
+        type: string
+        nullable: false
+        primary_key: false
+        description: "ハッシュ化パスワード（REQ-002 準拠）"
+      - name: role
+        type: string
+        nullable: false
+        primary_key: false
+        description: "admin / operator / user"
+      - name: created_at
+        type: timestamp
+        nullable: false
+        primary_key: false
+        description: "作成日時"
+      - name: updated_at
+        type: timestamp
+        nullable: false
+        primary_key: false
+        description: "更新日時"
+    relations:
+      - target_entity_id: E-002
+        relation_type: one_to_many
+        description: "1ユーザーに対し複数リフレッシュトークン（有効分）"
+      - target_entity_id: E-003
+        relation_type: one_to_one
+        description: "ユーザーとプロファイルは1:1"
+  - id: E-002
+    name: "refresh_tokens"
+    description: "リフレッシュトークン（ローテーション用）。使用済みは無効フラグ"
+    attributes:
+      - name: id
+        type: uuid
+        nullable: false
+        primary_key: true
+        description: "PK"
+      - name: user_id
+        type: uuid
+        nullable: false
+        primary_key: false
+        description: "FK → users"
+      - name: token_hash
+        type: string
+        nullable: false
+        primary_key: false
+        description: "トークンのハッシュ"
+      - name: revoked
+        type: boolean
+        nullable: false
+        primary_key: false
+        description: "使用済み・無効化済み"
+      - name: expires_at
+        type: timestamp
+        nullable: false
+        primary_key: false
+        description: "有効期限"
+    relations:
+      - target_entity_id: E-001
+        relation_type: one_to_many
+        description: "users への多対一"
+  - id: E-003
+    name: "user_profiles"
+    description: "ユーザーの表示用プロファイル（名前・表示設定等）"
+    attributes:
+      - name: user_id
+        type: uuid
+        nullable: false
+        primary_key: true
+        description: "PK, FK → users"
+      - name: display_name
+        type: string
+        nullable: true
+        primary_key: false
+        description: "表示名"
+      - name: updated_at
+        type: timestamp
+        nullable: false
+        primary_key: false
+        description: "更新日時"
+    relations:
+      - target_entity_id: E-001
+        relation_type: one_to_one
+        description: "users と1:1"
 
 references:
   - title: 要件整理
     url: categories/design/requirements/ai/document.yaml
+  - title: アーキテクチャ
+    url: categories/design/architecture/ai/document.yaml
